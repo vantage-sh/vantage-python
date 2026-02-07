@@ -16,21 +16,13 @@ Usage:
     async def main():
         async with AsyncClient("your-api-token") as client:
             folders = await client.folders.list()
-
-    # Never-throw mode (Go-style error handling)
-    client = Client("your-api-token", never_throw=True)
-    result = client.folders.list()
-    if result.ok:
-        print(result.value)
-    else:
-        print(result.error)
 """
 
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from ._base import VantageAPIError, Result, DEFAULT_BASE_URL
+from ._base import VantageAPIError, DEFAULT_BASE_URL
 
 if TYPE_CHECKING:
     from ._sync.client import SyncClient
@@ -40,7 +32,6 @@ __all__ = [
     "Client",
     "AsyncClient",
     "VantageAPIError",
-    "Result",
     "DEFAULT_BASE_URL",
 ]
 
@@ -49,7 +40,6 @@ def Client(
     bearer_token: str,
     *,
     base_url: str = DEFAULT_BASE_URL,
-    never_throw: bool = False,
 ) -> "SyncClient":
     """
     Create a synchronous Vantage API client.
@@ -57,7 +47,6 @@ def Client(
     Args:
         bearer_token: Your Vantage API bearer token.
         base_url: Base URL for the API (default: https://api.vantage.sh).
-        never_throw: If True, returns Result objects instead of raising exceptions.
 
     Returns:
         A synchronous client instance.
@@ -68,14 +57,13 @@ def Client(
     """
     from ._sync.client import SyncClient
 
-    return SyncClient(bearer_token, base_url=base_url, never_throw=never_throw)
+    return SyncClient(bearer_token, base_url=base_url)
 
 
 def AsyncClient(
     bearer_token: str,
     *,
     base_url: str = DEFAULT_BASE_URL,
-    never_throw: bool = False,
 ) -> "_AsyncClient":
     """
     Create an asynchronous Vantage API client.
@@ -83,7 +71,6 @@ def AsyncClient(
     Args:
         bearer_token: Your Vantage API bearer token.
         base_url: Base URL for the API (default: https://api.vantage.sh).
-        never_throw: If True, returns Result objects instead of raising exceptions.
 
     Returns:
         An asynchronous client instance.
@@ -94,4 +81,4 @@ def AsyncClient(
     """
     from ._async.client import AsyncClient as _AsyncClientImpl
 
-    return _AsyncClientImpl(bearer_token, base_url=base_url, never_throw=never_throw)
+    return _AsyncClientImpl(bearer_token, base_url=base_url)

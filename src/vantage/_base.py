@@ -2,11 +2,9 @@
 
 from __future__ import annotations
 
-from typing import Any, TypeVar, Generic, Optional, List, Dict, Set
+from typing import Any, Optional, List, Dict, Set
 from dataclasses import dataclass
 from urllib.parse import quote
-
-T = TypeVar("T")
 
 
 @dataclass
@@ -30,23 +28,6 @@ class VantageAPIError(Exception):
                     self.errors = parsed["errors"]
             except (json.JSONDecodeError, KeyError):
                 pass
-
-
-@dataclass
-class Result(Generic[T]):
-    """Result wrapper for never-throw mode."""
-
-    value: Optional[T] = None
-    error: Optional[VantageAPIError] = None
-
-    @property
-    def ok(self) -> bool:
-        return self.error is None
-
-    def unwrap(self) -> T:
-        if self.error is not None:
-            raise self.error
-        return self.value  # type: ignore
 
 
 # Multipart edge cases - routes that use multipart/form-data
