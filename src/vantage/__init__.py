@@ -26,7 +26,7 @@ from ._base import VantageAPIError, DEFAULT_BASE_URL
 from ._types import *
 
 if TYPE_CHECKING:
-    from ._sync.client import SyncClient
+    from ._sync.client import SyncClient as _SyncClient
     from ._async.client import AsyncClient as _AsyncClient
 
 
@@ -34,7 +34,7 @@ def Client(
     bearer_token: str,
     *,
     base_url: str = DEFAULT_BASE_URL,
-) -> "SyncClient":
+) -> "_SyncClient":
     """
     Create a synchronous Vantage API client.
 
