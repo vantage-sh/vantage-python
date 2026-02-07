@@ -1,0 +1,30 @@
+on: push
+name: Run Tests
+
+jobs:
+    e2e-tests:
+        name: E2E Tests
+        runs-on: ubuntu-22.04
+        steps:
+            - uses: actions/checkout@v4
+            - uses: actions/setup-python@v5
+              with:
+                  python-version: "3.12"
+            - run: pip install -e ".[dev]"
+            - run: python autogen.py
+            - run: pytest tests/test_e2e.py
+              env:
+                  VANTAGE_API_TOKEN: ${{ secrets.VANTAGE_API_TOKEN }}
+                  VANTAGE_WORKSPACE_TOKEN: ${{ secrets.VANTAGE_WORKSPACE_TOKEN }}
+
+    dry-build:
+        name: Dry Build
+        runs-on: ubuntu-22.04
+        steps:
+            - uses: actions/checkout@v4
+            - uses: actions/setup-python@v5
+              with:
+                  python-version: "3.12"
+            - run: pip install -e ".[dev]"
+            - run: python autogen.py
+            - run: python -c "from vantage import Client, AsyncClient"

@@ -1,0 +1,25 @@
+name: Publish Package
+
+on:
+    push:
+        tags:
+            - "v*"
+
+permissions:
+    id-token: write
+    contents: read
+
+jobs:
+    publish:
+        runs-on: ubuntu-22.04
+        steps:
+            - uses: actions/checkout@v4
+            - uses: actions/setup-python@v5
+              with:
+                  python-version: "3.12"
+            - run: pip install build twine
+            - run: pip install -e ".[dev]"
+            - run: python autogen.py
+            - run: python -m build
+            - name: Publish release distributions to PyPI
+              uses: pypa/gh-action-pypi-publish@v1.13.0
