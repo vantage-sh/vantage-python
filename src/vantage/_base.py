@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from typing import Any, TypeVar, Generic, Optional, List, Dict, Set
 from dataclasses import dataclass
+from urllib.parse import quote
 
 T = TypeVar("T")
 
@@ -71,19 +72,21 @@ def is_multipart_route(path: str, method: str) -> bool:
 
 
 def build_query_string(params: Dict[str, Any]) -> str:
-    """Build a query string from parameters."""
+    """Build a URL-safe query string from parameters."""
     if not params:
         return ""
     parts = []
     for key, value in params.items():
         if value is None:
             continue
+        enc_key = quote(str(key), safe="")
         if isinstance(value, bool):
-            parts.append(f"{key}={str(value).lower()}")
+            parts.append(f"{enc_key}={str(value).lower()}")
         elif isinstance(value, list):
-            parts.append(f"{key}={','.join(str(v) for v in value)}")
+            joined = ",".join(quote(str(v), safe="") for v in value)
+            parts.append(f"{enc_key}={joined}")
         else:
-            parts.append(f"{key}={value}")
+            parts.append(f"{enc_key}={quote(str(value), safe='')}")
     return "?" + "&".join(parts) if parts else ""
 
 
