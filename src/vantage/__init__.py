@@ -23,17 +23,11 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from ._base import VantageAPIError, DEFAULT_BASE_URL
+from ._types import *
 
 if TYPE_CHECKING:
     from ._sync.client import SyncClient
     from ._async.client import AsyncClient as _AsyncClient
-
-__all__ = [
-    "Client",
-    "AsyncClient",
-    "VantageAPIError",
-    "DEFAULT_BASE_URL",
-]
 
 
 def Client(
