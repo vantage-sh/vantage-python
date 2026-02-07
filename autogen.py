@@ -64,6 +64,14 @@ def to_snake_case(name: str) -> str:
     return re.sub(r"([a-z0-9])([A-Z])", r"\1_\2", s1).lower()
 
 
+# Python names that collide with BaseModel attributes or builtins
+RESERVED_FIELD_NAMES = frozenset({
+    "schema", "validate", "model_fields", "model_computed_fields",
+    "model_config", "model_post_init", "model_dump", "model_json_schema",
+    "model_rebuild", "model_validate", "model_validate_json",
+})
+
+
 def sanitize_python_name(name: str) -> str:
     """Convert a parameter name to a valid Python identifier."""
     # Handle bracket notation: settings[include_credits] -> settings_include_credits
@@ -400,6 +408,13 @@ def generate_pydantic_models(schema: dict[str, Any]) -> str:
 
         for prop_name, prop_spec in properties.items():
             python_name = to_snake_case(prop_name)
+
+            # Avoid shadowing BaseModel attributes
+            needs_alias = python_name != prop_name
+            if python_name in RESERVED_FIELD_NAMES:
+                python_name = python_name + "_"
+                needs_alias = True
+
             prop_type = openapi_type_to_python(prop_spec, schemas)
 
             # Handle nullable
@@ -417,7 +432,7 @@ def generate_pydantic_models(schema: dict[str, Any]) -> str:
 
             # Build field definition
             field_args = []
-            if python_name != prop_name:
+            if needs_alias:
                 field_args.append(f'alias="{prop_name}"')
             if not is_required or has_default:
                 default_val = prop_spec.get("default", None)
