@@ -1,3 +1,10 @@
+# Generated code
 src/vantage/_types.py
 src/vantage/_async/client.py
 src/vantage/_sync/client.py
+
+# Python specific
+__pycache__/
+dist/
+build/
+*.egg-info/
