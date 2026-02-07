@@ -3,13 +3,16 @@ name: Run Tests
 
 jobs:
     e2e-tests:
-        name: E2E Tests
+        name: E2E Tests (Python ${{ matrix.python-version }})
         runs-on: ubuntu-22.04
+        strategy:
+            matrix:
+                python-version: ["3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
         steps:
             - uses: actions/checkout@v4
             - uses: actions/setup-python@v5
               with:
-                  python-version: "3.12"
+                  python-version: ${{ matrix.python-version }}
             - run: pip install -e ".[dev]"
             - run: python autogen.py
             - run: pytest tests/test_e2e.py
@@ -18,13 +21,16 @@ jobs:
                   VANTAGE_WORKSPACE_TOKEN: ${{ secrets.VANTAGE_WORKSPACE_TOKEN }}
 
     dry-build:
-        name: Dry Build
+        name: Dry Build (Python ${{ matrix.python-version }})
         runs-on: ubuntu-22.04
+        strategy:
+            matrix:
+                python-version: ["3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
         steps:
             - uses: actions/checkout@v4
             - uses: actions/setup-python@v5
               with:
-                  python-version: "3.12"
+                  python-version: ${{ matrix.python-version }}
             - run: pip install -e ".[dev]"
             - run: python autogen.py
             - run: python -c "from vantage import Client, AsyncClient"
