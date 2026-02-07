@@ -334,21 +334,31 @@ def group_by_resource(endpoints: list[Endpoint]) -> dict[str, Resource]:
 
 
 def generate_method_name(endpoint: Endpoint, resource_name: str) -> str:
-    """Generate a method name from operation ID."""
+    """Generate a method name from operation ID, stripping redundant resource names."""
     op_id = endpoint.operation_id
+    resource_pascal = to_pascal_case(resource_name)
+    resource_singular = resource_pascal[:-1] if resource_pascal.endswith("s") else resource_pascal
 
-    # Remove common prefixes
-    for prefix in ["get", "create", "update", "delete", "list"]:
+    for prefix in ["get", "create", "update", "delete", "list", "add", "remove",
+                    "download", "regenerate", "send"]:
         if op_id.lower().startswith(prefix):
-            remainder = op_id[len(prefix) :]
-            # Remove resource name from remainder
-            resource_pascal = to_pascal_case(resource_name)
-            if remainder.startswith(resource_pascal):
-                remainder = remainder[len(resource_pascal) :]
-            elif remainder.startswith("_" + resource_name):
-                remainder = remainder[len(resource_name) + 1 :]
+            remainder = op_id[len(prefix):]
 
-            if not remainder or remainder == "s":
+            # Exact plural match = list operation (e.g. getCostReports -> list)
+            if resource_pascal.endswith("s") and remainder == resource_pascal:
+                return "list"
+
+            # Strip resource name: try plural first to avoid stray 's'
+            if remainder.startswith(resource_pascal):
+                remainder = remainder[len(resource_pascal):]
+            elif remainder.startswith(resource_singular):
+                remainder = remainder[len(resource_singular):]
+            elif remainder.endswith(resource_pascal):
+                remainder = remainder[:-len(resource_pascal)]
+            elif remainder.endswith(resource_singular):
+                remainder = remainder[:-len(resource_singular)]
+
+            if not remainder:
                 return prefix
             return to_snake_case(prefix + remainder)
 
