@@ -127,6 +127,14 @@ def openapi_type_to_python(schema: dict[str, Any], schemas: dict[str, Any]) -> s
         if additional:
             value_type = openapi_type_to_python(additional, schemas)
             return f"Dict[str, {value_type}]"
+        # Check if inline properties match an existing named schema
+        inline_props = schema.get("properties")
+        if inline_props:
+            inline_keys = sorted(inline_props.keys())
+            for schema_name, schema_def in schemas.items():
+                defined_keys = sorted(schema_def.get("properties", {}).keys())
+                if defined_keys and inline_keys == defined_keys:
+                    return to_pascal_case(schema_name)
         return "Dict[str, Any]"
     else:
         return "Any"
