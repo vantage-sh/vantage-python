@@ -100,6 +100,81 @@ def to_pascal_case(name: str) -> str:
     return "".join(word.capitalize() for word in snake.replace("-", "_").split("_") if word)
 
 
+def preprocess_inline_models(schemas: dict[str, Any]) -> None:
+    """
+    Scan all schema properties for inline objects with explicit properties
+    that don't match any existing named schema. Create synthetic schema
+    entries so they get proper Pydantic models instead of Dict[str, Any].
+
+    Naming rules:
+    - Default name: PascalCase of the property key (e.g. settings -> Settings)
+    - If that conflicts with an existing schema or another inline group with
+      different keys, prefix with parent model name(s) joined by 'Or'.
+    """
+    existing_names = {to_pascal_case(name) for name in schemas}
+
+    # Phase 1: Collect inline objects that don't match existing schemas
+    # candidate_name -> [(parent_schema_name, sorted_keys, prop_spec)]
+    candidates: dict[str, list[tuple[str, tuple[str, ...], dict[str, Any]]]] = {}
+
+    for schema_name in list(schemas):
+        for prop_name, prop_spec in schemas[schema_name].get("properties", {}).items():
+            if prop_spec.get("type") != "object":
+                continue
+            if prop_spec.get("additionalProperties"):
+                continue
+            inline_props = prop_spec.get("properties")
+            if not inline_props:
+                continue
+
+            inline_keys = tuple(sorted(inline_props.keys()))
+            if any(
+                tuple(sorted(sd.get("properties", {}).keys())) == inline_keys
+                for sd in schemas.values()
+                if sd.get("properties")
+            ):
+                continue
+
+            cand = to_pascal_case(prop_name)
+            candidates.setdefault(cand, []).append((schema_name, inline_keys, prop_spec))
+
+    # Phase 2: Resolve names and add synthetic schemas
+    for cand_name, instances in candidates.items():
+        # Group by key structure
+        by_keys: dict[tuple[str, ...], list[tuple[str, dict[str, Any]]]] = {}
+        for parent, keys, spec in instances:
+            by_keys.setdefault(keys, []).append((parent, spec))
+
+        needs_prefix = cand_name in existing_names or len(by_keys) > 1
+
+        for keys, group in by_keys.items():
+            if needs_prefix:
+                parents = sorted({to_pascal_case(p) for p, _ in group})
+                model_name = "Or".join(parents) + cand_name
+            else:
+                model_name = cand_name
+
+            # Pick the spec with the most documentation (descriptions + defaults)
+            best = max(
+                (s for _, s in group),
+                key=lambda s: sum(
+                    bool(v.get("description")) + ("default" in v)
+                    for v in s.get("properties", {}).values()
+                ),
+            )
+
+            synthetic: dict[str, Any] = {
+                "type": "object",
+                "properties": best["properties"],
+            }
+            for k in ("required", "description"):
+                if best.get(k):
+                    synthetic[k] = best[k]
+
+            schemas[model_name] = synthetic
+            existing_names.add(model_name)
+
+
 def openapi_type_to_python(schema: dict[str, Any], schemas: dict[str, Any]) -> str:
     """Convert OpenAPI type to Python type hint."""
     if "$ref" in schema:
@@ -842,6 +917,11 @@ def main() -> None:
     """Main entry point for code generation."""
     # Fetch schema
     schema = fetch_openapi_schema()
+
+    # Preprocess inline models before any type resolution
+    print("Preprocessing inline models...")
+    schemas = schema.get("components", {}).get("schemas", {})
+    preprocess_inline_models(schemas)
 
     # Parse endpoints
     print("Parsing endpoints...")
