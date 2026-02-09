@@ -1,11 +1,11 @@
-# vantage.py
+# vantage-python
 
 A Python SDK for the [Vantage](https://vantage.sh) API. Types and client methods are auto-generated from the official OpenAPI specification.
 
 ## Installation
 
 ```bash
-pip install vantage.py
+pip install vantage-python
 ```
 
 ## Usage
