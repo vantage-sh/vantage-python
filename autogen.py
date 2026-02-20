@@ -373,6 +373,70 @@ def generate_method_name(endpoint: Endpoint, resource_name: str) -> str:
     return to_snake_case(op_id)
 
 
+def _extract_inner_type(type_hint: str, generic_prefix: str) -> str | None:
+    """Extract inner type from simple generic forms like Prefix[Inner]."""
+    if not type_hint.startswith(generic_prefix) or not type_hint.endswith("]"):
+        return None
+    return type_hint[len(generic_prefix):-1].strip()
+
+
+def _extract_dict_value_type(type_hint: str) -> str | None:
+    """Extract value type from Dict[str, ValueType]."""
+    if not type_hint.startswith("Dict[") or not type_hint.endswith("]"):
+        return None
+    inner = type_hint[len("Dict["):-1].strip()
+    key_and_value = inner.split(",", 1)
+    if len(key_and_value) != 2:
+        return None
+    key_type = key_and_value[0].strip()
+    value_type = key_and_value[1].strip()
+    if key_type not in {"str", "Optional[str]"}:
+        return None
+    return value_type
+
+
+def _is_model_type(type_hint: str) -> bool:
+    """Return True for generated Pydantic model type names."""
+    return bool(re.match(r"^[A-Z][A-Za-z0-9_]*$", type_hint))
+
+
+def _append_response_mapping(lines: list[str], return_type: str, data_var: str) -> None:
+    """Append generated code that coerces dict payloads into typed models."""
+    type_hint = return_type.strip()
+
+    optional_inner = _extract_inner_type(type_hint, "Optional[")
+    if optional_inner:
+        type_hint = optional_inner
+
+    list_inner = _extract_inner_type(type_hint, "List[")
+    if list_inner and _is_model_type(list_inner):
+        lines.extend(
+            [
+                f"        if isinstance({data_var}, list):",
+                f"            return [{list_inner}.model_validate(item) if isinstance(item, dict) else item for item in {data_var}]",
+            ]
+        )
+        return
+
+    dict_inner = _extract_dict_value_type(type_hint)
+    if dict_inner and _is_model_type(dict_inner):
+        lines.extend(
+            [
+                f"        if isinstance({data_var}, dict):",
+                f"            return {{k: {dict_inner}.model_validate(v) if isinstance(v, dict) else v for k, v in {data_var}.items()}}",
+            ]
+        )
+        return
+
+    if _is_model_type(type_hint):
+        lines.extend(
+            [
+                f"        if isinstance({data_var}, dict):",
+                f"            return {type_hint}.model_validate({data_var})",
+            ]
+        )
+
+
 def generate_pydantic_models(schema: dict[str, Any]) -> str:
     """Generate Pydantic models from OpenAPI schemas."""
     schemas = schema.get("components", {}).get("schemas", {})
@@ -675,10 +739,12 @@ def generate_sync_method(endpoint: Endpoint, method_name: str) -> list[str]:
     else:
         lines.append("        body_data = None")
 
-    # Make request
+    # Make request and coerce response payload into typed models where possible
     lines.append(
-        f'        return self._client.request("{endpoint.method}", path, params=params, body=body_data)'
+        f'        data = self._client.request("{endpoint.method}", path, params=params, body=body_data)'
     )
+    _append_response_mapping(lines, return_type, "data")
+    lines.append("        return data")
 
     return lines
 
@@ -899,10 +965,12 @@ def generate_async_method(endpoint: Endpoint, method_name: str) -> list[str]:
     else:
         lines.append("        body_data = None")
 
-    # Make request
+    # Make request and coerce response payload into typed models where possible
     lines.append(
-        f'        return await self._client.request("{endpoint.method}", path, params=params, body=body_data)'
+        f'        data = await self._client.request("{endpoint.method}", path, params=params, body=body_data)'
     )
+    _append_response_mapping(lines, return_type, "data")
+    lines.append("        return data")
 
     return lines
 

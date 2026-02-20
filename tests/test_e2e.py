@@ -35,19 +35,19 @@ class TestSyncCRUD:
         folder = client.folders.create(
             CreateFolder(title="E2E Test Folder", workspace_token=WORKSPACE_TOKEN)
         )
-        assert folder["title"] == "E2E Test Folder"
-        token = folder["token"]
+        assert folder.title == "E2E Test Folder"
+        token = folder.token
 
         try:
             # Read
             fetched = client.folders.get(token)
-            assert fetched["title"] == "E2E Test Folder"
+            assert fetched.title == "E2E Test Folder"
 
             # Update
             updated = client.folders.update(
                 token, UpdateFolder(title="Updated E2E Folder")
             )
-            assert updated["title"] == "Updated E2E Folder"
+            assert updated.title == "Updated E2E Folder"
         finally:
             # Delete
             client.folders.delete(token)
@@ -75,19 +75,19 @@ class TestAsyncCRUD:
             folder = await client.folders.create(
                 CreateFolder(title="E2E Async Test Folder", workspace_token=WORKSPACE_TOKEN)
             )
-            assert folder["title"] == "E2E Async Test Folder"
-            token = folder["token"]
+            assert folder.title == "E2E Async Test Folder"
+            token = folder.token
 
             try:
                 # Read
                 fetched = await client.folders.get(token)
-                assert fetched["title"] == "E2E Async Test Folder"
+                assert fetched.title == "E2E Async Test Folder"
 
                 # Update
                 updated = await client.folders.update(
                     token, UpdateFolder(title="Updated E2E Async Folder")
                 )
-                assert updated["title"] == "Updated E2E Async Folder"
+                assert updated.title == "Updated E2E Async Folder"
             finally:
                 # Delete
                 await client.folders.delete(token)

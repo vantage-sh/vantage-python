@@ -149,7 +149,10 @@ class AccessGrantsApi:
             "limit": limit,
         }
         body_data = None
-        return self._client.request("GET", path, params=params, body=body_data)
+        data = self._client.request("GET", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return AccessGrants.model_validate(data)
+        return data
 
     def create(self, body: CreateAccessGrant) -> AccessGrant:
         """
@@ -160,7 +163,10 @@ class AccessGrantsApi:
         path = "/access_grants"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
-        return self._client.request("POST", path, params=params, body=body_data)
+        data = self._client.request("POST", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return AccessGrant.model_validate(data)
+        return data
 
     def get(self, access_grant_token: str) -> AccessGrant:
         """
@@ -171,7 +177,10 @@ class AccessGrantsApi:
         path = f"/access_grants/{quote(str(access_grant_token), safe='')}"
         params = None
         body_data = None
-        return self._client.request("GET", path, params=params, body=body_data)
+        data = self._client.request("GET", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return AccessGrant.model_validate(data)
+        return data
 
     def update(self, access_grant_token: str, body: UpdateAccessGrant) -> AccessGrant:
         """
@@ -182,7 +191,10 @@ class AccessGrantsApi:
         path = f"/access_grants/{quote(str(access_grant_token), safe='')}"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
-        return self._client.request("PUT", path, params=params, body=body_data)
+        data = self._client.request("PUT", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return AccessGrant.model_validate(data)
+        return data
 
     def delete(self, access_grant_token: str) -> Any:
         """
@@ -193,7 +205,10 @@ class AccessGrantsApi:
         path = f"/access_grants/{quote(str(access_grant_token), safe='')}"
         params = None
         body_data = None
-        return self._client.request("DELETE", path, params=params, body=body_data)
+        data = self._client.request("DELETE", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return Any.model_validate(data)
+        return data
 
 
 class AnomalyAlertsApi:
@@ -220,7 +235,10 @@ class AnomalyAlertsApi:
             "cost_report_token": cost_report_token,
         }
         body_data = None
-        return self._client.request("GET", path, params=params, body=body_data)
+        data = self._client.request("GET", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return AnomalyAlerts.model_validate(data)
+        return data
 
     def get(self, anomaly_alert_token: str) -> AnomalyAlert:
         """
@@ -231,7 +249,10 @@ class AnomalyAlertsApi:
         path = f"/anomaly_alerts/{quote(str(anomaly_alert_token), safe='')}"
         params = None
         body_data = None
-        return self._client.request("GET", path, params=params, body=body_data)
+        data = self._client.request("GET", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return AnomalyAlert.model_validate(data)
+        return data
 
     def update(self, anomaly_alert_token: str, body: UpdateAnomalyAlert) -> AnomalyAlert:
         """
@@ -242,7 +263,10 @@ class AnomalyAlertsApi:
         path = f"/anomaly_alerts/{quote(str(anomaly_alert_token), safe='')}"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
-        return self._client.request("PUT", path, params=params, body=body_data)
+        data = self._client.request("PUT", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return AnomalyAlert.model_validate(data)
+        return data
 
 
 class AnomalyNotificationsApi:
@@ -263,7 +287,10 @@ class AnomalyNotificationsApi:
             "limit": limit,
         }
         body_data = None
-        return self._client.request("GET", path, params=params, body=body_data)
+        data = self._client.request("GET", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return AnomalyNotifications.model_validate(data)
+        return data
 
     def create(self, body: CreateAnomalyNotification) -> AnomalyNotification:
         """
@@ -274,7 +301,10 @@ class AnomalyNotificationsApi:
         path = "/anomaly_notifications"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
-        return self._client.request("POST", path, params=params, body=body_data)
+        data = self._client.request("POST", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return AnomalyNotification.model_validate(data)
+        return data
 
     def get(self, anomaly_notification_token: str) -> AnomalyNotification:
         """
@@ -285,7 +315,10 @@ class AnomalyNotificationsApi:
         path = f"/anomaly_notifications/{quote(str(anomaly_notification_token), safe='')}"
         params = None
         body_data = None
-        return self._client.request("GET", path, params=params, body=body_data)
+        data = self._client.request("GET", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return AnomalyNotification.model_validate(data)
+        return data
 
     def update(self, anomaly_notification_token: str, body: UpdateAnomalyNotification) -> AnomalyNotification:
         """
@@ -296,7 +329,10 @@ class AnomalyNotificationsApi:
         path = f"/anomaly_notifications/{quote(str(anomaly_notification_token), safe='')}"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
-        return self._client.request("PUT", path, params=params, body=body_data)
+        data = self._client.request("PUT", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return AnomalyNotification.model_validate(data)
+        return data
 
     def delete(self, anomaly_notification_token: str) -> Any:
         """
@@ -307,7 +343,10 @@ class AnomalyNotificationsApi:
         path = f"/anomaly_notifications/{quote(str(anomaly_notification_token), safe='')}"
         params = None
         body_data = None
-        return self._client.request("DELETE", path, params=params, body=body_data)
+        data = self._client.request("DELETE", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return Any.model_validate(data)
+        return data
 
 
 class AuditLogsApi:
@@ -338,7 +377,10 @@ class AuditLogsApi:
             "end_date": end_date,
         }
         body_data = None
-        return self._client.request("GET", path, params=params, body=body_data)
+        data = self._client.request("GET", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return AuditLogs.model_validate(data)
+        return data
 
     def get(self, audit_log_token: str) -> AuditLog:
         """
@@ -349,7 +391,10 @@ class AuditLogsApi:
         path = f"/audit_logs/{quote(str(audit_log_token), safe='')}"
         params = None
         body_data = None
-        return self._client.request("GET", path, params=params, body=body_data)
+        data = self._client.request("GET", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return AuditLog.model_validate(data)
+        return data
 
 
 class BillingProfilesApi:
@@ -370,7 +415,10 @@ class BillingProfilesApi:
             "limit": limit,
         }
         body_data = None
-        return self._client.request("GET", path, params=params, body=body_data)
+        data = self._client.request("GET", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return BillingProfiles.model_validate(data)
+        return data
 
     def create(self, body: CreateBillingProfile) -> BillingProfile:
         """
@@ -381,7 +429,10 @@ class BillingProfilesApi:
         path = "/billing_profiles"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
-        return self._client.request("POST", path, params=params, body=body_data)
+        data = self._client.request("POST", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return BillingProfile.model_validate(data)
+        return data
 
     def get(self, billing_profile_token: str) -> BillingProfile:
         """
@@ -392,7 +443,10 @@ class BillingProfilesApi:
         path = f"/billing_profiles/{quote(str(billing_profile_token), safe='')}"
         params = None
         body_data = None
-        return self._client.request("GET", path, params=params, body=body_data)
+        data = self._client.request("GET", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return BillingProfile.model_validate(data)
+        return data
 
     def update(self, billing_profile_token: str, body: UpdateBillingProfile) -> BillingProfile:
         """
@@ -403,7 +457,10 @@ class BillingProfilesApi:
         path = f"/billing_profiles/{quote(str(billing_profile_token), safe='')}"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
-        return self._client.request("PUT", path, params=params, body=body_data)
+        data = self._client.request("PUT", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return BillingProfile.model_validate(data)
+        return data
 
     def delete(self, billing_profile_token: str) -> Any:
         """
@@ -414,7 +471,10 @@ class BillingProfilesApi:
         path = f"/billing_profiles/{quote(str(billing_profile_token), safe='')}"
         params = None
         body_data = None
-        return self._client.request("DELETE", path, params=params, body=body_data)
+        data = self._client.request("DELETE", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return Any.model_validate(data)
+        return data
 
 
 class BillingRulesApi:
@@ -435,7 +495,10 @@ class BillingRulesApi:
             "limit": limit,
         }
         body_data = None
-        return self._client.request("GET", path, params=params, body=body_data)
+        data = self._client.request("GET", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return BillingRules.model_validate(data)
+        return data
 
     def create(self, body: CreateBillingRule) -> BillingRule:
         """
@@ -446,7 +509,10 @@ class BillingRulesApi:
         path = "/billing_rules"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
-        return self._client.request("POST", path, params=params, body=body_data)
+        data = self._client.request("POST", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return BillingRule.model_validate(data)
+        return data
 
     def get(self, billing_rule_token: str) -> BillingRule:
         """
@@ -457,7 +523,10 @@ class BillingRulesApi:
         path = f"/billing_rules/{quote(str(billing_rule_token), safe='')}"
         params = None
         body_data = None
-        return self._client.request("GET", path, params=params, body=body_data)
+        data = self._client.request("GET", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return BillingRule.model_validate(data)
+        return data
 
     def update(self, billing_rule_token: str, body: UpdateBillingRule) -> BillingRule:
         """
@@ -468,7 +537,10 @@ class BillingRulesApi:
         path = f"/billing_rules/{quote(str(billing_rule_token), safe='')}"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
-        return self._client.request("PUT", path, params=params, body=body_data)
+        data = self._client.request("PUT", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return BillingRule.model_validate(data)
+        return data
 
     def delete(self, billing_rule_token: str) -> Any:
         """
@@ -479,7 +551,10 @@ class BillingRulesApi:
         path = f"/billing_rules/{quote(str(billing_rule_token), safe='')}"
         params = None
         body_data = None
-        return self._client.request("DELETE", path, params=params, body=body_data)
+        data = self._client.request("DELETE", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return Any.model_validate(data)
+        return data
 
 
 class BudgetAlertsApi:
@@ -500,7 +575,10 @@ class BudgetAlertsApi:
             "limit": limit,
         }
         body_data = None
-        return self._client.request("GET", path, params=params, body=body_data)
+        data = self._client.request("GET", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return BudgetAlerts.model_validate(data)
+        return data
 
     def create(self, body: CreateBudgetAlert) -> BudgetAlert:
         """
@@ -511,7 +589,10 @@ class BudgetAlertsApi:
         path = "/budget_alerts"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
-        return self._client.request("POST", path, params=params, body=body_data)
+        data = self._client.request("POST", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return BudgetAlert.model_validate(data)
+        return data
 
     def get(self, budget_alert_token: str) -> BudgetAlert:
         """
@@ -522,7 +603,10 @@ class BudgetAlertsApi:
         path = f"/budget_alerts/{quote(str(budget_alert_token), safe='')}"
         params = None
         body_data = None
-        return self._client.request("GET", path, params=params, body=body_data)
+        data = self._client.request("GET", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return BudgetAlert.model_validate(data)
+        return data
 
     def update(self, budget_alert_token: str, body: UpdateBudgetAlert) -> BudgetAlert:
         """
@@ -533,7 +617,10 @@ class BudgetAlertsApi:
         path = f"/budget_alerts/{quote(str(budget_alert_token), safe='')}"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
-        return self._client.request("PUT", path, params=params, body=body_data)
+        data = self._client.request("PUT", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return BudgetAlert.model_validate(data)
+        return data
 
     def delete(self, budget_alert_token: str) -> Any:
         """
@@ -544,7 +631,10 @@ class BudgetAlertsApi:
         path = f"/budget_alerts/{quote(str(budget_alert_token), safe='')}"
         params = None
         body_data = None
-        return self._client.request("DELETE", path, params=params, body=body_data)
+        data = self._client.request("DELETE", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return Any.model_validate(data)
+        return data
 
 
 class BudgetsApi:
@@ -565,7 +655,10 @@ class BudgetsApi:
             "limit": limit,
         }
         body_data = None
-        return self._client.request("GET", path, params=params, body=body_data)
+        data = self._client.request("GET", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return Budgets.model_validate(data)
+        return data
 
     def create(self, body: CreateBudget) -> Budget:
         """
@@ -576,7 +669,10 @@ class BudgetsApi:
         path = "/budgets"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
-        return self._client.request("POST", path, params=params, body=body_data)
+        data = self._client.request("POST", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return Budget.model_validate(data)
+        return data
 
     def get(self, budget_token: str, *, include_performance: Optional[bool] = None) -> Budget:
         """
@@ -589,7 +685,10 @@ class BudgetsApi:
             "include_performance": include_performance,
         }
         body_data = None
-        return self._client.request("GET", path, params=params, body=body_data)
+        data = self._client.request("GET", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return Budget.model_validate(data)
+        return data
 
     def update(self, budget_token: str, body: UpdateBudget) -> Budget:
         """
@@ -600,7 +699,10 @@ class BudgetsApi:
         path = f"/budgets/{quote(str(budget_token), safe='')}"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
-        return self._client.request("PUT", path, params=params, body=body_data)
+        data = self._client.request("PUT", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return Budget.model_validate(data)
+        return data
 
     def delete(self, budget_token: str) -> Any:
         """
@@ -611,7 +713,10 @@ class BudgetsApi:
         path = f"/budgets/{quote(str(budget_token), safe='')}"
         params = None
         body_data = None
-        return self._client.request("DELETE", path, params=params, body=body_data)
+        data = self._client.request("DELETE", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return Any.model_validate(data)
+        return data
 
 
 class BusinessMetricsApi:
@@ -632,7 +737,10 @@ class BusinessMetricsApi:
             "limit": limit,
         }
         body_data = None
-        return self._client.request("GET", path, params=params, body=body_data)
+        data = self._client.request("GET", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return BusinessMetrics.model_validate(data)
+        return data
 
     def create(self, body: CreateBusinessMetric) -> BusinessMetric:
         """
@@ -643,7 +751,10 @@ class BusinessMetricsApi:
         path = "/business_metrics"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
-        return self._client.request("POST", path, params=params, body=body_data)
+        data = self._client.request("POST", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return BusinessMetric.model_validate(data)
+        return data
 
     def get(self, business_metric_token: str) -> BusinessMetric:
         """
@@ -654,7 +765,10 @@ class BusinessMetricsApi:
         path = f"/business_metrics/{quote(str(business_metric_token), safe='')}"
         params = None
         body_data = None
-        return self._client.request("GET", path, params=params, body=body_data)
+        data = self._client.request("GET", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return BusinessMetric.model_validate(data)
+        return data
 
     def update(self, business_metric_token: str, body: UpdateBusinessMetric) -> BusinessMetric:
         """
@@ -665,7 +779,10 @@ class BusinessMetricsApi:
         path = f"/business_metrics/{quote(str(business_metric_token), safe='')}"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
-        return self._client.request("PUT", path, params=params, body=body_data)
+        data = self._client.request("PUT", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return BusinessMetric.model_validate(data)
+        return data
 
     def delete(self, business_metric_token: str) -> Any:
         """
@@ -676,7 +793,10 @@ class BusinessMetricsApi:
         path = f"/business_metrics/{quote(str(business_metric_token), safe='')}"
         params = None
         body_data = None
-        return self._client.request("DELETE", path, params=params, body=body_data)
+        data = self._client.request("DELETE", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return Any.model_validate(data)
+        return data
 
     def get_values(self, business_metric_token: str, *, page: Optional[int] = None, limit: Optional[int] = None, start_date: Optional[str] = None) -> BusinessMetricValues:
         """
@@ -691,7 +811,10 @@ class BusinessMetricsApi:
             "start_date": start_date,
         }
         body_data = None
-        return self._client.request("GET", path, params=params, body=body_data)
+        data = self._client.request("GET", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return BusinessMetricValues.model_validate(data)
+        return data
 
     def get_forecasted_values(self, business_metric_token: str, *, page: Optional[int] = None, limit: Optional[int] = None, start_date: Optional[str] = None) -> BusinessMetricValues:
         """
@@ -706,7 +829,10 @@ class BusinessMetricsApi:
             "start_date": start_date,
         }
         body_data = None
-        return self._client.request("GET", path, params=params, body=body_data)
+        data = self._client.request("GET", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return BusinessMetricValues.model_validate(data)
+        return data
 
     def update_values_csv(self, business_metric_token: str, body: dict[str, Any]) -> BusinessMetric:
         """
@@ -717,7 +843,10 @@ class BusinessMetricsApi:
         path = f"/business_metrics/{quote(str(business_metric_token), safe='')}/values.csv"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
-        return self._client.request("PUT", path, params=params, body=body_data)
+        data = self._client.request("PUT", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return BusinessMetric.model_validate(data)
+        return data
 
 
 class CostAlertsApi:
@@ -739,7 +868,10 @@ class CostAlertsApi:
             "limit": limit,
         }
         body_data = None
-        return self._client.request("GET", path, params=params, body=body_data)
+        data = self._client.request("GET", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return CostAlertEvents.model_validate(data)
+        return data
 
     def get_event(self, cost_alert_token: str, event_token: str) -> CostAlertEvent:
         """
@@ -750,7 +882,10 @@ class CostAlertsApi:
         path = f"/cost_alerts/{quote(str(cost_alert_token), safe='')}/events/{quote(str(event_token), safe='')}"
         params = None
         body_data = None
-        return self._client.request("GET", path, params=params, body=body_data)
+        data = self._client.request("GET", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return CostAlertEvent.model_validate(data)
+        return data
 
     def list(self) -> CostAlerts:
         """
@@ -761,7 +896,10 @@ class CostAlertsApi:
         path = "/cost_alerts"
         params = None
         body_data = None
-        return self._client.request("GET", path, params=params, body=body_data)
+        data = self._client.request("GET", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return CostAlerts.model_validate(data)
+        return data
 
     def create(self, body: CreateCostAlert) -> CostAlert:
         """
@@ -772,7 +910,10 @@ class CostAlertsApi:
         path = "/cost_alerts"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
-        return self._client.request("POST", path, params=params, body=body_data)
+        data = self._client.request("POST", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return CostAlert.model_validate(data)
+        return data
 
     def get(self, cost_alert_token: str) -> CostAlert:
         """
@@ -783,7 +924,10 @@ class CostAlertsApi:
         path = f"/cost_alerts/{quote(str(cost_alert_token), safe='')}"
         params = None
         body_data = None
-        return self._client.request("GET", path, params=params, body=body_data)
+        data = self._client.request("GET", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return CostAlert.model_validate(data)
+        return data
 
     def update(self, cost_alert_token: str, body: UpdateCostAlert) -> CostAlert:
         """
@@ -794,7 +938,10 @@ class CostAlertsApi:
         path = f"/cost_alerts/{quote(str(cost_alert_token), safe='')}"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
-        return self._client.request("PUT", path, params=params, body=body_data)
+        data = self._client.request("PUT", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return CostAlert.model_validate(data)
+        return data
 
     def delete(self, cost_alert_token: str) -> Any:
         """
@@ -805,7 +952,10 @@ class CostAlertsApi:
         path = f"/cost_alerts/{quote(str(cost_alert_token), safe='')}"
         params = None
         body_data = None
-        return self._client.request("DELETE", path, params=params, body=body_data)
+        data = self._client.request("DELETE", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return Any.model_validate(data)
+        return data
 
 
 class CostProviderAccountsApi:
@@ -828,7 +978,10 @@ class CostProviderAccountsApi:
             "account_name": account_name,
         }
         body_data = None
-        return self._client.request("GET", path, params=params, body=body_data)
+        data = self._client.request("GET", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return CostProviderAccounts.model_validate(data)
+        return data
 
 
 class CostProvidersApi:
@@ -848,7 +1001,10 @@ class CostProvidersApi:
             "workspace_token": workspace_token,
         }
         body_data = None
-        return self._client.request("GET", path, params=params, body=body_data)
+        data = self._client.request("GET", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return CostProviders.model_validate(data)
+        return data
 
 
 class CostReportsApi:
@@ -870,7 +1026,10 @@ class CostReportsApi:
             "folder_token": folder_token,
         }
         body_data = None
-        return self._client.request("GET", path, params=params, body=body_data)
+        data = self._client.request("GET", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return CostReports.model_validate(data)
+        return data
 
     def create(self, body: CreateCostReport) -> CostReport:
         """
@@ -881,7 +1040,10 @@ class CostReportsApi:
         path = "/cost_reports"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
-        return self._client.request("POST", path, params=params, body=body_data)
+        data = self._client.request("POST", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return CostReport.model_validate(data)
+        return data
 
     def get(self, cost_report_token: str) -> CostReport:
         """
@@ -892,7 +1054,10 @@ class CostReportsApi:
         path = f"/cost_reports/{quote(str(cost_report_token), safe='')}"
         params = None
         body_data = None
-        return self._client.request("GET", path, params=params, body=body_data)
+        data = self._client.request("GET", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return CostReport.model_validate(data)
+        return data
 
     def update(self, cost_report_token: str, body: UpdateCostReport) -> CostReport:
         """
@@ -903,7 +1068,10 @@ class CostReportsApi:
         path = f"/cost_reports/{quote(str(cost_report_token), safe='')}"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
-        return self._client.request("PUT", path, params=params, body=body_data)
+        data = self._client.request("PUT", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return CostReport.model_validate(data)
+        return data
 
     def delete(self, cost_report_token: str) -> Any:
         """
@@ -914,7 +1082,10 @@ class CostReportsApi:
         path = f"/cost_reports/{quote(str(cost_report_token), safe='')}"
         params = None
         body_data = None
-        return self._client.request("DELETE", path, params=params, body=body_data)
+        data = self._client.request("DELETE", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return Any.model_validate(data)
+        return data
 
     def get_forecasted_costs(self, cost_report_token: str, *, start_date: Optional[str] = None, end_date: Optional[str] = None, provider: Optional[str] = None, service: Optional[str] = None, page: Optional[int] = None, limit: Optional[int] = None) -> ForecastedCosts:
         """
@@ -932,7 +1103,10 @@ class CostReportsApi:
             "limit": limit,
         }
         body_data = None
-        return self._client.request("GET", path, params=params, body=body_data)
+        data = self._client.request("GET", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return ForecastedCosts.model_validate(data)
+        return data
 
 
 class CostServicesApi:
@@ -952,7 +1126,10 @@ class CostServicesApi:
             "workspace_token": workspace_token,
         }
         body_data = None
-        return self._client.request("GET", path, params=params, body=body_data)
+        data = self._client.request("GET", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return CostServices.model_validate(data)
+        return data
 
 
 class CostsApi:
@@ -972,7 +1149,10 @@ class CostsApi:
             "groupings": groupings,
         }
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
-        return self._client.request("POST", path, params=params, body=body_data)
+        data = self._client.request("POST", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return Any.model_validate(data)
+        return data
 
     def list(self, *, cost_report_token: Optional[str] = None, filter: Optional[str] = None, workspace_token: Optional[str] = None, start_date: Optional[str] = None, end_date: Optional[str] = None, groupings: Optional[List[str]] = None, order: Optional[str] = None, limit: Optional[int] = None, page: Optional[int] = None, date_bin: Optional[str] = None, settings_include_credits: Optional[bool] = None, settings_include_refunds: Optional[bool] = None, settings_include_discounts: Optional[bool] = None, settings_include_tax: Optional[bool] = None, settings_amortize: Optional[bool] = None, settings_unallocated: Optional[bool] = None, settings_aggregate_by: Optional[str] = None, settings_show_previous_period: Optional[bool] = None) -> Costs:
         """
@@ -1002,7 +1182,10 @@ class CostsApi:
             "settings[show_previous_period]": settings_show_previous_period,
         }
         body_data = None
-        return self._client.request("GET", path, params=params, body=body_data)
+        data = self._client.request("GET", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return Costs.model_validate(data)
+        return data
 
 
 class DashboardsApi:
@@ -1023,7 +1206,10 @@ class DashboardsApi:
             "limit": limit,
         }
         body_data = None
-        return self._client.request("GET", path, params=params, body=body_data)
+        data = self._client.request("GET", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return Dashboards.model_validate(data)
+        return data
 
     def create(self, body: CreateDashboard) -> Dashboard:
         """
@@ -1034,7 +1220,10 @@ class DashboardsApi:
         path = "/dashboards"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
-        return self._client.request("POST", path, params=params, body=body_data)
+        data = self._client.request("POST", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return Dashboard.model_validate(data)
+        return data
 
     def get(self, dashboard_token: str) -> Dashboard:
         """
@@ -1045,7 +1234,10 @@ class DashboardsApi:
         path = f"/dashboards/{quote(str(dashboard_token), safe='')}"
         params = None
         body_data = None
-        return self._client.request("GET", path, params=params, body=body_data)
+        data = self._client.request("GET", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return Dashboard.model_validate(data)
+        return data
 
     def update(self, dashboard_token: str, body: UpdateDashboard) -> Dashboard:
         """
@@ -1056,7 +1248,10 @@ class DashboardsApi:
         path = f"/dashboards/{quote(str(dashboard_token), safe='')}"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
-        return self._client.request("PUT", path, params=params, body=body_data)
+        data = self._client.request("PUT", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return Dashboard.model_validate(data)
+        return data
 
     def delete(self, dashboard_token: str) -> Any:
         """
@@ -1067,7 +1262,10 @@ class DashboardsApi:
         path = f"/dashboards/{quote(str(dashboard_token), safe='')}"
         params = None
         body_data = None
-        return self._client.request("DELETE", path, params=params, body=body_data)
+        data = self._client.request("DELETE", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return Any.model_validate(data)
+        return data
 
 
 class DataExportsApi:
@@ -1085,7 +1283,10 @@ class DataExportsApi:
         path = f"/data_exports/{quote(str(data_export_token), safe='')}"
         params = None
         body_data = None
-        return self._client.request("GET", path, params=params, body=body_data)
+        data = self._client.request("GET", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return DataExport.model_validate(data)
+        return data
 
 
 class ExchangeRatesApi:
@@ -1106,7 +1307,10 @@ class ExchangeRatesApi:
             "limit": limit,
         }
         body_data = None
-        return self._client.request("GET", path, params=params, body=body_data)
+        data = self._client.request("GET", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return ExchangeRates.model_validate(data)
+        return data
 
     def create_via_csv(self, body: dict[str, Any]) -> Any:
         """
@@ -1117,7 +1321,10 @@ class ExchangeRatesApi:
         path = "/exchange_rates/csv"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
-        return self._client.request("POST", path, params=params, body=body_data)
+        data = self._client.request("POST", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return Any.model_validate(data)
+        return data
 
 
 class FinancialCommitmentReportsApi:
@@ -1138,7 +1345,10 @@ class FinancialCommitmentReportsApi:
             "limit": limit,
         }
         body_data = None
-        return self._client.request("GET", path, params=params, body=body_data)
+        data = self._client.request("GET", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return FinancialCommitmentReports.model_validate(data)
+        return data
 
     def create(self, body: CreateFinancialCommitmentReport) -> FinancialCommitmentReport:
         """
@@ -1149,7 +1359,10 @@ class FinancialCommitmentReportsApi:
         path = "/financial_commitment_reports"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
-        return self._client.request("POST", path, params=params, body=body_data)
+        data = self._client.request("POST", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return FinancialCommitmentReport.model_validate(data)
+        return data
 
     def get(self, financial_commitment_report_token: str) -> FinancialCommitmentReport:
         """
@@ -1160,7 +1373,10 @@ class FinancialCommitmentReportsApi:
         path = f"/financial_commitment_reports/{quote(str(financial_commitment_report_token), safe='')}"
         params = None
         body_data = None
-        return self._client.request("GET", path, params=params, body=body_data)
+        data = self._client.request("GET", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return FinancialCommitmentReport.model_validate(data)
+        return data
 
     def update(self, financial_commitment_report_token: str, body: UpdateFinancialCommitmentReport) -> FinancialCommitmentReport:
         """
@@ -1171,7 +1387,10 @@ class FinancialCommitmentReportsApi:
         path = f"/financial_commitment_reports/{quote(str(financial_commitment_report_token), safe='')}"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
-        return self._client.request("PUT", path, params=params, body=body_data)
+        data = self._client.request("PUT", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return FinancialCommitmentReport.model_validate(data)
+        return data
 
     def delete(self, financial_commitment_report_token: str) -> Any:
         """
@@ -1182,7 +1401,10 @@ class FinancialCommitmentReportsApi:
         path = f"/financial_commitment_reports/{quote(str(financial_commitment_report_token), safe='')}"
         params = None
         body_data = None
-        return self._client.request("DELETE", path, params=params, body=body_data)
+        data = self._client.request("DELETE", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return Any.model_validate(data)
+        return data
 
 
 class FinancialCommitmentsApi:
@@ -1203,7 +1425,10 @@ class FinancialCommitmentsApi:
             "limit": limit,
         }
         body_data = None
-        return self._client.request("GET", path, params=params, body=body_data)
+        data = self._client.request("GET", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return FinancialCommitments.model_validate(data)
+        return data
 
 
 class FoldersApi:
@@ -1224,7 +1449,10 @@ class FoldersApi:
             "limit": limit,
         }
         body_data = None
-        return self._client.request("GET", path, params=params, body=body_data)
+        data = self._client.request("GET", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return Folders.model_validate(data)
+        return data
 
     def create(self, body: CreateFolder) -> Folder:
         """
@@ -1235,7 +1463,10 @@ class FoldersApi:
         path = "/folders"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
-        return self._client.request("POST", path, params=params, body=body_data)
+        data = self._client.request("POST", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return Folder.model_validate(data)
+        return data
 
     def get(self, folder_token: str) -> Folder:
         """
@@ -1246,7 +1477,10 @@ class FoldersApi:
         path = f"/folders/{quote(str(folder_token), safe='')}"
         params = None
         body_data = None
-        return self._client.request("GET", path, params=params, body=body_data)
+        data = self._client.request("GET", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return Folder.model_validate(data)
+        return data
 
     def update(self, folder_token: str, body: UpdateFolder) -> Folder:
         """
@@ -1257,7 +1491,10 @@ class FoldersApi:
         path = f"/folders/{quote(str(folder_token), safe='')}"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
-        return self._client.request("PUT", path, params=params, body=body_data)
+        data = self._client.request("PUT", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return Folder.model_validate(data)
+        return data
 
     def delete(self, folder_token: str) -> Any:
         """
@@ -1268,7 +1505,10 @@ class FoldersApi:
         path = f"/folders/{quote(str(folder_token), safe='')}"
         params = None
         body_data = None
-        return self._client.request("DELETE", path, params=params, body=body_data)
+        data = self._client.request("DELETE", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return Any.model_validate(data)
+        return data
 
 
 class IntegrationsApi:
@@ -1291,7 +1531,10 @@ class IntegrationsApi:
             "limit": limit,
         }
         body_data = None
-        return self._client.request("GET", path, params=params, body=body_data)
+        data = self._client.request("GET", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return Integrations.model_validate(data)
+        return data
 
     def get(self, integration_token: str) -> Integration:
         """
@@ -1302,7 +1545,10 @@ class IntegrationsApi:
         path = f"/integrations/{quote(str(integration_token), safe='')}"
         params = None
         body_data = None
-        return self._client.request("GET", path, params=params, body=body_data)
+        data = self._client.request("GET", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return Integration.model_validate(data)
+        return data
 
     def update(self, integration_token: str, body: UpdateIntegration) -> Integration:
         """
@@ -1313,7 +1559,10 @@ class IntegrationsApi:
         path = f"/integrations/{quote(str(integration_token), safe='')}"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
-        return self._client.request("PUT", path, params=params, body=body_data)
+        data = self._client.request("PUT", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return Integration.model_validate(data)
+        return data
 
     def delete(self, integration_token: str) -> Any:
         """
@@ -1324,7 +1573,10 @@ class IntegrationsApi:
         path = f"/integrations/{quote(str(integration_token), safe='')}"
         params = None
         body_data = None
-        return self._client.request("DELETE", path, params=params, body=body_data)
+        data = self._client.request("DELETE", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return Any.model_validate(data)
+        return data
 
     def create_custom_provider(self, body: CreateCustomProviderIntegration) -> Integration:
         """
@@ -1335,7 +1587,10 @@ class IntegrationsApi:
         path = "/integrations/custom_provider"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
-        return self._client.request("POST", path, params=params, body=body_data)
+        data = self._client.request("POST", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return Integration.model_validate(data)
+        return data
 
     def create_user_costs_upload_via_csv(self, integration_token: str, body: dict[str, Any]) -> UserCostsUpload:
         """
@@ -1346,7 +1601,10 @@ class IntegrationsApi:
         path = f"/integrations/{quote(str(integration_token), safe='')}/costs.csv"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
-        return self._client.request("POST", path, params=params, body=body_data)
+        data = self._client.request("POST", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return UserCostsUpload.model_validate(data)
+        return data
 
     def delete_user_costs_upload(self, integration_token: str, user_costs_upload_token: int) -> Any:
         """
@@ -1357,7 +1615,10 @@ class IntegrationsApi:
         path = f"/integrations/{quote(str(integration_token), safe='')}/costs/{quote(str(user_costs_upload_token), safe='')}"
         params = None
         body_data = None
-        return self._client.request("DELETE", path, params=params, body=body_data)
+        data = self._client.request("DELETE", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return Any.model_validate(data)
+        return data
 
     def get_user_costs_uploads(self, integration_token: str) -> UserCostsUploads:
         """
@@ -1368,7 +1629,10 @@ class IntegrationsApi:
         path = f"/integrations/{quote(str(integration_token), safe='')}/costs"
         params = None
         body_data = None
-        return self._client.request("GET", path, params=params, body=body_data)
+        data = self._client.request("GET", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return UserCostsUploads.model_validate(data)
+        return data
 
     def create_gcp(self, body: CreateGcpIntegration) -> Integration:
         """
@@ -1379,7 +1643,10 @@ class IntegrationsApi:
         path = "/integrations/gcp"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
-        return self._client.request("POST", path, params=params, body=body_data)
+        data = self._client.request("POST", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return Integration.model_validate(data)
+        return data
 
     def create_azure(self, body: CreateAzureIntegration) -> Integration:
         """
@@ -1390,7 +1657,10 @@ class IntegrationsApi:
         path = "/integrations/azure"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
-        return self._client.request("POST", path, params=params, body=body_data)
+        data = self._client.request("POST", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return Integration.model_validate(data)
+        return data
 
 
 class InvoicesApi:
@@ -1412,7 +1682,10 @@ class InvoicesApi:
             "managed_account_token": managed_account_token,
         }
         body_data = None
-        return self._client.request("GET", path, params=params, body=body_data)
+        data = self._client.request("GET", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return Invoices.model_validate(data)
+        return data
 
     def create(self, body: CreateInvoice) -> Invoice:
         """
@@ -1423,7 +1696,10 @@ class InvoicesApi:
         path = "/invoices"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
-        return self._client.request("POST", path, params=params, body=body_data)
+        data = self._client.request("POST", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return Invoice.model_validate(data)
+        return data
 
     def get(self, invoice_token: str) -> Invoice:
         """
@@ -1434,7 +1710,10 @@ class InvoicesApi:
         path = f"/invoices/{quote(str(invoice_token), safe='')}"
         params = None
         body_data = None
-        return self._client.request("GET", path, params=params, body=body_data)
+        data = self._client.request("GET", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return Invoice.model_validate(data)
+        return data
 
     def download(self, invoice_token: str, body: DownloadInvoice) -> Any:
         """
@@ -1445,7 +1724,10 @@ class InvoicesApi:
         path = f"/invoices/{quote(str(invoice_token), safe='')}/download"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
-        return self._client.request("POST", path, params=params, body=body_data)
+        data = self._client.request("POST", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return Any.model_validate(data)
+        return data
 
     def send(self, invoice_token: str) -> SendInvoice:
         """
@@ -1456,7 +1738,10 @@ class InvoicesApi:
         path = f"/invoices/{quote(str(invoice_token), safe='')}/send"
         params = None
         body_data = None
-        return self._client.request("POST", path, params=params, body=body_data)
+        data = self._client.request("POST", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return SendInvoice.model_validate(data)
+        return data
 
     def send_and_approve(self, invoice_token: str) -> SendInvoice:
         """
@@ -1467,7 +1752,10 @@ class InvoicesApi:
         path = f"/invoices/{quote(str(invoice_token), safe='')}/send_and_approve"
         params = None
         body_data = None
-        return self._client.request("POST", path, params=params, body=body_data)
+        data = self._client.request("POST", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return SendInvoice.model_validate(data)
+        return data
 
     def get_cost_report(self, invoice_token: str) -> CostReportUrl:
         """
@@ -1478,7 +1766,10 @@ class InvoicesApi:
         path = f"/invoices/{quote(str(invoice_token), safe='')}/cost_report"
         params = None
         body_data = None
-        return self._client.request("GET", path, params=params, body=body_data)
+        data = self._client.request("GET", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return CostReportUrl.model_validate(data)
+        return data
 
     def regenerate(self, invoice_token: str) -> Invoice:
         """
@@ -1489,7 +1780,10 @@ class InvoicesApi:
         path = f"/invoices/{quote(str(invoice_token), safe='')}/regenerate"
         params = None
         body_data = None
-        return self._client.request("POST", path, params=params, body=body_data)
+        data = self._client.request("POST", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return Invoice.model_validate(data)
+        return data
 
 
 class KubernetesEfficiencyReportsApi:
@@ -1510,7 +1804,10 @@ class KubernetesEfficiencyReportsApi:
             "limit": limit,
         }
         body_data = None
-        return self._client.request("GET", path, params=params, body=body_data)
+        data = self._client.request("GET", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return KubernetesEfficiencyReports.model_validate(data)
+        return data
 
     def create(self, body: CreateKubernetesEfficiencyReport) -> KubernetesEfficiencyReport:
         """
@@ -1521,7 +1818,10 @@ class KubernetesEfficiencyReportsApi:
         path = "/kubernetes_efficiency_reports"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
-        return self._client.request("POST", path, params=params, body=body_data)
+        data = self._client.request("POST", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return KubernetesEfficiencyReport.model_validate(data)
+        return data
 
     def create_export(self, body: CreateKubernetesEfficiencyReportExport, *, groupings: Optional[List[str]] = None) -> DataExport:
         """
@@ -1534,7 +1834,10 @@ class KubernetesEfficiencyReportsApi:
             "groupings": groupings,
         }
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
-        return self._client.request("POST", path, params=params, body=body_data)
+        data = self._client.request("POST", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return DataExport.model_validate(data)
+        return data
 
     def get(self, kubernetes_efficiency_report_token: str) -> KubernetesEfficiencyReport:
         """
@@ -1545,7 +1848,10 @@ class KubernetesEfficiencyReportsApi:
         path = f"/kubernetes_efficiency_reports/{quote(str(kubernetes_efficiency_report_token), safe='')}"
         params = None
         body_data = None
-        return self._client.request("GET", path, params=params, body=body_data)
+        data = self._client.request("GET", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return KubernetesEfficiencyReport.model_validate(data)
+        return data
 
     def update(self, kubernetes_efficiency_report_token: str, body: UpdateKubernetesEfficiencyReport) -> KubernetesEfficiencyReport:
         """
@@ -1556,7 +1862,10 @@ class KubernetesEfficiencyReportsApi:
         path = f"/kubernetes_efficiency_reports/{quote(str(kubernetes_efficiency_report_token), safe='')}"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
-        return self._client.request("PUT", path, params=params, body=body_data)
+        data = self._client.request("PUT", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return KubernetesEfficiencyReport.model_validate(data)
+        return data
 
     def delete(self, kubernetes_efficiency_report_token: str) -> Any:
         """
@@ -1567,7 +1876,10 @@ class KubernetesEfficiencyReportsApi:
         path = f"/kubernetes_efficiency_reports/{quote(str(kubernetes_efficiency_report_token), safe='')}"
         params = None
         body_data = None
-        return self._client.request("DELETE", path, params=params, body=body_data)
+        data = self._client.request("DELETE", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return Any.model_validate(data)
+        return data
 
 
 class ManagedAccountsApi:
@@ -1588,7 +1900,10 @@ class ManagedAccountsApi:
             "limit": limit,
         }
         body_data = None
-        return self._client.request("GET", path, params=params, body=body_data)
+        data = self._client.request("GET", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return ManagedAccounts.model_validate(data)
+        return data
 
     def create(self, body: CreateManagedAccount) -> ManagedAccount:
         """
@@ -1599,7 +1914,10 @@ class ManagedAccountsApi:
         path = "/managed_accounts"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
-        return self._client.request("POST", path, params=params, body=body_data)
+        data = self._client.request("POST", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return ManagedAccount.model_validate(data)
+        return data
 
     def get(self, managed_account_token: str) -> ManagedAccount:
         """
@@ -1610,7 +1928,10 @@ class ManagedAccountsApi:
         path = f"/managed_accounts/{quote(str(managed_account_token), safe='')}"
         params = None
         body_data = None
-        return self._client.request("GET", path, params=params, body=body_data)
+        data = self._client.request("GET", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return ManagedAccount.model_validate(data)
+        return data
 
     def update(self, managed_account_token: str, body: UpdateManagedAccount) -> ManagedAccount:
         """
@@ -1621,7 +1942,10 @@ class ManagedAccountsApi:
         path = f"/managed_accounts/{quote(str(managed_account_token), safe='')}"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
-        return self._client.request("PUT", path, params=params, body=body_data)
+        data = self._client.request("PUT", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return ManagedAccount.model_validate(data)
+        return data
 
     def delete(self, managed_account_token: str) -> Any:
         """
@@ -1632,7 +1956,10 @@ class ManagedAccountsApi:
         path = f"/managed_accounts/{quote(str(managed_account_token), safe='')}"
         params = None
         body_data = None
-        return self._client.request("DELETE", path, params=params, body=body_data)
+        data = self._client.request("DELETE", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return Any.model_validate(data)
+        return data
 
     def update_sso_connection_for(self, managed_account_token: str, body: UpdateSsoConnectionForManagedAccount) -> ManagedAccount:
         """
@@ -1643,7 +1970,10 @@ class ManagedAccountsApi:
         path = f"/managed_accounts/{quote(str(managed_account_token), safe='')}/sso_connection"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
-        return self._client.request("PUT", path, params=params, body=body_data)
+        data = self._client.request("PUT", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return ManagedAccount.model_validate(data)
+        return data
 
     def create_sso_connection_for(self, managed_account_token: str, body: CreateSsoConnectionForManagedAccount) -> ManagedAccount:
         """
@@ -1654,7 +1984,10 @@ class ManagedAccountsApi:
         path = f"/managed_accounts/{quote(str(managed_account_token), safe='')}/sso_connection"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
-        return self._client.request("POST", path, params=params, body=body_data)
+        data = self._client.request("POST", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return ManagedAccount.model_validate(data)
+        return data
 
 
 class MeApi:
@@ -1672,7 +2005,10 @@ class MeApi:
         path = "/me"
         params = None
         body_data = None
-        return self._client.request("GET", path, params=params, body=body_data)
+        data = self._client.request("GET", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return Me.model_validate(data)
+        return data
 
 
 class NetworkFlowReportsApi:
@@ -1693,7 +2029,10 @@ class NetworkFlowReportsApi:
             "limit": limit,
         }
         body_data = None
-        return self._client.request("GET", path, params=params, body=body_data)
+        data = self._client.request("GET", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return NetworkFlowReports.model_validate(data)
+        return data
 
     def create(self, body: CreateNetworkFlowReport) -> NetworkFlowReport:
         """
@@ -1704,7 +2043,10 @@ class NetworkFlowReportsApi:
         path = "/network_flow_reports"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
-        return self._client.request("POST", path, params=params, body=body_data)
+        data = self._client.request("POST", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return NetworkFlowReport.model_validate(data)
+        return data
 
     def get(self, network_flow_report_token: str) -> NetworkFlowReport:
         """
@@ -1715,7 +2057,10 @@ class NetworkFlowReportsApi:
         path = f"/network_flow_reports/{quote(str(network_flow_report_token), safe='')}"
         params = None
         body_data = None
-        return self._client.request("GET", path, params=params, body=body_data)
+        data = self._client.request("GET", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return NetworkFlowReport.model_validate(data)
+        return data
 
     def update(self, network_flow_report_token: str, body: UpdateNetworkFlowReport) -> NetworkFlowReport:
         """
@@ -1726,7 +2071,10 @@ class NetworkFlowReportsApi:
         path = f"/network_flow_reports/{quote(str(network_flow_report_token), safe='')}"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
-        return self._client.request("PUT", path, params=params, body=body_data)
+        data = self._client.request("PUT", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return NetworkFlowReport.model_validate(data)
+        return data
 
     def delete(self, network_flow_report_token: str) -> Any:
         """
@@ -1737,7 +2085,10 @@ class NetworkFlowReportsApi:
         path = f"/network_flow_reports/{quote(str(network_flow_report_token), safe='')}"
         params = None
         body_data = None
-        return self._client.request("DELETE", path, params=params, body=body_data)
+        data = self._client.request("DELETE", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return Any.model_validate(data)
+        return data
 
 
 class PingApi:
@@ -1751,7 +2102,10 @@ class PingApi:
         path = "/ping"
         params = None
         body_data = None
-        return self._client.request("GET", path, params=params, body=body_data)
+        data = self._client.request("GET", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return Any.model_validate(data)
+        return data
 
 
 class ProductsApi:
@@ -1772,7 +2126,10 @@ class ProductsApi:
             "limit": limit,
         }
         body_data = None
-        return self._client.request("GET", path, params=params, body=body_data)
+        data = self._client.request("GET", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return Prices.model_validate(data)
+        return data
 
     def get_price(self, product_id: str, id: str) -> Price:
         """
@@ -1783,7 +2140,10 @@ class ProductsApi:
         path = f"/products/{quote(str(product_id), safe='')}/prices/{quote(str(id), safe='')}"
         params = None
         body_data = None
-        return self._client.request("GET", path, params=params, body=body_data)
+        data = self._client.request("GET", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return Price.model_validate(data)
+        return data
 
     def list(self, *, provider_id: Optional[str] = None, service_id: Optional[str] = None, name: Optional[str] = None, page: Optional[int] = None, limit: Optional[int] = None) -> Products:
         """
@@ -1800,7 +2160,10 @@ class ProductsApi:
             "limit": limit,
         }
         body_data = None
-        return self._client.request("GET", path, params=params, body=body_data)
+        data = self._client.request("GET", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return Products.model_validate(data)
+        return data
 
     def get(self, id: str) -> Product:
         """
@@ -1811,7 +2174,10 @@ class ProductsApi:
         path = f"/products/{quote(str(id), safe='')}"
         params = None
         body_data = None
-        return self._client.request("GET", path, params=params, body=body_data)
+        data = self._client.request("GET", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return Product.model_validate(data)
+        return data
 
 
 class RecommendationViewsApi:
@@ -1832,7 +2198,10 @@ class RecommendationViewsApi:
             "limit": limit,
         }
         body_data = None
-        return self._client.request("GET", path, params=params, body=body_data)
+        data = self._client.request("GET", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return RecommendationViews.model_validate(data)
+        return data
 
     def create(self, body: CreateRecommendationView) -> RecommendationView:
         """
@@ -1843,7 +2212,10 @@ class RecommendationViewsApi:
         path = "/recommendation_views"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
-        return self._client.request("POST", path, params=params, body=body_data)
+        data = self._client.request("POST", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return RecommendationView.model_validate(data)
+        return data
 
     def get(self, recommendation_view_token: str) -> RecommendationView:
         """
@@ -1854,7 +2226,10 @@ class RecommendationViewsApi:
         path = f"/recommendation_views/{quote(str(recommendation_view_token), safe='')}"
         params = None
         body_data = None
-        return self._client.request("GET", path, params=params, body=body_data)
+        data = self._client.request("GET", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return RecommendationView.model_validate(data)
+        return data
 
     def update(self, recommendation_view_token: str, body: UpdateRecommendationView) -> RecommendationView:
         """
@@ -1865,7 +2240,10 @@ class RecommendationViewsApi:
         path = f"/recommendation_views/{quote(str(recommendation_view_token), safe='')}"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
-        return self._client.request("PUT", path, params=params, body=body_data)
+        data = self._client.request("PUT", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return RecommendationView.model_validate(data)
+        return data
 
     def delete(self, recommendation_view_token: str) -> Any:
         """
@@ -1876,7 +2254,10 @@ class RecommendationViewsApi:
         path = f"/recommendation_views/{quote(str(recommendation_view_token), safe='')}"
         params = None
         body_data = None
-        return self._client.request("DELETE", path, params=params, body=body_data)
+        data = self._client.request("DELETE", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return Any.model_validate(data)
+        return data
 
 
 class RecommendationsApi:
@@ -1911,7 +2292,10 @@ class RecommendationsApi:
             "provider": provider,
         }
         body_data = None
-        return self._client.request("GET", path, params=params, body=body_data)
+        data = self._client.request("GET", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return Recommendations.model_validate(data)
+        return data
 
     def get(self, recommendation_token: str) -> Recommendation:
         """
@@ -1922,7 +2306,10 @@ class RecommendationsApi:
         path = f"/recommendations/{quote(str(recommendation_token), safe='')}"
         params = None
         body_data = None
-        return self._client.request("GET", path, params=params, body=body_data)
+        data = self._client.request("GET", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return Recommendation.model_validate(data)
+        return data
 
     def get_resources(self, recommendation_token: str, *, page: Optional[int] = None, limit: Optional[int] = None) -> RecommendationProviderResources:
         """
@@ -1936,7 +2323,10 @@ class RecommendationsApi:
             "limit": limit,
         }
         body_data = None
-        return self._client.request("GET", path, params=params, body=body_data)
+        data = self._client.request("GET", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return RecommendationProviderResources.model_validate(data)
+        return data
 
     def get_resource(self, recommendation_token: str, resource_token: str) -> ProviderResource:
         """
@@ -1947,7 +2337,10 @@ class RecommendationsApi:
         path = f"/recommendations/{quote(str(recommendation_token), safe='')}/resources/{quote(str(resource_token), safe='')}"
         params = None
         body_data = None
-        return self._client.request("GET", path, params=params, body=body_data)
+        data = self._client.request("GET", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return ProviderResource.model_validate(data)
+        return data
 
     def get_type_resources(self, type: str, *, provider_ids: Optional[List[str]] = None, billing_account_ids: Optional[List[str]] = None, account_ids: Optional[List[str]] = None, regions: Optional[List[str]] = None, tag_key: Optional[str] = None, tag_value: Optional[str] = None, start_date: Optional[str] = None, end_date: Optional[str] = None, status: Optional[str] = None, page: Optional[int] = None, limit: Optional[int] = None, workspace_token: str) -> RecommendationProviderResources:
         """
@@ -1971,7 +2364,10 @@ class RecommendationsApi:
             "workspace_token": workspace_token,
         }
         body_data = None
-        return self._client.request("GET", path, params=params, body=body_data)
+        data = self._client.request("GET", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return RecommendationProviderResources.model_validate(data)
+        return data
 
 
 class ReportNotificationsApi:
@@ -1992,7 +2388,10 @@ class ReportNotificationsApi:
             "limit": limit,
         }
         body_data = None
-        return self._client.request("GET", path, params=params, body=body_data)
+        data = self._client.request("GET", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return ReportNotifications.model_validate(data)
+        return data
 
     def create(self, body: CreateReportNotification) -> ReportNotification:
         """
@@ -2003,7 +2402,10 @@ class ReportNotificationsApi:
         path = "/report_notifications"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
-        return self._client.request("POST", path, params=params, body=body_data)
+        data = self._client.request("POST", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return ReportNotification.model_validate(data)
+        return data
 
     def get(self, report_notification_token: str) -> ReportNotification:
         """
@@ -2014,7 +2416,10 @@ class ReportNotificationsApi:
         path = f"/report_notifications/{quote(str(report_notification_token), safe='')}"
         params = None
         body_data = None
-        return self._client.request("GET", path, params=params, body=body_data)
+        data = self._client.request("GET", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return ReportNotification.model_validate(data)
+        return data
 
     def update(self, report_notification_token: str, body: UpdateReportNotification) -> ReportNotification:
         """
@@ -2025,7 +2430,10 @@ class ReportNotificationsApi:
         path = f"/report_notifications/{quote(str(report_notification_token), safe='')}"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
-        return self._client.request("PUT", path, params=params, body=body_data)
+        data = self._client.request("PUT", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return ReportNotification.model_validate(data)
+        return data
 
     def delete(self, report_notification_token: str) -> Any:
         """
@@ -2036,7 +2444,10 @@ class ReportNotificationsApi:
         path = f"/report_notifications/{quote(str(report_notification_token), safe='')}"
         params = None
         body_data = None
-        return self._client.request("DELETE", path, params=params, body=body_data)
+        data = self._client.request("DELETE", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return Any.model_validate(data)
+        return data
 
 
 class ResourceReportsApi:
@@ -2056,7 +2467,10 @@ class ResourceReportsApi:
             "resource_type": resource_type,
         }
         body_data = None
-        return self._client.request("GET", path, params=params, body=body_data)
+        data = self._client.request("GET", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return ResourceReportColumns.model_validate(data)
+        return data
 
     def list(self, *, page: Optional[int] = None, limit: Optional[int] = None) -> ResourceReports:
         """
@@ -2070,7 +2484,10 @@ class ResourceReportsApi:
             "limit": limit,
         }
         body_data = None
-        return self._client.request("GET", path, params=params, body=body_data)
+        data = self._client.request("GET", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return ResourceReports.model_validate(data)
+        return data
 
     def create(self, body: CreateResourceReport) -> ResourceReport:
         """
@@ -2081,7 +2498,10 @@ class ResourceReportsApi:
         path = "/resource_reports"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
-        return self._client.request("POST", path, params=params, body=body_data)
+        data = self._client.request("POST", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return ResourceReport.model_validate(data)
+        return data
 
     def get(self, resource_report_token: str) -> ResourceReport:
         """
@@ -2092,7 +2512,10 @@ class ResourceReportsApi:
         path = f"/resource_reports/{quote(str(resource_report_token), safe='')}"
         params = None
         body_data = None
-        return self._client.request("GET", path, params=params, body=body_data)
+        data = self._client.request("GET", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return ResourceReport.model_validate(data)
+        return data
 
     def update(self, resource_report_token: str, body: UpdateResourceReport) -> ResourceReport:
         """
@@ -2103,7 +2526,10 @@ class ResourceReportsApi:
         path = f"/resource_reports/{quote(str(resource_report_token), safe='')}"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
-        return self._client.request("PUT", path, params=params, body=body_data)
+        data = self._client.request("PUT", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return ResourceReport.model_validate(data)
+        return data
 
     def delete(self, resource_report_token: str) -> Any:
         """
@@ -2114,7 +2540,10 @@ class ResourceReportsApi:
         path = f"/resource_reports/{quote(str(resource_report_token), safe='')}"
         params = None
         body_data = None
-        return self._client.request("DELETE", path, params=params, body=body_data)
+        data = self._client.request("DELETE", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return Any.model_validate(data)
+        return data
 
 
 class ResourcesApi:
@@ -2139,7 +2568,10 @@ class ResourcesApi:
             "limit": limit,
         }
         body_data = None
-        return self._client.request("GET", path, params=params, body=body_data)
+        data = self._client.request("GET", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return Resources.model_validate(data)
+        return data
 
     def get(self, resource_token: str, *, include_cost: Optional[bool] = None) -> Resource:
         """
@@ -2152,7 +2584,10 @@ class ResourcesApi:
             "include_cost": include_cost,
         }
         body_data = None
-        return self._client.request("GET", path, params=params, body=body_data)
+        data = self._client.request("GET", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return Resource.model_validate(data)
+        return data
 
 
 class SavedFiltersApi:
@@ -2173,7 +2608,10 @@ class SavedFiltersApi:
             "limit": limit,
         }
         body_data = None
-        return self._client.request("GET", path, params=params, body=body_data)
+        data = self._client.request("GET", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return SavedFilters.model_validate(data)
+        return data
 
     def create(self, body: CreateSavedFilter) -> SavedFilter:
         """
@@ -2184,7 +2622,10 @@ class SavedFiltersApi:
         path = "/saved_filters"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
-        return self._client.request("POST", path, params=params, body=body_data)
+        data = self._client.request("POST", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return SavedFilter.model_validate(data)
+        return data
 
     def get(self, saved_filter_token: str) -> SavedFilter:
         """
@@ -2195,7 +2636,10 @@ class SavedFiltersApi:
         path = f"/saved_filters/{quote(str(saved_filter_token), safe='')}"
         params = None
         body_data = None
-        return self._client.request("GET", path, params=params, body=body_data)
+        data = self._client.request("GET", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return SavedFilter.model_validate(data)
+        return data
 
     def update(self, saved_filter_token: str, body: UpdateSavedFilter) -> SavedFilter:
         """
@@ -2206,7 +2650,10 @@ class SavedFiltersApi:
         path = f"/saved_filters/{quote(str(saved_filter_token), safe='')}"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
-        return self._client.request("PUT", path, params=params, body=body_data)
+        data = self._client.request("PUT", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return SavedFilter.model_validate(data)
+        return data
 
     def delete(self, saved_filter_token: str) -> Any:
         """
@@ -2217,7 +2664,10 @@ class SavedFiltersApi:
         path = f"/saved_filters/{quote(str(saved_filter_token), safe='')}"
         params = None
         body_data = None
-        return self._client.request("DELETE", path, params=params, body=body_data)
+        data = self._client.request("DELETE", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return Any.model_validate(data)
+        return data
 
 
 class SegmentsApi:
@@ -2238,7 +2688,10 @@ class SegmentsApi:
             "limit": limit,
         }
         body_data = None
-        return self._client.request("GET", path, params=params, body=body_data)
+        data = self._client.request("GET", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return Segments.model_validate(data)
+        return data
 
     def create(self, body: CreateSegment) -> Segment:
         """
@@ -2249,7 +2702,10 @@ class SegmentsApi:
         path = "/segments"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
-        return self._client.request("POST", path, params=params, body=body_data)
+        data = self._client.request("POST", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return Segment.model_validate(data)
+        return data
 
     def get(self, segment_token: str) -> Segment:
         """
@@ -2260,7 +2716,10 @@ class SegmentsApi:
         path = f"/segments/{quote(str(segment_token), safe='')}"
         params = None
         body_data = None
-        return self._client.request("GET", path, params=params, body=body_data)
+        data = self._client.request("GET", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return Segment.model_validate(data)
+        return data
 
     def update(self, segment_token: str, body: UpdateSegment) -> Segment:
         """
@@ -2271,7 +2730,10 @@ class SegmentsApi:
         path = f"/segments/{quote(str(segment_token), safe='')}"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
-        return self._client.request("PUT", path, params=params, body=body_data)
+        data = self._client.request("PUT", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return Segment.model_validate(data)
+        return data
 
     def delete(self, segment_token: str) -> Any:
         """
@@ -2282,7 +2744,10 @@ class SegmentsApi:
         path = f"/segments/{quote(str(segment_token), safe='')}"
         params = None
         body_data = None
-        return self._client.request("DELETE", path, params=params, body=body_data)
+        data = self._client.request("DELETE", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return Any.model_validate(data)
+        return data
 
 
 class TagsApi:
@@ -2306,7 +2771,10 @@ class TagsApi:
             "limit": limit,
         }
         body_data = None
-        return self._client.request("GET", path, params=params, body=body_data)
+        data = self._client.request("GET", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return Tags.model_validate(data)
+        return data
 
     def update(self, body: UpdateTag) -> Tags:
         """
@@ -2317,7 +2785,10 @@ class TagsApi:
         path = "/tags"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
-        return self._client.request("PUT", path, params=params, body=body_data)
+        data = self._client.request("PUT", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return Tags.model_validate(data)
+        return data
 
     def get_values(self, key: str, *, providers: Optional[List[str]] = None, sort_direction: Optional[str] = None, search_query: Optional[str] = None, page: Optional[int] = None, limit: Optional[int] = None) -> TagValues:
         """
@@ -2334,7 +2805,10 @@ class TagsApi:
             "limit": limit,
         }
         body_data = None
-        return self._client.request("GET", path, params=params, body=body_data)
+        data = self._client.request("GET", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return TagValues.model_validate(data)
+        return data
 
 
 class TeamsApi:
@@ -2355,7 +2829,10 @@ class TeamsApi:
             "limit": limit,
         }
         body_data = None
-        return self._client.request("GET", path, params=params, body=body_data)
+        data = self._client.request("GET", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return Teams.model_validate(data)
+        return data
 
     def create(self, body: CreateTeam) -> Team:
         """
@@ -2366,7 +2843,10 @@ class TeamsApi:
         path = "/teams"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
-        return self._client.request("POST", path, params=params, body=body_data)
+        data = self._client.request("POST", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return Team.model_validate(data)
+        return data
 
     def get(self, team_token: str) -> Team:
         """
@@ -2377,7 +2857,10 @@ class TeamsApi:
         path = f"/teams/{quote(str(team_token), safe='')}"
         params = None
         body_data = None
-        return self._client.request("GET", path, params=params, body=body_data)
+        data = self._client.request("GET", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return Team.model_validate(data)
+        return data
 
     def update(self, team_token: str, body: UpdateTeam) -> Team:
         """
@@ -2388,7 +2871,10 @@ class TeamsApi:
         path = f"/teams/{quote(str(team_token), safe='')}"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
-        return self._client.request("PUT", path, params=params, body=body_data)
+        data = self._client.request("PUT", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return Team.model_validate(data)
+        return data
 
     def delete(self, team_token: str) -> Any:
         """
@@ -2399,7 +2885,10 @@ class TeamsApi:
         path = f"/teams/{quote(str(team_token), safe='')}"
         params = None
         body_data = None
-        return self._client.request("DELETE", path, params=params, body=body_data)
+        data = self._client.request("DELETE", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return Any.model_validate(data)
+        return data
 
     def get_members(self, team_token: str, *, page: Optional[int] = None, limit: Optional[int] = None) -> TeamMembers:
         """
@@ -2413,7 +2902,10 @@ class TeamsApi:
             "limit": limit,
         }
         body_data = None
-        return self._client.request("GET", path, params=params, body=body_data)
+        data = self._client.request("GET", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return TeamMembers.model_validate(data)
+        return data
 
     def add_member(self, team_token: str, body: AddTeamMember) -> TeamMember:
         """
@@ -2424,7 +2916,10 @@ class TeamsApi:
         path = f"/teams/{quote(str(team_token), safe='')}/members"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
-        return self._client.request("POST", path, params=params, body=body_data)
+        data = self._client.request("POST", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return TeamMember.model_validate(data)
+        return data
 
     def remove_member(self, team_token: str, user_token: str) -> Any:
         """
@@ -2435,7 +2930,10 @@ class TeamsApi:
         path = f"/teams/{quote(str(team_token), safe='')}/members/{quote(str(user_token), safe='')}"
         params = None
         body_data = None
-        return self._client.request("DELETE", path, params=params, body=body_data)
+        data = self._client.request("DELETE", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return Any.model_validate(data)
+        return data
 
 
 class UnitCostsApi:
@@ -2453,7 +2951,10 @@ class UnitCostsApi:
         path = "/unit_costs/data_exports"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
-        return self._client.request("POST", path, params=params, body=body_data)
+        data = self._client.request("POST", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return DataExport.model_validate(data)
+        return data
 
     def list(self, *, cost_report_token: str, start_date: Optional[str] = None, end_date: Optional[str] = None, date_bin: Optional[str] = None, order: Optional[str] = None, limit: Optional[int] = None, page: Optional[int] = None) -> UnitCosts:
         """
@@ -2472,7 +2973,10 @@ class UnitCostsApi:
             "page": page,
         }
         body_data = None
-        return self._client.request("GET", path, params=params, body=body_data)
+        data = self._client.request("GET", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return UnitCosts.model_validate(data)
+        return data
 
 
 class UserFeedbackApi:
@@ -2490,7 +2994,10 @@ class UserFeedbackApi:
         path = "/user_feedback"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
-        return self._client.request("POST", path, params=params, body=body_data)
+        data = self._client.request("POST", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return UserFeedback.model_validate(data)
+        return data
 
 
 class UsersApi:
@@ -2511,7 +3018,10 @@ class UsersApi:
             "limit": limit,
         }
         body_data = None
-        return self._client.request("GET", path, params=params, body=body_data)
+        data = self._client.request("GET", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return Users.model_validate(data)
+        return data
 
     def get(self, user_token: str) -> User:
         """
@@ -2522,7 +3032,10 @@ class UsersApi:
         path = f"/users/{quote(str(user_token), safe='')}"
         params = None
         body_data = None
-        return self._client.request("GET", path, params=params, body=body_data)
+        data = self._client.request("GET", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return User.model_validate(data)
+        return data
 
 
 class VirtualTagConfigsApi:
@@ -2540,7 +3053,10 @@ class VirtualTagConfigsApi:
         path = "/virtual_tag_configs"
         params = None
         body_data = None
-        return self._client.request("GET", path, params=params, body=body_data)
+        data = self._client.request("GET", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return VirtualTagConfigs.model_validate(data)
+        return data
 
     def create(self, body: CreateVirtualTagConfig) -> VirtualTagConfig:
         """
@@ -2551,7 +3067,10 @@ class VirtualTagConfigsApi:
         path = "/virtual_tag_configs"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
-        return self._client.request("POST", path, params=params, body=body_data)
+        data = self._client.request("POST", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return VirtualTagConfig.model_validate(data)
+        return data
 
     def get(self, token: str) -> VirtualTagConfig:
         """
@@ -2562,7 +3081,10 @@ class VirtualTagConfigsApi:
         path = f"/virtual_tag_configs/{quote(str(token), safe='')}"
         params = None
         body_data = None
-        return self._client.request("GET", path, params=params, body=body_data)
+        data = self._client.request("GET", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return VirtualTagConfig.model_validate(data)
+        return data
 
     def update(self, token: str, body: UpdateVirtualTagConfig) -> VirtualTagConfig:
         """
@@ -2573,7 +3095,10 @@ class VirtualTagConfigsApi:
         path = f"/virtual_tag_configs/{quote(str(token), safe='')}"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
-        return self._client.request("PUT", path, params=params, body=body_data)
+        data = self._client.request("PUT", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return VirtualTagConfig.model_validate(data)
+        return data
 
     def delete(self, token: str) -> Any:
         """
@@ -2584,7 +3109,10 @@ class VirtualTagConfigsApi:
         path = f"/virtual_tag_configs/{quote(str(token), safe='')}"
         params = None
         body_data = None
-        return self._client.request("DELETE", path, params=params, body=body_data)
+        data = self._client.request("DELETE", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return Any.model_validate(data)
+        return data
 
     def get_status(self, token: str) -> VirtualTagConfigStatus:
         """
@@ -2595,7 +3123,10 @@ class VirtualTagConfigsApi:
         path = f"/virtual_tag_configs/{quote(str(token), safe='')}/status"
         params = None
         body_data = None
-        return self._client.request("GET", path, params=params, body=body_data)
+        data = self._client.request("GET", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return VirtualTagConfigStatus.model_validate(data)
+        return data
 
     def update_async(self, token: str, body: UpdateAsyncVirtualTagConfig) -> Any:
         """
@@ -2606,7 +3137,10 @@ class VirtualTagConfigsApi:
         path = f"/virtual_tag_configs/{quote(str(token), safe='')}/async"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
-        return self._client.request("PUT", path, params=params, body=body_data)
+        data = self._client.request("PUT", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return Any.model_validate(data)
+        return data
 
     def get_async_virtual_tag_config_status(self, request_id: str) -> Any:
         """
@@ -2617,7 +3151,10 @@ class VirtualTagConfigsApi:
         path = f"/virtual_tag_configs/async/{quote(str(request_id), safe='')}"
         params = None
         body_data = None
-        return self._client.request("GET", path, params=params, body=body_data)
+        data = self._client.request("GET", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return Any.model_validate(data)
+        return data
 
 
 class WorkspacesApi:
@@ -2638,7 +3175,10 @@ class WorkspacesApi:
             "limit": limit,
         }
         body_data = None
-        return self._client.request("GET", path, params=params, body=body_data)
+        data = self._client.request("GET", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return Workspaces.model_validate(data)
+        return data
 
     def create(self, body: CreateWorkspace) -> Workspace:
         """
@@ -2649,7 +3189,10 @@ class WorkspacesApi:
         path = "/workspaces"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
-        return self._client.request("POST", path, params=params, body=body_data)
+        data = self._client.request("POST", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return Workspace.model_validate(data)
+        return data
 
     def get(self, workspace_token: str) -> Workspace:
         """
@@ -2660,7 +3203,10 @@ class WorkspacesApi:
         path = f"/workspaces/{quote(str(workspace_token), safe='')}"
         params = None
         body_data = None
-        return self._client.request("GET", path, params=params, body=body_data)
+        data = self._client.request("GET", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return Workspace.model_validate(data)
+        return data
 
     def update(self, workspace_token: str, body: UpdateWorkspace) -> Workspace:
         """
@@ -2671,5 +3217,8 @@ class WorkspacesApi:
         path = f"/workspaces/{quote(str(workspace_token), safe='')}"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
-        return self._client.request("PUT", path, params=params, body=body_data)
+        data = self._client.request("PUT", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return Workspace.model_validate(data)
+        return data
 
