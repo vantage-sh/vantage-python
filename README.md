@@ -75,7 +75,7 @@ except VantageAPIError as e:
 make install
 ```
 
-This fetches the latest OpenAPI schema from the Vantage API and generates Pydantic models, sync client, and async client. Your pip version will need to be up to date for this.
+This generates Pydantic models, sync client, and the async client. Your pip version will need to be up to date for this. If you wish to generate the client first, you should use `make generate`.
 
 ### Testing
 

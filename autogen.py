@@ -248,7 +248,7 @@ def extract_response_type(
     responses: dict[str, Any], schemas: dict[str, Any]
 ) -> str | None:
     """Extract successful response type."""
-    for code in ["200", "201", "202", "204"]:
+    for code in ["200", "201", "202", "203"]:
         if code not in responses:
             continue
         response = responses[code]
