@@ -13,17 +13,26 @@ jobs:
     check-if-tag:
         name: Check if Tag is Present
         runs-on: ubuntu-22.04
+        outputs:
+            TAG_NOT_PRESENT: ${{ steps.get-tag.outputs.TAG_NOT_PRESENT }}
         steps:
             - uses: actions/checkout@v4
             - name: Get the tag from Python and check if it's present
+              id: get-tag
               run: |
                 pip install toml
                 VERSION=$(python -c "import toml; print(toml.load('pyproject.toml')['project']['version'])")
                 if git tag -l "v$VERSION" | grep -q .; then
                     echo "Tag v$VERSION is present"
+                    echo "TAG_NOT_PRESENT=false" >> $GITHUB_OUTPUT
                 else
                     echo "Tag v$VERSION is not present"
                     echo "TAG_NOT_PRESENT=true" >> $GITHUB_OUTPUT
+
+                    git tag "v$VERSION"
+                    git config user.name "github-actions[bot]"
+                    git config user.email "github-actions[bot]@users.noreply.github.com"
+                    git push origin "v$VERSION"
                 fi
 
     publish:
