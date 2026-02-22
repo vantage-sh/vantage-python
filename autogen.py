@@ -699,7 +699,7 @@ def generate_sync_method(endpoint: Endpoint, method_name: str) -> list[str]:
 
     # Method signature
     param_str = ", ".join(["self"] + params) if params else "self"
-    return_type = endpoint.response_type or "Any"
+    return_type = endpoint.response_type or "None"
     lines.append(f"    def {method_name}({param_str}) -> {return_type}:")
 
     # Docstring
@@ -740,11 +740,16 @@ def generate_sync_method(endpoint: Endpoint, method_name: str) -> list[str]:
         lines.append("        body_data = None")
 
     # Make request and coerce response payload into typed models where possible
-    lines.append(
-        f'        data = self._client.request("{endpoint.method}", path, params=params, body=body_data)'
-    )
-    _append_response_mapping(lines, return_type, "data")
-    lines.append("        return data")
+    if endpoint.response_type is None:
+        lines.append(
+            f'        self._client.request("{endpoint.method}", path, params=params, body=body_data)'
+        )
+    else:
+        lines.append(
+            f'        data = self._client.request("{endpoint.method}", path, params=params, body=body_data)'
+        )
+        _append_response_mapping(lines, return_type, "data")
+        lines.append("        return data")
 
     return lines
 
@@ -925,7 +930,7 @@ def generate_async_method(endpoint: Endpoint, method_name: str) -> list[str]:
 
     # Method signature
     param_str = ", ".join(["self"] + params) if params else "self"
-    return_type = endpoint.response_type or "Any"
+    return_type = endpoint.response_type or "None"
     lines.append(f"    async def {method_name}({param_str}) -> {return_type}:")
 
     # Docstring
@@ -966,11 +971,16 @@ def generate_async_method(endpoint: Endpoint, method_name: str) -> list[str]:
         lines.append("        body_data = None")
 
     # Make request and coerce response payload into typed models where possible
-    lines.append(
-        f'        data = await self._client.request("{endpoint.method}", path, params=params, body=body_data)'
-    )
-    _append_response_mapping(lines, return_type, "data")
-    lines.append("        return data")
+    if endpoint.response_type is None:
+        lines.append(
+            f'        await self._client.request("{endpoint.method}", path, params=params, body=body_data)'
+        )
+    else:
+        lines.append(
+            f'        data = await self._client.request("{endpoint.method}", path, params=params, body=body_data)'
+        )
+        _append_response_mapping(lines, return_type, "data")
+        lines.append("        return data")
 
     return lines
 

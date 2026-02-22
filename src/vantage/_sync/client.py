@@ -196,7 +196,7 @@ class AccessGrantsApi:
             return AccessGrant.model_validate(data)
         return data
 
-    def delete(self, access_grant_token: str) -> Any:
+    def delete(self, access_grant_token: str) -> None:
         """
         Delete access grant
         
@@ -205,10 +205,7 @@ class AccessGrantsApi:
         path = f"/access_grants/{quote(str(access_grant_token), safe='')}"
         params = None
         body_data = None
-        data = self._client.request("DELETE", path, params=params, body=body_data)
-        if isinstance(data, dict):
-            return Any.model_validate(data)
-        return data
+        self._client.request("DELETE", path, params=params, body=body_data)
 
 
 class AnomalyAlertsApi:
@@ -334,7 +331,7 @@ class AnomalyNotificationsApi:
             return AnomalyNotification.model_validate(data)
         return data
 
-    def delete(self, anomaly_notification_token: str) -> Any:
+    def delete(self, anomaly_notification_token: str) -> None:
         """
         Delete anomaly notification
         
@@ -343,10 +340,7 @@ class AnomalyNotificationsApi:
         path = f"/anomaly_notifications/{quote(str(anomaly_notification_token), safe='')}"
         params = None
         body_data = None
-        data = self._client.request("DELETE", path, params=params, body=body_data)
-        if isinstance(data, dict):
-            return Any.model_validate(data)
-        return data
+        self._client.request("DELETE", path, params=params, body=body_data)
 
 
 class AuditLogsApi:
@@ -462,7 +456,7 @@ class BillingProfilesApi:
             return BillingProfile.model_validate(data)
         return data
 
-    def delete(self, billing_profile_token: str) -> Any:
+    def delete(self, billing_profile_token: str) -> None:
         """
         Delete billing profile
         
@@ -471,10 +465,7 @@ class BillingProfilesApi:
         path = f"/billing_profiles/{quote(str(billing_profile_token), safe='')}"
         params = None
         body_data = None
-        data = self._client.request("DELETE", path, params=params, body=body_data)
-        if isinstance(data, dict):
-            return Any.model_validate(data)
-        return data
+        self._client.request("DELETE", path, params=params, body=body_data)
 
 
 class BillingRulesApi:
@@ -542,7 +533,7 @@ class BillingRulesApi:
             return BillingRule.model_validate(data)
         return data
 
-    def delete(self, billing_rule_token: str) -> Any:
+    def delete(self, billing_rule_token: str) -> None:
         """
         Delete billing rule
         
@@ -551,10 +542,7 @@ class BillingRulesApi:
         path = f"/billing_rules/{quote(str(billing_rule_token), safe='')}"
         params = None
         body_data = None
-        data = self._client.request("DELETE", path, params=params, body=body_data)
-        if isinstance(data, dict):
-            return Any.model_validate(data)
-        return data
+        self._client.request("DELETE", path, params=params, body=body_data)
 
 
 class BudgetAlertsApi:
@@ -622,7 +610,7 @@ class BudgetAlertsApi:
             return BudgetAlert.model_validate(data)
         return data
 
-    def delete(self, budget_alert_token: str) -> Any:
+    def delete(self, budget_alert_token: str) -> None:
         """
         Delete budget alert
         
@@ -631,10 +619,7 @@ class BudgetAlertsApi:
         path = f"/budget_alerts/{quote(str(budget_alert_token), safe='')}"
         params = None
         body_data = None
-        data = self._client.request("DELETE", path, params=params, body=body_data)
-        if isinstance(data, dict):
-            return Any.model_validate(data)
-        return data
+        self._client.request("DELETE", path, params=params, body=body_data)
 
 
 class BudgetsApi:
@@ -704,7 +689,7 @@ class BudgetsApi:
             return Budget.model_validate(data)
         return data
 
-    def delete(self, budget_token: str) -> Any:
+    def delete(self, budget_token: str) -> None:
         """
         Delete budget
         
@@ -713,10 +698,7 @@ class BudgetsApi:
         path = f"/budgets/{quote(str(budget_token), safe='')}"
         params = None
         body_data = None
-        data = self._client.request("DELETE", path, params=params, body=body_data)
-        if isinstance(data, dict):
-            return Any.model_validate(data)
-        return data
+        self._client.request("DELETE", path, params=params, body=body_data)
 
 
 class BusinessMetricsApi:
@@ -784,7 +766,7 @@ class BusinessMetricsApi:
             return BusinessMetric.model_validate(data)
         return data
 
-    def delete(self, business_metric_token: str) -> Any:
+    def delete(self, business_metric_token: str) -> None:
         """
         Delete business metric
         
@@ -793,10 +775,7 @@ class BusinessMetricsApi:
         path = f"/business_metrics/{quote(str(business_metric_token), safe='')}"
         params = None
         body_data = None
-        data = self._client.request("DELETE", path, params=params, body=body_data)
-        if isinstance(data, dict):
-            return Any.model_validate(data)
-        return data
+        self._client.request("DELETE", path, params=params, body=body_data)
 
     def get_values(self, business_metric_token: str, *, page: Optional[int] = None, limit: Optional[int] = None, start_date: Optional[str] = None) -> BusinessMetricValues:
         """
@@ -943,7 +922,7 @@ class CostAlertsApi:
             return CostAlert.model_validate(data)
         return data
 
-    def delete(self, cost_alert_token: str) -> Any:
+    def delete(self, cost_alert_token: str) -> None:
         """
         Delete cost alert
         
@@ -952,10 +931,7 @@ class CostAlertsApi:
         path = f"/cost_alerts/{quote(str(cost_alert_token), safe='')}"
         params = None
         body_data = None
-        data = self._client.request("DELETE", path, params=params, body=body_data)
-        if isinstance(data, dict):
-            return Any.model_validate(data)
-        return data
+        self._client.request("DELETE", path, params=params, body=body_data)
 
 
 class CostProviderAccountsApi:
@@ -1073,7 +1049,7 @@ class CostReportsApi:
             return CostReport.model_validate(data)
         return data
 
-    def delete(self, cost_report_token: str) -> Any:
+    def delete(self, cost_report_token: str) -> None:
         """
         Delete cost report
         
@@ -1082,10 +1058,7 @@ class CostReportsApi:
         path = f"/cost_reports/{quote(str(cost_report_token), safe='')}"
         params = None
         body_data = None
-        data = self._client.request("DELETE", path, params=params, body=body_data)
-        if isinstance(data, dict):
-            return Any.model_validate(data)
-        return data
+        self._client.request("DELETE", path, params=params, body=body_data)
 
     def get_forecasted_costs(self, cost_report_token: str, *, start_date: Optional[str] = None, end_date: Optional[str] = None, provider: Optional[str] = None, service: Optional[str] = None, page: Optional[int] = None, limit: Optional[int] = None) -> ForecastedCosts:
         """
@@ -1138,7 +1111,7 @@ class CostsApi:
     def __init__(self, client: SyncClient) -> None:
         self._client = client
 
-    def create_export(self, body: CreateCostExport, *, groupings: Optional[List[str]] = None) -> Any:
+    def create_export(self, body: CreateCostExport, *, groupings: Optional[List[str]] = None) -> None:
         """
         Generate cost data export
         
@@ -1149,10 +1122,7 @@ class CostsApi:
             "groupings": groupings,
         }
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
-        data = self._client.request("POST", path, params=params, body=body_data)
-        if isinstance(data, dict):
-            return Any.model_validate(data)
-        return data
+        self._client.request("POST", path, params=params, body=body_data)
 
     def list(self, *, cost_report_token: Optional[str] = None, filter: Optional[str] = None, workspace_token: Optional[str] = None, start_date: Optional[str] = None, end_date: Optional[str] = None, groupings: Optional[List[str]] = None, order: Optional[str] = None, limit: Optional[int] = None, page: Optional[int] = None, date_bin: Optional[str] = None, settings_include_credits: Optional[bool] = None, settings_include_refunds: Optional[bool] = None, settings_include_discounts: Optional[bool] = None, settings_include_tax: Optional[bool] = None, settings_amortize: Optional[bool] = None, settings_unallocated: Optional[bool] = None, settings_aggregate_by: Optional[str] = None, settings_show_previous_period: Optional[bool] = None) -> Costs:
         """
@@ -1253,7 +1223,7 @@ class DashboardsApi:
             return Dashboard.model_validate(data)
         return data
 
-    def delete(self, dashboard_token: str) -> Any:
+    def delete(self, dashboard_token: str) -> None:
         """
         Delete dashboard
         
@@ -1262,10 +1232,7 @@ class DashboardsApi:
         path = f"/dashboards/{quote(str(dashboard_token), safe='')}"
         params = None
         body_data = None
-        data = self._client.request("DELETE", path, params=params, body=body_data)
-        if isinstance(data, dict):
-            return Any.model_validate(data)
-        return data
+        self._client.request("DELETE", path, params=params, body=body_data)
 
 
 class DataExportsApi:
@@ -1312,7 +1279,7 @@ class ExchangeRatesApi:
             return ExchangeRates.model_validate(data)
         return data
 
-    def create_via_csv(self, body: dict[str, Any]) -> Any:
+    def create_via_csv(self, body: dict[str, Any]) -> None:
         """
         Upload exchange rates via CSV
         
@@ -1321,10 +1288,7 @@ class ExchangeRatesApi:
         path = "/exchange_rates/csv"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
-        data = self._client.request("POST", path, params=params, body=body_data)
-        if isinstance(data, dict):
-            return Any.model_validate(data)
-        return data
+        self._client.request("POST", path, params=params, body=body_data)
 
 
 class FinancialCommitmentReportsApi:
@@ -1392,7 +1356,7 @@ class FinancialCommitmentReportsApi:
             return FinancialCommitmentReport.model_validate(data)
         return data
 
-    def delete(self, financial_commitment_report_token: str) -> Any:
+    def delete(self, financial_commitment_report_token: str) -> None:
         """
         Delete financial commitment report
         
@@ -1401,10 +1365,7 @@ class FinancialCommitmentReportsApi:
         path = f"/financial_commitment_reports/{quote(str(financial_commitment_report_token), safe='')}"
         params = None
         body_data = None
-        data = self._client.request("DELETE", path, params=params, body=body_data)
-        if isinstance(data, dict):
-            return Any.model_validate(data)
-        return data
+        self._client.request("DELETE", path, params=params, body=body_data)
 
 
 class FinancialCommitmentsApi:
@@ -1496,7 +1457,7 @@ class FoldersApi:
             return Folder.model_validate(data)
         return data
 
-    def delete(self, folder_token: str) -> Any:
+    def delete(self, folder_token: str) -> None:
         """
         Delete folder
         
@@ -1505,10 +1466,7 @@ class FoldersApi:
         path = f"/folders/{quote(str(folder_token), safe='')}"
         params = None
         body_data = None
-        data = self._client.request("DELETE", path, params=params, body=body_data)
-        if isinstance(data, dict):
-            return Any.model_validate(data)
-        return data
+        self._client.request("DELETE", path, params=params, body=body_data)
 
 
 class IntegrationsApi:
@@ -1564,7 +1522,7 @@ class IntegrationsApi:
             return Integration.model_validate(data)
         return data
 
-    def delete(self, integration_token: str) -> Any:
+    def delete(self, integration_token: str) -> None:
         """
         Delete integration
         
@@ -1573,10 +1531,7 @@ class IntegrationsApi:
         path = f"/integrations/{quote(str(integration_token), safe='')}"
         params = None
         body_data = None
-        data = self._client.request("DELETE", path, params=params, body=body_data)
-        if isinstance(data, dict):
-            return Any.model_validate(data)
-        return data
+        self._client.request("DELETE", path, params=params, body=body_data)
 
     def create_custom_provider(self, body: CreateCustomProviderIntegration) -> Integration:
         """
@@ -1606,7 +1561,7 @@ class IntegrationsApi:
             return UserCostsUpload.model_validate(data)
         return data
 
-    def delete_user_costs_upload(self, integration_token: str, user_costs_upload_token: int) -> Any:
+    def delete_user_costs_upload(self, integration_token: str, user_costs_upload_token: int) -> None:
         """
         Delete user costs upload
         
@@ -1615,10 +1570,7 @@ class IntegrationsApi:
         path = f"/integrations/{quote(str(integration_token), safe='')}/costs/{quote(str(user_costs_upload_token), safe='')}"
         params = None
         body_data = None
-        data = self._client.request("DELETE", path, params=params, body=body_data)
-        if isinstance(data, dict):
-            return Any.model_validate(data)
-        return data
+        self._client.request("DELETE", path, params=params, body=body_data)
 
     def get_user_costs_uploads(self, integration_token: str) -> UserCostsUploads:
         """
@@ -1715,7 +1667,7 @@ class InvoicesApi:
             return Invoice.model_validate(data)
         return data
 
-    def download(self, invoice_token: str, body: DownloadInvoice) -> Any:
+    def download(self, invoice_token: str, body: DownloadInvoice) -> None:
         """
         Get invoice file
         
@@ -1724,10 +1676,7 @@ class InvoicesApi:
         path = f"/invoices/{quote(str(invoice_token), safe='')}/download"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
-        data = self._client.request("POST", path, params=params, body=body_data)
-        if isinstance(data, dict):
-            return Any.model_validate(data)
-        return data
+        self._client.request("POST", path, params=params, body=body_data)
 
     def send(self, invoice_token: str) -> SendInvoice:
         """
@@ -1867,7 +1816,7 @@ class KubernetesEfficiencyReportsApi:
             return KubernetesEfficiencyReport.model_validate(data)
         return data
 
-    def delete(self, kubernetes_efficiency_report_token: str) -> Any:
+    def delete(self, kubernetes_efficiency_report_token: str) -> None:
         """
         Delete Kubernetes efficiency report
         
@@ -1876,10 +1825,7 @@ class KubernetesEfficiencyReportsApi:
         path = f"/kubernetes_efficiency_reports/{quote(str(kubernetes_efficiency_report_token), safe='')}"
         params = None
         body_data = None
-        data = self._client.request("DELETE", path, params=params, body=body_data)
-        if isinstance(data, dict):
-            return Any.model_validate(data)
-        return data
+        self._client.request("DELETE", path, params=params, body=body_data)
 
 
 class ManagedAccountsApi:
@@ -1947,7 +1893,7 @@ class ManagedAccountsApi:
             return ManagedAccount.model_validate(data)
         return data
 
-    def delete(self, managed_account_token: str) -> Any:
+    def delete(self, managed_account_token: str) -> None:
         """
         Delete managed account
         
@@ -1956,10 +1902,7 @@ class ManagedAccountsApi:
         path = f"/managed_accounts/{quote(str(managed_account_token), safe='')}"
         params = None
         body_data = None
-        data = self._client.request("DELETE", path, params=params, body=body_data)
-        if isinstance(data, dict):
-            return Any.model_validate(data)
-        return data
+        self._client.request("DELETE", path, params=params, body=body_data)
 
     def update_sso_connection_for(self, managed_account_token: str, body: UpdateSsoConnectionForManagedAccount) -> ManagedAccount:
         """
@@ -2076,7 +2019,7 @@ class NetworkFlowReportsApi:
             return NetworkFlowReport.model_validate(data)
         return data
 
-    def delete(self, network_flow_report_token: str) -> Any:
+    def delete(self, network_flow_report_token: str) -> None:
         """
         Delete network flow report
         
@@ -2085,10 +2028,7 @@ class NetworkFlowReportsApi:
         path = f"/network_flow_reports/{quote(str(network_flow_report_token), safe='')}"
         params = None
         body_data = None
-        data = self._client.request("DELETE", path, params=params, body=body_data)
-        if isinstance(data, dict):
-            return Any.model_validate(data)
-        return data
+        self._client.request("DELETE", path, params=params, body=body_data)
 
 
 class PingApi:
@@ -2097,15 +2037,12 @@ class PingApi:
     def __init__(self, client: SyncClient) -> None:
         self._client = client
 
-    def ping(self) -> Any:
+    def ping(self) -> None:
         """This is a health check endpoint that can be used to determine Vantage API healthiness. It will return 200 if everything is running smoothly."""
         path = "/ping"
         params = None
         body_data = None
-        data = self._client.request("GET", path, params=params, body=body_data)
-        if isinstance(data, dict):
-            return Any.model_validate(data)
-        return data
+        self._client.request("GET", path, params=params, body=body_data)
 
 
 class ProductsApi:
@@ -2245,7 +2182,7 @@ class RecommendationViewsApi:
             return RecommendationView.model_validate(data)
         return data
 
-    def delete(self, recommendation_view_token: str) -> Any:
+    def delete(self, recommendation_view_token: str) -> None:
         """
         Delete recommendation view
         
@@ -2254,10 +2191,7 @@ class RecommendationViewsApi:
         path = f"/recommendation_views/{quote(str(recommendation_view_token), safe='')}"
         params = None
         body_data = None
-        data = self._client.request("DELETE", path, params=params, body=body_data)
-        if isinstance(data, dict):
-            return Any.model_validate(data)
-        return data
+        self._client.request("DELETE", path, params=params, body=body_data)
 
 
 class RecommendationsApi:
@@ -2435,7 +2369,7 @@ class ReportNotificationsApi:
             return ReportNotification.model_validate(data)
         return data
 
-    def delete(self, report_notification_token: str) -> Any:
+    def delete(self, report_notification_token: str) -> None:
         """
         Delete report notification
         
@@ -2444,10 +2378,7 @@ class ReportNotificationsApi:
         path = f"/report_notifications/{quote(str(report_notification_token), safe='')}"
         params = None
         body_data = None
-        data = self._client.request("DELETE", path, params=params, body=body_data)
-        if isinstance(data, dict):
-            return Any.model_validate(data)
-        return data
+        self._client.request("DELETE", path, params=params, body=body_data)
 
 
 class ResourceReportsApi:
@@ -2531,7 +2462,7 @@ class ResourceReportsApi:
             return ResourceReport.model_validate(data)
         return data
 
-    def delete(self, resource_report_token: str) -> Any:
+    def delete(self, resource_report_token: str) -> None:
         """
         Delete resource report
         
@@ -2540,10 +2471,7 @@ class ResourceReportsApi:
         path = f"/resource_reports/{quote(str(resource_report_token), safe='')}"
         params = None
         body_data = None
-        data = self._client.request("DELETE", path, params=params, body=body_data)
-        if isinstance(data, dict):
-            return Any.model_validate(data)
-        return data
+        self._client.request("DELETE", path, params=params, body=body_data)
 
 
 class ResourcesApi:
@@ -2655,7 +2583,7 @@ class SavedFiltersApi:
             return SavedFilter.model_validate(data)
         return data
 
-    def delete(self, saved_filter_token: str) -> Any:
+    def delete(self, saved_filter_token: str) -> None:
         """
         Delete saved filter
         
@@ -2664,10 +2592,7 @@ class SavedFiltersApi:
         path = f"/saved_filters/{quote(str(saved_filter_token), safe='')}"
         params = None
         body_data = None
-        data = self._client.request("DELETE", path, params=params, body=body_data)
-        if isinstance(data, dict):
-            return Any.model_validate(data)
-        return data
+        self._client.request("DELETE", path, params=params, body=body_data)
 
 
 class SegmentsApi:
@@ -2735,7 +2660,7 @@ class SegmentsApi:
             return Segment.model_validate(data)
         return data
 
-    def delete(self, segment_token: str) -> Any:
+    def delete(self, segment_token: str) -> None:
         """
         Delete segment
         
@@ -2744,10 +2669,7 @@ class SegmentsApi:
         path = f"/segments/{quote(str(segment_token), safe='')}"
         params = None
         body_data = None
-        data = self._client.request("DELETE", path, params=params, body=body_data)
-        if isinstance(data, dict):
-            return Any.model_validate(data)
-        return data
+        self._client.request("DELETE", path, params=params, body=body_data)
 
 
 class TagsApi:
@@ -2876,7 +2798,7 @@ class TeamsApi:
             return Team.model_validate(data)
         return data
 
-    def delete(self, team_token: str) -> Any:
+    def delete(self, team_token: str) -> None:
         """
         Delete team
         
@@ -2885,10 +2807,7 @@ class TeamsApi:
         path = f"/teams/{quote(str(team_token), safe='')}"
         params = None
         body_data = None
-        data = self._client.request("DELETE", path, params=params, body=body_data)
-        if isinstance(data, dict):
-            return Any.model_validate(data)
-        return data
+        self._client.request("DELETE", path, params=params, body=body_data)
 
     def get_members(self, team_token: str, *, page: Optional[int] = None, limit: Optional[int] = None) -> TeamMembers:
         """
@@ -2921,7 +2840,7 @@ class TeamsApi:
             return TeamMember.model_validate(data)
         return data
 
-    def remove_member(self, team_token: str, user_token: str) -> Any:
+    def remove_member(self, team_token: str, user_token: str) -> None:
         """
         Remove team member
         
@@ -2930,10 +2849,7 @@ class TeamsApi:
         path = f"/teams/{quote(str(team_token), safe='')}/members/{quote(str(user_token), safe='')}"
         params = None
         body_data = None
-        data = self._client.request("DELETE", path, params=params, body=body_data)
-        if isinstance(data, dict):
-            return Any.model_validate(data)
-        return data
+        self._client.request("DELETE", path, params=params, body=body_data)
 
 
 class UnitCostsApi:
@@ -3100,7 +3016,7 @@ class VirtualTagConfigsApi:
             return VirtualTagConfig.model_validate(data)
         return data
 
-    def delete(self, token: str) -> Any:
+    def delete(self, token: str) -> None:
         """
         Delete virtual tag config
         
@@ -3109,10 +3025,7 @@ class VirtualTagConfigsApi:
         path = f"/virtual_tag_configs/{quote(str(token), safe='')}"
         params = None
         body_data = None
-        data = self._client.request("DELETE", path, params=params, body=body_data)
-        if isinstance(data, dict):
-            return Any.model_validate(data)
-        return data
+        self._client.request("DELETE", path, params=params, body=body_data)
 
     def get_status(self, token: str) -> VirtualTagConfigStatus:
         """
@@ -3128,7 +3041,7 @@ class VirtualTagConfigsApi:
             return VirtualTagConfigStatus.model_validate(data)
         return data
 
-    def update_async(self, token: str, body: UpdateAsyncVirtualTagConfig) -> Any:
+    def update_async(self, token: str, body: UpdateAsyncVirtualTagConfig) -> None:
         """
         Update virtual tag config asynchronously
         
@@ -3137,12 +3050,9 @@ class VirtualTagConfigsApi:
         path = f"/virtual_tag_configs/{quote(str(token), safe='')}/async"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
-        data = self._client.request("PUT", path, params=params, body=body_data)
-        if isinstance(data, dict):
-            return Any.model_validate(data)
-        return data
+        self._client.request("PUT", path, params=params, body=body_data)
 
-    def get_async_virtual_tag_config_status(self, request_id: str) -> Any:
+    def get_async_virtual_tag_config_status(self, request_id: str) -> None:
         """
         Get async virtual tag config update status
         
@@ -3151,10 +3061,7 @@ class VirtualTagConfigsApi:
         path = f"/virtual_tag_configs/async/{quote(str(request_id), safe='')}"
         params = None
         body_data = None
-        data = self._client.request("GET", path, params=params, body=body_data)
-        if isinstance(data, dict):
-            return Any.model_validate(data)
-        return data
+        self._client.request("GET", path, params=params, body=body_data)
 
 
 class WorkspacesApi:
