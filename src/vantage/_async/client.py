@@ -116,6 +116,18 @@ class AsyncClient:
                 json=body,
             )
 
+        if method.upper() == "GET" and path.startswith("/virtual_tag_configs/async/"):
+            if response.status_code == 404:
+                return False
+            elif response.is_success:
+                return True
+            else:
+                raise VantageAPIError(
+                    status=response.status_code,
+                    status_text=response.reason_phrase,
+                    body=response.text,
+                )
+
         if not response.is_success:
             raise VantageAPIError(
                 status=response.status_code,
@@ -3053,7 +3065,7 @@ class VirtualTagConfigsAsyncApi:
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
         await self._client.request("PUT", path, params=params, body=body_data)
 
-    async def get_async_virtual_tag_config_status(self, request_id: str) -> None:
+    async def get_async_virtual_tag_config_status(self, request_id: str) -> bool:
         """
         Get async virtual tag config update status
         
@@ -3062,7 +3074,7 @@ class VirtualTagConfigsAsyncApi:
         path = f"/virtual_tag_configs/async/{quote(str(request_id), safe='')}"
         params = None
         body_data = None
-        await self._client.request("GET", path, params=params, body=body_data)
+        return await self._client.request("GET", path, params=params, body=body_data)
 
 
 class WorkspacesAsyncApi:

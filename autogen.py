@@ -31,6 +31,12 @@ RESPONSE_HANDLERS: list[tuple[str, str, str]] = [
     ),
 ]
 
+# Endpoints that return bool based on HTTP status: 404 -> False, 2xx -> True, else raise.
+# Each entry is (METHOD, openapi_path_template).
+BOOLEAN_STATUS_ROUTES: list[tuple[str, str]] = [
+    ("GET", "/virtual_tag_configs/async/{request_id}"),
+]
+
 
 @dataclass
 class Parameter:
@@ -61,6 +67,7 @@ class Endpoint:
     is_multipart: bool = False
     response_handler: str | None = None  # internal client method to call, if not the default
     response_handler_return_type: str | None = None
+    boolean_status: bool = False  # 404->False, 2xx->True, else raise VantageAPIError
 
 
 @dataclass
@@ -319,6 +326,10 @@ def parse_endpoints(schema: dict[str, Any]) -> list[Endpoint]:
                 if response_handler:
                     break
 
+            boolean_status = (method.upper(), path) in {
+                (m.upper(), p) for m, p in BOOLEAN_STATUS_ROUTES
+            }
+
             endpoints.append(
                 Endpoint(
                     path=path,
@@ -336,6 +347,7 @@ def parse_endpoints(schema: dict[str, Any]) -> list[Endpoint]:
                     is_multipart=is_multipart,
                     response_handler=response_handler,
                     response_handler_return_type=response_handler_return_type,
+                    boolean_status=boolean_status,
                 )
             )
 
@@ -564,6 +576,21 @@ def _collect_handler_routes(resources: dict[str, Resource]) -> dict[str, list[tu
     return handler_routes
 
 
+def _collect_boolean_status_prefixes(resources: dict[str, Resource]) -> list[tuple[str, str]]:
+    """Collect (method, path_prefix) pairs for boolean-status endpoints.
+
+    The prefix is derived by taking everything before the first path parameter
+    so it can be matched with str.startswith() at runtime.
+    """
+    result = []
+    for resource in resources.values():
+        for endpoint in resource.endpoints:
+            if endpoint.boolean_status:
+                prefix = endpoint.path.split("{")[0]
+                result.append((endpoint.method, prefix))
+    return result
+
+
 def generate_sync_client(resources: dict[str, Resource]) -> str:
     """Generate synchronous client code."""
     lines = [
@@ -652,6 +679,29 @@ def generate_sync_client(resources: dict[str, Resource]) -> str:
             "                json=body,",
             "            )",
             "",
+        ]
+    )
+
+    # Inject boolean-status path checks (before the generic error check)
+    boolean_prefixes = _collect_boolean_status_prefixes(resources)
+    for method, prefix in boolean_prefixes:
+        lines.extend([
+            f'        if method.upper() == "{method}" and path.startswith("{prefix}"):',
+            "            if response.status_code == 404:",
+            "                return False",
+            "            elif response.is_success:",
+            "                return True",
+            "            else:",
+            "                raise VantageAPIError(",
+            "                    status=response.status_code,",
+            "                    status_text=response.reason_phrase,",
+            "                    body=response.text,",
+            "                )",
+            "",
+        ])
+
+    lines.extend(
+        [
             "        if not response.is_success:",
             "            raise VantageAPIError(",
             "                status=response.status_code,",
@@ -757,7 +807,9 @@ def generate_sync_method(endpoint: Endpoint, method_name: str) -> list[str]:
 
     # Method signature
     param_str = ", ".join(["self"] + params) if params else "self"
-    if endpoint.response_handler:
+    if endpoint.boolean_status:
+        return_type = "bool"
+    elif endpoint.response_handler:
         return_type = endpoint.response_handler_return_type or "Any"
     else:
         return_type = endpoint.response_type or "None"
@@ -801,7 +853,7 @@ def generate_sync_method(endpoint: Endpoint, method_name: str) -> list[str]:
         lines.append("        body_data = None")
 
     # Make request and coerce response payload into typed models where possible
-    if endpoint.response_handler:
+    if endpoint.boolean_status or endpoint.response_handler:
         lines.append(
             f'        return self._client.request("{endpoint.method}", path, params=params, body=body_data)'
         )
@@ -907,6 +959,29 @@ def generate_async_client(resources: dict[str, Resource]) -> str:
             "                json=body,",
             "            )",
             "",
+        ]
+    )
+
+    # Inject boolean-status path checks (before the generic error check)
+    boolean_prefixes = _collect_boolean_status_prefixes(resources)
+    for method, prefix in boolean_prefixes:
+        lines.extend([
+            f'        if method.upper() == "{method}" and path.startswith("{prefix}"):',
+            "            if response.status_code == 404:",
+            "                return False",
+            "            elif response.is_success:",
+            "                return True",
+            "            else:",
+            "                raise VantageAPIError(",
+            "                    status=response.status_code,",
+            "                    status_text=response.reason_phrase,",
+            "                    body=response.text,",
+            "                )",
+            "",
+        ])
+
+    lines.extend(
+        [
             "        if not response.is_success:",
             "            raise VantageAPIError(",
             "                status=response.status_code,",
@@ -1012,7 +1087,9 @@ def generate_async_method(endpoint: Endpoint, method_name: str) -> list[str]:
 
     # Method signature
     param_str = ", ".join(["self"] + params) if params else "self"
-    if endpoint.response_handler:
+    if endpoint.boolean_status:
+        return_type = "bool"
+    elif endpoint.response_handler:
         return_type = endpoint.response_handler_return_type or "Any"
     else:
         return_type = endpoint.response_type or "None"
@@ -1056,7 +1133,7 @@ def generate_async_method(endpoint: Endpoint, method_name: str) -> list[str]:
         lines.append("        body_data = None")
 
     # Make request and coerce response payload into typed models where possible
-    if endpoint.response_handler:
+    if endpoint.boolean_status or endpoint.response_handler:
         lines.append(
             f'        return await self._client.request("{endpoint.method}", path, params=params, body=body_data)'
         )
