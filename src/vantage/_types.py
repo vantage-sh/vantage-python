@@ -1021,10 +1021,16 @@ class CreateInvoice(BaseModel):
     account_token: str = Field(description="Token of the managed account to invoice")
 
 
-class DownloadInvoice(BaseModel):
+class DownloadInvoiceRequest(BaseModel):
     """Download invoice file (PDF or CSV)."""
 
     file_type: str = Field(description="Type of file to download (pdf or csv)")
+
+
+class DownloadInvoice(BaseModel):
+    """DownloadInvoice model"""
+
+    download_url: str = Field(description="The URL to download the invoice file.")
 
 
 class SendInvoice(BaseModel):
@@ -1845,6 +1851,13 @@ class UpdateAsyncVirtualTagConfig(BaseModel):
     backfill_until: Optional[str] = Field(default=None, description="The earliest month the VirtualTagConfig should be backfilled to.")
     collapsed_tag_keys: Optional[List[VirtualTagConfigCollapsedTagKey]] = Field(default=None, description="Tag keys to collapse values for.")
     values: Optional[List[VirtualTagConfigValue]] = Field(default=None, description="Values for the VirtualTagConfig, with match precedence determined by order in the list.")
+
+
+class AsyncVirtualTagConfigUpdate(BaseModel):
+    """AsyncVirtualTagConfigUpdate model"""
+
+    request_id: str = Field(description="The request ID of the async virtual tag config update.")
+    status_url: str = Field(description="The status path of the async virtual tag config update.")
 
 
 class Workspaces(BaseModel):

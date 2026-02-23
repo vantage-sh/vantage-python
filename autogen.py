@@ -203,10 +203,16 @@ def preprocess_inline_models(schemas: dict[str, Any]) -> None:
             existing_names.add(model_name)
 
 
-def openapi_type_to_python(schema: dict[str, Any], schemas: dict[str, Any]) -> str:
+def openapi_type_to_python(
+    schema: dict[str, Any],
+    schemas: dict[str, Any],
+    name_map: dict[str, str] | None = None,
+) -> str:
     """Convert OpenAPI type to Python type hint."""
     if "$ref" in schema:
         ref_name = schema["$ref"].split("/")[-1]
+        if name_map and ref_name in name_map:
+            return name_map[ref_name]
         return to_pascal_case(ref_name)
 
     schema_type = schema.get("type", "any")
@@ -223,12 +229,12 @@ def openapi_type_to_python(schema: dict[str, Any], schemas: dict[str, Any]) -> s
         return "bool"
     elif schema_type == "array":
         items = schema.get("items", {})
-        item_type = openapi_type_to_python(items, schemas)
+        item_type = openapi_type_to_python(items, schemas, name_map)
         return f"List[{item_type}]"
     elif schema_type == "object":
         additional = schema.get("additionalProperties")
         if additional:
-            value_type = openapi_type_to_python(additional, schemas)
+            value_type = openapi_type_to_python(additional, schemas, name_map)
             return f"Dict[str, {value_type}]"
         # Check if inline properties match an existing named schema
         inline_props = schema.get("properties")
@@ -237,6 +243,8 @@ def openapi_type_to_python(schema: dict[str, Any], schemas: dict[str, Any]) -> s
             for schema_name, schema_def in schemas.items():
                 defined_keys = sorted(schema_def.get("properties", {}).keys())
                 if defined_keys and inline_keys == defined_keys:
+                    if name_map and schema_name in name_map:
+                        return name_map[schema_name]
                     return to_pascal_case(schema_name)
         return "Dict[str, Any]"
     else:
@@ -244,7 +252,9 @@ def openapi_type_to_python(schema: dict[str, Any], schemas: dict[str, Any]) -> s
 
 
 def extract_request_body_type(
-    request_body: dict[str, Any] | None, schemas: dict[str, Any]
+    request_body: dict[str, Any] | None,
+    schemas: dict[str, Any],
+    name_map: dict[str, str] | None = None,
 ) -> tuple[str | None, bool]:
     """Extract request body type and whether it's multipart."""
     if not request_body:
@@ -259,13 +269,15 @@ def extract_request_body_type(
     # Check for JSON
     if "application/json" in content:
         schema = content["application/json"].get("schema", {})
-        return openapi_type_to_python(schema, schemas), False
+        return openapi_type_to_python(schema, schemas, name_map), False
 
     return None, False
 
 
 def extract_response_type(
-    responses: dict[str, Any], schemas: dict[str, Any]
+    responses: dict[str, Any],
+    schemas: dict[str, Any],
+    name_map: dict[str, str] | None = None,
 ) -> str | None:
     """Extract successful response type."""
     for code in ["200", "201", "202", "203"]:
@@ -275,8 +287,51 @@ def extract_response_type(
         content = response.get("content", {})
         if "application/json" in content:
             schema = content["application/json"].get("schema", {})
-            return openapi_type_to_python(schema, schemas)
+            return openapi_type_to_python(schema, schemas, name_map)
     return None
+
+
+def find_request_body_schemas(schema: dict[str, Any]) -> set[str]:
+    """Return the set of schema names referenced as request bodies in any endpoint."""
+    result = set()
+    paths = schema.get("paths", {})
+    for path_item in paths.values():
+        for method, spec in path_item.items():
+            if method in ("parameters", "servers", "summary", "description"):
+                continue
+            request_body = spec.get("requestBody", {})
+            content = request_body.get("content", {})
+            for media_type in content.values():
+                ref_schema = media_type.get("schema", {})
+                if "$ref" in ref_schema:
+                    name = ref_schema["$ref"].split("/")[-1]
+                    result.add(name)
+    return result
+
+
+def build_class_name_map(schemas: dict[str, Any], request_body_schemas: set[str]) -> dict[str, str]:
+    """Build a mapping from raw schema names to Python class names, resolving conflicts.
+
+    If two schema names map to the same PascalCase name, the one used as a
+    request body is suffixed with 'Request'.
+    """
+    initial = {name: to_pascal_case(name) for name in schemas}
+
+    by_class_name: dict[str, list[str]] = {}
+    for raw_name, class_name in initial.items():
+        by_class_name.setdefault(class_name, []).append(raw_name)
+
+    result: dict[str, str] = {}
+    for class_name, raw_names in by_class_name.items():
+        if len(raw_names) == 1:
+            result[raw_names[0]] = class_name
+        else:
+            for raw_name in raw_names:
+                if raw_name in request_body_schemas:
+                    result[raw_name] = class_name + "Request"
+                else:
+                    result[raw_name] = class_name
+    return result
 
 
 def parse_endpoints(schema: dict[str, Any]) -> list[Endpoint]:
@@ -284,6 +339,7 @@ def parse_endpoints(schema: dict[str, Any]) -> list[Endpoint]:
     endpoints = []
     paths = schema.get("paths", {})
     schemas = schema.get("components", {}).get("schemas", {})
+    name_map = build_class_name_map(schemas, find_request_body_schemas(schema))
 
     for path, methods in paths.items():
         for method, spec in methods.items():
@@ -295,7 +351,7 @@ def parse_endpoints(schema: dict[str, Any]) -> list[Endpoint]:
             parameters = []
             for param in spec.get("parameters", []):
                 param_schema = param.get("schema", {})
-                param_type = openapi_type_to_python(param_schema, schemas)
+                param_type = openapi_type_to_python(param_schema, schemas, name_map)
                 parameters.append(
                     Parameter(
                         name=param["name"],
@@ -308,9 +364,9 @@ def parse_endpoints(schema: dict[str, Any]) -> list[Endpoint]:
                 )
 
             request_body = spec.get("requestBody")
-            body_type, is_multipart = extract_request_body_type(request_body, schemas)
+            body_type, is_multipart = extract_request_body_type(request_body, schemas, name_map)
 
-            response_type = extract_response_type(spec.get("responses", {}), schemas)
+            response_type = extract_response_type(spec.get("responses", {}), schemas, name_map)
 
             description = spec.get("description")
 
@@ -481,6 +537,7 @@ def _append_response_mapping(lines: list[str], return_type: str, data_var: str) 
 def generate_pydantic_models(schema: dict[str, Any]) -> str:
     """Generate Pydantic models from OpenAPI schemas."""
     schemas = schema.get("components", {}).get("schemas", {})
+    name_map = build_class_name_map(schemas, find_request_body_schemas(schema))
     lines = [
         '"""Auto-generated Pydantic models from OpenAPI schema."""',
         "",
@@ -494,7 +551,7 @@ def generate_pydantic_models(schema: dict[str, Any]) -> str:
     ]
 
     for name, spec in schemas.items():
-        class_name = to_pascal_case(name)
+        class_name = name_map.get(name, to_pascal_case(name))
         description = spec.get("description", "")
 
         lines.append(f"class {class_name}(BaseModel):")
@@ -520,7 +577,7 @@ def generate_pydantic_models(schema: dict[str, Any]) -> str:
                 python_name = python_name + "_"
                 needs_alias = True
 
-            prop_type = openapi_type_to_python(prop_spec, schemas)
+            prop_type = openapi_type_to_python(prop_spec, schemas, name_map)
 
             # Handle nullable
             if prop_spec.get("x-nullable") or prop_spec.get("nullable"):

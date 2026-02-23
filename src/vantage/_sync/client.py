@@ -1686,7 +1686,7 @@ class InvoicesApi:
             return Invoice.model_validate(data)
         return data
 
-    def download(self, invoice_token: str, body: DownloadInvoice) -> None:
+    def download(self, invoice_token: str, body: DownloadInvoiceRequest) -> DownloadInvoice:
         """
         Get invoice file
         
@@ -1695,7 +1695,10 @@ class InvoicesApi:
         path = f"/invoices/{quote(str(invoice_token), safe='')}/download"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
-        self._client.request("POST", path, params=params, body=body_data)
+        data = self._client.request("POST", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return DownloadInvoice.model_validate(data)
+        return data
 
     def send(self, invoice_token: str) -> SendInvoice:
         """
@@ -3054,7 +3057,7 @@ class VirtualTagConfigsApi:
             return VirtualTagConfigStatus.model_validate(data)
         return data
 
-    def update_async(self, token: str, body: UpdateAsyncVirtualTagConfig) -> None:
+    def update_async(self, token: str, body: UpdateAsyncVirtualTagConfig) -> AsyncVirtualTagConfigUpdate:
         """
         Update virtual tag config asynchronously
         
@@ -3063,7 +3066,10 @@ class VirtualTagConfigsApi:
         path = f"/virtual_tag_configs/{quote(str(token), safe='')}/async"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
-        self._client.request("PUT", path, params=params, body=body_data)
+        data = self._client.request("PUT", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return AsyncVirtualTagConfigUpdate.model_validate(data)
+        return data
 
     def get_async_virtual_tag_config_status(self, request_id: str) -> bool:
         """
