@@ -123,12 +123,19 @@ class SyncClient:
                 body=response.text,
             )
 
+        if (method, path) in {("POST", "/costs/data_exports"), ("POST", "/kubernetes_efficiency_reports/data_exports"), ("POST", "/unit_costs/data_exports")}:
+            return self._request_for_location(response)
+
         try:
             data = response.json()
         except Exception:
             data = None
 
         return data
+
+    def _request_for_location(self, response: Any) -> str:
+        """Extract the Location header from a response."""
+        return response.headers["Location"]
 
 
 class AccessGrantsApi:
@@ -1111,7 +1118,7 @@ class CostsApi:
     def __init__(self, client: SyncClient) -> None:
         self._client = client
 
-    def create_export(self, body: CreateCostExport, *, groupings: Optional[List[str]] = None) -> None:
+    def create_export(self, body: CreateCostExport, *, groupings: Optional[List[str]] = None) -> str:
         """
         Generate cost data export
         
@@ -1122,7 +1129,7 @@ class CostsApi:
             "groupings": groupings,
         }
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
-        self._client.request("POST", path, params=params, body=body_data)
+        return self._client.request("POST", path, params=params, body=body_data)
 
     def list(self, *, cost_report_token: Optional[str] = None, filter: Optional[str] = None, workspace_token: Optional[str] = None, start_date: Optional[str] = None, end_date: Optional[str] = None, groupings: Optional[List[str]] = None, order: Optional[str] = None, limit: Optional[int] = None, page: Optional[int] = None, date_bin: Optional[str] = None, settings_include_credits: Optional[bool] = None, settings_include_refunds: Optional[bool] = None, settings_include_discounts: Optional[bool] = None, settings_include_tax: Optional[bool] = None, settings_amortize: Optional[bool] = None, settings_unallocated: Optional[bool] = None, settings_aggregate_by: Optional[str] = None, settings_show_previous_period: Optional[bool] = None) -> Costs:
         """
@@ -1772,7 +1779,7 @@ class KubernetesEfficiencyReportsApi:
             return KubernetesEfficiencyReport.model_validate(data)
         return data
 
-    def create_export(self, body: CreateKubernetesEfficiencyReportExport, *, groupings: Optional[List[str]] = None) -> DataExport:
+    def create_export(self, body: CreateKubernetesEfficiencyReportExport, *, groupings: Optional[List[str]] = None) -> str:
         """
         Generate Kubernetes efficiency data export
         
@@ -1783,10 +1790,7 @@ class KubernetesEfficiencyReportsApi:
             "groupings": groupings,
         }
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
-        data = self._client.request("POST", path, params=params, body=body_data)
-        if isinstance(data, dict):
-            return DataExport.model_validate(data)
-        return data
+        return self._client.request("POST", path, params=params, body=body_data)
 
     def get(self, kubernetes_efficiency_report_token: str) -> KubernetesEfficiencyReport:
         """
@@ -2858,7 +2862,7 @@ class UnitCostsApi:
     def __init__(self, client: SyncClient) -> None:
         self._client = client
 
-    def create_export(self, body: CreateUnitCostsExport) -> DataExport:
+    def create_export(self, body: CreateUnitCostsExport) -> str:
         """
         Generate data export of unit costs
         
@@ -2867,10 +2871,7 @@ class UnitCostsApi:
         path = "/unit_costs/data_exports"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
-        data = self._client.request("POST", path, params=params, body=body_data)
-        if isinstance(data, dict):
-            return DataExport.model_validate(data)
-        return data
+        return self._client.request("POST", path, params=params, body=body_data)
 
     def list(self, *, cost_report_token: str, start_date: Optional[str] = None, end_date: Optional[str] = None, date_bin: Optional[str] = None, order: Optional[str] = None, limit: Optional[int] = None, page: Optional[int] = None) -> UnitCosts:
         """
