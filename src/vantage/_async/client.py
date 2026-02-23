@@ -123,12 +123,19 @@ class AsyncClient:
                 body=response.text,
             )
 
+        if (method, path) in {("POST", "/costs/data_exports"), ("POST", "/kubernetes_efficiency_reports/data_exports"), ("POST", "/unit_costs/data_exports")}:
+            return self._request_for_location(response)
+
         try:
             data = response.json()
         except Exception:
             data = None
 
         return data
+
+    def _request_for_location(self, response: Any) -> str:
+        """Extract the Location header from a response."""
+        return response.headers["Location"]
 
 
 class AccessGrantsAsyncApi:
@@ -196,7 +203,7 @@ class AccessGrantsAsyncApi:
             return AccessGrant.model_validate(data)
         return data
 
-    async def delete(self, access_grant_token: str) -> Any:
+    async def delete(self, access_grant_token: str) -> None:
         """
         Delete access grant
         
@@ -205,10 +212,7 @@ class AccessGrantsAsyncApi:
         path = f"/access_grants/{quote(str(access_grant_token), safe='')}"
         params = None
         body_data = None
-        data = await self._client.request("DELETE", path, params=params, body=body_data)
-        if isinstance(data, dict):
-            return Any.model_validate(data)
-        return data
+        await self._client.request("DELETE", path, params=params, body=body_data)
 
 
 class AnomalyAlertsAsyncApi:
@@ -334,7 +338,7 @@ class AnomalyNotificationsAsyncApi:
             return AnomalyNotification.model_validate(data)
         return data
 
-    async def delete(self, anomaly_notification_token: str) -> Any:
+    async def delete(self, anomaly_notification_token: str) -> None:
         """
         Delete anomaly notification
         
@@ -343,10 +347,7 @@ class AnomalyNotificationsAsyncApi:
         path = f"/anomaly_notifications/{quote(str(anomaly_notification_token), safe='')}"
         params = None
         body_data = None
-        data = await self._client.request("DELETE", path, params=params, body=body_data)
-        if isinstance(data, dict):
-            return Any.model_validate(data)
-        return data
+        await self._client.request("DELETE", path, params=params, body=body_data)
 
 
 class AuditLogsAsyncApi:
@@ -462,7 +463,7 @@ class BillingProfilesAsyncApi:
             return BillingProfile.model_validate(data)
         return data
 
-    async def delete(self, billing_profile_token: str) -> Any:
+    async def delete(self, billing_profile_token: str) -> None:
         """
         Delete billing profile
         
@@ -471,10 +472,7 @@ class BillingProfilesAsyncApi:
         path = f"/billing_profiles/{quote(str(billing_profile_token), safe='')}"
         params = None
         body_data = None
-        data = await self._client.request("DELETE", path, params=params, body=body_data)
-        if isinstance(data, dict):
-            return Any.model_validate(data)
-        return data
+        await self._client.request("DELETE", path, params=params, body=body_data)
 
 
 class BillingRulesAsyncApi:
@@ -542,7 +540,7 @@ class BillingRulesAsyncApi:
             return BillingRule.model_validate(data)
         return data
 
-    async def delete(self, billing_rule_token: str) -> Any:
+    async def delete(self, billing_rule_token: str) -> None:
         """
         Delete billing rule
         
@@ -551,10 +549,7 @@ class BillingRulesAsyncApi:
         path = f"/billing_rules/{quote(str(billing_rule_token), safe='')}"
         params = None
         body_data = None
-        data = await self._client.request("DELETE", path, params=params, body=body_data)
-        if isinstance(data, dict):
-            return Any.model_validate(data)
-        return data
+        await self._client.request("DELETE", path, params=params, body=body_data)
 
 
 class BudgetAlertsAsyncApi:
@@ -622,7 +617,7 @@ class BudgetAlertsAsyncApi:
             return BudgetAlert.model_validate(data)
         return data
 
-    async def delete(self, budget_alert_token: str) -> Any:
+    async def delete(self, budget_alert_token: str) -> None:
         """
         Delete budget alert
         
@@ -631,10 +626,7 @@ class BudgetAlertsAsyncApi:
         path = f"/budget_alerts/{quote(str(budget_alert_token), safe='')}"
         params = None
         body_data = None
-        data = await self._client.request("DELETE", path, params=params, body=body_data)
-        if isinstance(data, dict):
-            return Any.model_validate(data)
-        return data
+        await self._client.request("DELETE", path, params=params, body=body_data)
 
 
 class BudgetsAsyncApi:
@@ -704,7 +696,7 @@ class BudgetsAsyncApi:
             return Budget.model_validate(data)
         return data
 
-    async def delete(self, budget_token: str) -> Any:
+    async def delete(self, budget_token: str) -> None:
         """
         Delete budget
         
@@ -713,10 +705,7 @@ class BudgetsAsyncApi:
         path = f"/budgets/{quote(str(budget_token), safe='')}"
         params = None
         body_data = None
-        data = await self._client.request("DELETE", path, params=params, body=body_data)
-        if isinstance(data, dict):
-            return Any.model_validate(data)
-        return data
+        await self._client.request("DELETE", path, params=params, body=body_data)
 
 
 class BusinessMetricsAsyncApi:
@@ -784,7 +773,7 @@ class BusinessMetricsAsyncApi:
             return BusinessMetric.model_validate(data)
         return data
 
-    async def delete(self, business_metric_token: str) -> Any:
+    async def delete(self, business_metric_token: str) -> None:
         """
         Delete business metric
         
@@ -793,10 +782,7 @@ class BusinessMetricsAsyncApi:
         path = f"/business_metrics/{quote(str(business_metric_token), safe='')}"
         params = None
         body_data = None
-        data = await self._client.request("DELETE", path, params=params, body=body_data)
-        if isinstance(data, dict):
-            return Any.model_validate(data)
-        return data
+        await self._client.request("DELETE", path, params=params, body=body_data)
 
     async def get_values(self, business_metric_token: str, *, page: Optional[int] = None, limit: Optional[int] = None, start_date: Optional[str] = None) -> BusinessMetricValues:
         """
@@ -943,7 +929,7 @@ class CostAlertsAsyncApi:
             return CostAlert.model_validate(data)
         return data
 
-    async def delete(self, cost_alert_token: str) -> Any:
+    async def delete(self, cost_alert_token: str) -> None:
         """
         Delete cost alert
         
@@ -952,10 +938,7 @@ class CostAlertsAsyncApi:
         path = f"/cost_alerts/{quote(str(cost_alert_token), safe='')}"
         params = None
         body_data = None
-        data = await self._client.request("DELETE", path, params=params, body=body_data)
-        if isinstance(data, dict):
-            return Any.model_validate(data)
-        return data
+        await self._client.request("DELETE", path, params=params, body=body_data)
 
 
 class CostProviderAccountsAsyncApi:
@@ -1073,7 +1056,7 @@ class CostReportsAsyncApi:
             return CostReport.model_validate(data)
         return data
 
-    async def delete(self, cost_report_token: str) -> Any:
+    async def delete(self, cost_report_token: str) -> None:
         """
         Delete cost report
         
@@ -1082,10 +1065,7 @@ class CostReportsAsyncApi:
         path = f"/cost_reports/{quote(str(cost_report_token), safe='')}"
         params = None
         body_data = None
-        data = await self._client.request("DELETE", path, params=params, body=body_data)
-        if isinstance(data, dict):
-            return Any.model_validate(data)
-        return data
+        await self._client.request("DELETE", path, params=params, body=body_data)
 
     async def get_forecasted_costs(self, cost_report_token: str, *, start_date: Optional[str] = None, end_date: Optional[str] = None, provider: Optional[str] = None, service: Optional[str] = None, page: Optional[int] = None, limit: Optional[int] = None) -> ForecastedCosts:
         """
@@ -1138,7 +1118,7 @@ class CostsAsyncApi:
     def __init__(self, client: AsyncClient) -> None:
         self._client = client
 
-    async def create_export(self, body: CreateCostExport, *, groupings: Optional[List[str]] = None) -> Any:
+    async def create_export(self, body: CreateCostExport, *, groupings: Optional[List[str]] = None) -> str:
         """
         Generate cost data export
         
@@ -1149,10 +1129,7 @@ class CostsAsyncApi:
             "groupings": groupings,
         }
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
-        data = await self._client.request("POST", path, params=params, body=body_data)
-        if isinstance(data, dict):
-            return Any.model_validate(data)
-        return data
+        return await self._client.request("POST", path, params=params, body=body_data)
 
     async def list(self, *, cost_report_token: Optional[str] = None, filter: Optional[str] = None, workspace_token: Optional[str] = None, start_date: Optional[str] = None, end_date: Optional[str] = None, groupings: Optional[List[str]] = None, order: Optional[str] = None, limit: Optional[int] = None, page: Optional[int] = None, date_bin: Optional[str] = None, settings_include_credits: Optional[bool] = None, settings_include_refunds: Optional[bool] = None, settings_include_discounts: Optional[bool] = None, settings_include_tax: Optional[bool] = None, settings_amortize: Optional[bool] = None, settings_unallocated: Optional[bool] = None, settings_aggregate_by: Optional[str] = None, settings_show_previous_period: Optional[bool] = None) -> Costs:
         """
@@ -1253,7 +1230,7 @@ class DashboardsAsyncApi:
             return Dashboard.model_validate(data)
         return data
 
-    async def delete(self, dashboard_token: str) -> Any:
+    async def delete(self, dashboard_token: str) -> None:
         """
         Delete dashboard
         
@@ -1262,10 +1239,7 @@ class DashboardsAsyncApi:
         path = f"/dashboards/{quote(str(dashboard_token), safe='')}"
         params = None
         body_data = None
-        data = await self._client.request("DELETE", path, params=params, body=body_data)
-        if isinstance(data, dict):
-            return Any.model_validate(data)
-        return data
+        await self._client.request("DELETE", path, params=params, body=body_data)
 
 
 class DataExportsAsyncApi:
@@ -1312,7 +1286,7 @@ class ExchangeRatesAsyncApi:
             return ExchangeRates.model_validate(data)
         return data
 
-    async def create_via_csv(self, body: dict[str, Any]) -> Any:
+    async def create_via_csv(self, body: dict[str, Any]) -> None:
         """
         Upload exchange rates via CSV
         
@@ -1321,10 +1295,7 @@ class ExchangeRatesAsyncApi:
         path = "/exchange_rates/csv"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
-        data = await self._client.request("POST", path, params=params, body=body_data)
-        if isinstance(data, dict):
-            return Any.model_validate(data)
-        return data
+        await self._client.request("POST", path, params=params, body=body_data)
 
 
 class FinancialCommitmentReportsAsyncApi:
@@ -1392,7 +1363,7 @@ class FinancialCommitmentReportsAsyncApi:
             return FinancialCommitmentReport.model_validate(data)
         return data
 
-    async def delete(self, financial_commitment_report_token: str) -> Any:
+    async def delete(self, financial_commitment_report_token: str) -> None:
         """
         Delete financial commitment report
         
@@ -1401,10 +1372,7 @@ class FinancialCommitmentReportsAsyncApi:
         path = f"/financial_commitment_reports/{quote(str(financial_commitment_report_token), safe='')}"
         params = None
         body_data = None
-        data = await self._client.request("DELETE", path, params=params, body=body_data)
-        if isinstance(data, dict):
-            return Any.model_validate(data)
-        return data
+        await self._client.request("DELETE", path, params=params, body=body_data)
 
 
 class FinancialCommitmentsAsyncApi:
@@ -1496,7 +1464,7 @@ class FoldersAsyncApi:
             return Folder.model_validate(data)
         return data
 
-    async def delete(self, folder_token: str) -> Any:
+    async def delete(self, folder_token: str) -> None:
         """
         Delete folder
         
@@ -1505,10 +1473,7 @@ class FoldersAsyncApi:
         path = f"/folders/{quote(str(folder_token), safe='')}"
         params = None
         body_data = None
-        data = await self._client.request("DELETE", path, params=params, body=body_data)
-        if isinstance(data, dict):
-            return Any.model_validate(data)
-        return data
+        await self._client.request("DELETE", path, params=params, body=body_data)
 
 
 class IntegrationsAsyncApi:
@@ -1564,7 +1529,7 @@ class IntegrationsAsyncApi:
             return Integration.model_validate(data)
         return data
 
-    async def delete(self, integration_token: str) -> Any:
+    async def delete(self, integration_token: str) -> None:
         """
         Delete integration
         
@@ -1573,10 +1538,7 @@ class IntegrationsAsyncApi:
         path = f"/integrations/{quote(str(integration_token), safe='')}"
         params = None
         body_data = None
-        data = await self._client.request("DELETE", path, params=params, body=body_data)
-        if isinstance(data, dict):
-            return Any.model_validate(data)
-        return data
+        await self._client.request("DELETE", path, params=params, body=body_data)
 
     async def create_custom_provider(self, body: CreateCustomProviderIntegration) -> Integration:
         """
@@ -1606,7 +1568,7 @@ class IntegrationsAsyncApi:
             return UserCostsUpload.model_validate(data)
         return data
 
-    async def delete_user_costs_upload(self, integration_token: str, user_costs_upload_token: int) -> Any:
+    async def delete_user_costs_upload(self, integration_token: str, user_costs_upload_token: int) -> None:
         """
         Delete user costs upload
         
@@ -1615,10 +1577,7 @@ class IntegrationsAsyncApi:
         path = f"/integrations/{quote(str(integration_token), safe='')}/costs/{quote(str(user_costs_upload_token), safe='')}"
         params = None
         body_data = None
-        data = await self._client.request("DELETE", path, params=params, body=body_data)
-        if isinstance(data, dict):
-            return Any.model_validate(data)
-        return data
+        await self._client.request("DELETE", path, params=params, body=body_data)
 
     async def get_user_costs_uploads(self, integration_token: str) -> UserCostsUploads:
         """
@@ -1715,7 +1674,7 @@ class InvoicesAsyncApi:
             return Invoice.model_validate(data)
         return data
 
-    async def download(self, invoice_token: str, body: DownloadInvoice) -> Any:
+    async def download(self, invoice_token: str, body: DownloadInvoice) -> None:
         """
         Get invoice file
         
@@ -1724,10 +1683,7 @@ class InvoicesAsyncApi:
         path = f"/invoices/{quote(str(invoice_token), safe='')}/download"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
-        data = await self._client.request("POST", path, params=params, body=body_data)
-        if isinstance(data, dict):
-            return Any.model_validate(data)
-        return data
+        await self._client.request("POST", path, params=params, body=body_data)
 
     async def send(self, invoice_token: str) -> SendInvoice:
         """
@@ -1823,7 +1779,7 @@ class KubernetesEfficiencyReportsAsyncApi:
             return KubernetesEfficiencyReport.model_validate(data)
         return data
 
-    async def create_export(self, body: CreateKubernetesEfficiencyReportExport, *, groupings: Optional[List[str]] = None) -> DataExport:
+    async def create_export(self, body: CreateKubernetesEfficiencyReportExport, *, groupings: Optional[List[str]] = None) -> str:
         """
         Generate Kubernetes efficiency data export
         
@@ -1834,10 +1790,7 @@ class KubernetesEfficiencyReportsAsyncApi:
             "groupings": groupings,
         }
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
-        data = await self._client.request("POST", path, params=params, body=body_data)
-        if isinstance(data, dict):
-            return DataExport.model_validate(data)
-        return data
+        return await self._client.request("POST", path, params=params, body=body_data)
 
     async def get(self, kubernetes_efficiency_report_token: str) -> KubernetesEfficiencyReport:
         """
@@ -1867,7 +1820,7 @@ class KubernetesEfficiencyReportsAsyncApi:
             return KubernetesEfficiencyReport.model_validate(data)
         return data
 
-    async def delete(self, kubernetes_efficiency_report_token: str) -> Any:
+    async def delete(self, kubernetes_efficiency_report_token: str) -> None:
         """
         Delete Kubernetes efficiency report
         
@@ -1876,10 +1829,7 @@ class KubernetesEfficiencyReportsAsyncApi:
         path = f"/kubernetes_efficiency_reports/{quote(str(kubernetes_efficiency_report_token), safe='')}"
         params = None
         body_data = None
-        data = await self._client.request("DELETE", path, params=params, body=body_data)
-        if isinstance(data, dict):
-            return Any.model_validate(data)
-        return data
+        await self._client.request("DELETE", path, params=params, body=body_data)
 
 
 class ManagedAccountsAsyncApi:
@@ -1947,7 +1897,7 @@ class ManagedAccountsAsyncApi:
             return ManagedAccount.model_validate(data)
         return data
 
-    async def delete(self, managed_account_token: str) -> Any:
+    async def delete(self, managed_account_token: str) -> None:
         """
         Delete managed account
         
@@ -1956,10 +1906,7 @@ class ManagedAccountsAsyncApi:
         path = f"/managed_accounts/{quote(str(managed_account_token), safe='')}"
         params = None
         body_data = None
-        data = await self._client.request("DELETE", path, params=params, body=body_data)
-        if isinstance(data, dict):
-            return Any.model_validate(data)
-        return data
+        await self._client.request("DELETE", path, params=params, body=body_data)
 
     async def update_sso_connection_for(self, managed_account_token: str, body: UpdateSsoConnectionForManagedAccount) -> ManagedAccount:
         """
@@ -2076,7 +2023,7 @@ class NetworkFlowReportsAsyncApi:
             return NetworkFlowReport.model_validate(data)
         return data
 
-    async def delete(self, network_flow_report_token: str) -> Any:
+    async def delete(self, network_flow_report_token: str) -> None:
         """
         Delete network flow report
         
@@ -2085,10 +2032,7 @@ class NetworkFlowReportsAsyncApi:
         path = f"/network_flow_reports/{quote(str(network_flow_report_token), safe='')}"
         params = None
         body_data = None
-        data = await self._client.request("DELETE", path, params=params, body=body_data)
-        if isinstance(data, dict):
-            return Any.model_validate(data)
-        return data
+        await self._client.request("DELETE", path, params=params, body=body_data)
 
 
 class PingAsyncApi:
@@ -2097,15 +2041,12 @@ class PingAsyncApi:
     def __init__(self, client: AsyncClient) -> None:
         self._client = client
 
-    async def ping(self) -> Any:
+    async def ping(self) -> None:
         """This is a health check endpoint that can be used to determine Vantage API healthiness. It will return 200 if everything is running smoothly."""
         path = "/ping"
         params = None
         body_data = None
-        data = await self._client.request("GET", path, params=params, body=body_data)
-        if isinstance(data, dict):
-            return Any.model_validate(data)
-        return data
+        await self._client.request("GET", path, params=params, body=body_data)
 
 
 class ProductsAsyncApi:
@@ -2245,7 +2186,7 @@ class RecommendationViewsAsyncApi:
             return RecommendationView.model_validate(data)
         return data
 
-    async def delete(self, recommendation_view_token: str) -> Any:
+    async def delete(self, recommendation_view_token: str) -> None:
         """
         Delete recommendation view
         
@@ -2254,10 +2195,7 @@ class RecommendationViewsAsyncApi:
         path = f"/recommendation_views/{quote(str(recommendation_view_token), safe='')}"
         params = None
         body_data = None
-        data = await self._client.request("DELETE", path, params=params, body=body_data)
-        if isinstance(data, dict):
-            return Any.model_validate(data)
-        return data
+        await self._client.request("DELETE", path, params=params, body=body_data)
 
 
 class RecommendationsAsyncApi:
@@ -2435,7 +2373,7 @@ class ReportNotificationsAsyncApi:
             return ReportNotification.model_validate(data)
         return data
 
-    async def delete(self, report_notification_token: str) -> Any:
+    async def delete(self, report_notification_token: str) -> None:
         """
         Delete report notification
         
@@ -2444,10 +2382,7 @@ class ReportNotificationsAsyncApi:
         path = f"/report_notifications/{quote(str(report_notification_token), safe='')}"
         params = None
         body_data = None
-        data = await self._client.request("DELETE", path, params=params, body=body_data)
-        if isinstance(data, dict):
-            return Any.model_validate(data)
-        return data
+        await self._client.request("DELETE", path, params=params, body=body_data)
 
 
 class ResourceReportsAsyncApi:
@@ -2531,7 +2466,7 @@ class ResourceReportsAsyncApi:
             return ResourceReport.model_validate(data)
         return data
 
-    async def delete(self, resource_report_token: str) -> Any:
+    async def delete(self, resource_report_token: str) -> None:
         """
         Delete resource report
         
@@ -2540,10 +2475,7 @@ class ResourceReportsAsyncApi:
         path = f"/resource_reports/{quote(str(resource_report_token), safe='')}"
         params = None
         body_data = None
-        data = await self._client.request("DELETE", path, params=params, body=body_data)
-        if isinstance(data, dict):
-            return Any.model_validate(data)
-        return data
+        await self._client.request("DELETE", path, params=params, body=body_data)
 
 
 class ResourcesAsyncApi:
@@ -2655,7 +2587,7 @@ class SavedFiltersAsyncApi:
             return SavedFilter.model_validate(data)
         return data
 
-    async def delete(self, saved_filter_token: str) -> Any:
+    async def delete(self, saved_filter_token: str) -> None:
         """
         Delete saved filter
         
@@ -2664,10 +2596,7 @@ class SavedFiltersAsyncApi:
         path = f"/saved_filters/{quote(str(saved_filter_token), safe='')}"
         params = None
         body_data = None
-        data = await self._client.request("DELETE", path, params=params, body=body_data)
-        if isinstance(data, dict):
-            return Any.model_validate(data)
-        return data
+        await self._client.request("DELETE", path, params=params, body=body_data)
 
 
 class SegmentsAsyncApi:
@@ -2735,7 +2664,7 @@ class SegmentsAsyncApi:
             return Segment.model_validate(data)
         return data
 
-    async def delete(self, segment_token: str) -> Any:
+    async def delete(self, segment_token: str) -> None:
         """
         Delete segment
         
@@ -2744,10 +2673,7 @@ class SegmentsAsyncApi:
         path = f"/segments/{quote(str(segment_token), safe='')}"
         params = None
         body_data = None
-        data = await self._client.request("DELETE", path, params=params, body=body_data)
-        if isinstance(data, dict):
-            return Any.model_validate(data)
-        return data
+        await self._client.request("DELETE", path, params=params, body=body_data)
 
 
 class TagsAsyncApi:
@@ -2876,7 +2802,7 @@ class TeamsAsyncApi:
             return Team.model_validate(data)
         return data
 
-    async def delete(self, team_token: str) -> Any:
+    async def delete(self, team_token: str) -> None:
         """
         Delete team
         
@@ -2885,10 +2811,7 @@ class TeamsAsyncApi:
         path = f"/teams/{quote(str(team_token), safe='')}"
         params = None
         body_data = None
-        data = await self._client.request("DELETE", path, params=params, body=body_data)
-        if isinstance(data, dict):
-            return Any.model_validate(data)
-        return data
+        await self._client.request("DELETE", path, params=params, body=body_data)
 
     async def get_members(self, team_token: str, *, page: Optional[int] = None, limit: Optional[int] = None) -> TeamMembers:
         """
@@ -2921,7 +2844,7 @@ class TeamsAsyncApi:
             return TeamMember.model_validate(data)
         return data
 
-    async def remove_member(self, team_token: str, user_token: str) -> Any:
+    async def remove_member(self, team_token: str, user_token: str) -> None:
         """
         Remove team member
         
@@ -2930,10 +2853,7 @@ class TeamsAsyncApi:
         path = f"/teams/{quote(str(team_token), safe='')}/members/{quote(str(user_token), safe='')}"
         params = None
         body_data = None
-        data = await self._client.request("DELETE", path, params=params, body=body_data)
-        if isinstance(data, dict):
-            return Any.model_validate(data)
-        return data
+        await self._client.request("DELETE", path, params=params, body=body_data)
 
 
 class UnitCostsAsyncApi:
@@ -2942,7 +2862,7 @@ class UnitCostsAsyncApi:
     def __init__(self, client: AsyncClient) -> None:
         self._client = client
 
-    async def create_export(self, body: CreateUnitCostsExport) -> DataExport:
+    async def create_export(self, body: CreateUnitCostsExport) -> str:
         """
         Generate data export of unit costs
         
@@ -2951,10 +2871,7 @@ class UnitCostsAsyncApi:
         path = "/unit_costs/data_exports"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
-        data = await self._client.request("POST", path, params=params, body=body_data)
-        if isinstance(data, dict):
-            return DataExport.model_validate(data)
-        return data
+        return await self._client.request("POST", path, params=params, body=body_data)
 
     async def list(self, *, cost_report_token: str, start_date: Optional[str] = None, end_date: Optional[str] = None, date_bin: Optional[str] = None, order: Optional[str] = None, limit: Optional[int] = None, page: Optional[int] = None) -> UnitCosts:
         """
@@ -3100,7 +3017,7 @@ class VirtualTagConfigsAsyncApi:
             return VirtualTagConfig.model_validate(data)
         return data
 
-    async def delete(self, token: str) -> Any:
+    async def delete(self, token: str) -> None:
         """
         Delete virtual tag config
         
@@ -3109,10 +3026,7 @@ class VirtualTagConfigsAsyncApi:
         path = f"/virtual_tag_configs/{quote(str(token), safe='')}"
         params = None
         body_data = None
-        data = await self._client.request("DELETE", path, params=params, body=body_data)
-        if isinstance(data, dict):
-            return Any.model_validate(data)
-        return data
+        await self._client.request("DELETE", path, params=params, body=body_data)
 
     async def get_status(self, token: str) -> VirtualTagConfigStatus:
         """
@@ -3128,7 +3042,7 @@ class VirtualTagConfigsAsyncApi:
             return VirtualTagConfigStatus.model_validate(data)
         return data
 
-    async def update_async(self, token: str, body: UpdateAsyncVirtualTagConfig) -> Any:
+    async def update_async(self, token: str, body: UpdateAsyncVirtualTagConfig) -> None:
         """
         Update virtual tag config asynchronously
         
@@ -3137,12 +3051,9 @@ class VirtualTagConfigsAsyncApi:
         path = f"/virtual_tag_configs/{quote(str(token), safe='')}/async"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
-        data = await self._client.request("PUT", path, params=params, body=body_data)
-        if isinstance(data, dict):
-            return Any.model_validate(data)
-        return data
+        await self._client.request("PUT", path, params=params, body=body_data)
 
-    async def get_async_virtual_tag_config_status(self, request_id: str) -> Any:
+    async def get_async_virtual_tag_config_status(self, request_id: str) -> None:
         """
         Get async virtual tag config update status
         
@@ -3151,10 +3062,7 @@ class VirtualTagConfigsAsyncApi:
         path = f"/virtual_tag_configs/async/{quote(str(request_id), safe='')}"
         params = None
         body_data = None
-        data = await self._client.request("GET", path, params=params, body=body_data)
-        if isinstance(data, dict):
-            return Any.model_validate(data)
-        return data
+        await self._client.request("GET", path, params=params, body=body_data)
 
 
 class WorkspacesAsyncApi:
