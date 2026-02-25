@@ -1021,10 +1021,16 @@ class CreateInvoice(BaseModel):
     account_token: str = Field(description="Token of the managed account to invoice")
 
 
-class DownloadInvoice(BaseModel):
+class DownloadInvoiceRequest(BaseModel):
     """Download invoice file (PDF or CSV)."""
 
     file_type: str = Field(description="Type of file to download (pdf or csv)")
+
+
+class DownloadInvoice(BaseModel):
+    """DownloadInvoice model"""
+
+    download_url: str = Field(description="The URL to download the invoice file.")
 
 
 class SendInvoice(BaseModel):
@@ -1120,6 +1126,8 @@ class ManagedAccount(BaseModel):
     billing_rule_tokens: List[str] = Field(description="The tokens for the Billing Rules assigned to the Managed Account.")
     email_domain: Optional[str] = Field(default=None, description="Email domain associated with this Managed Account for SSO.")
     msp_billing_profile_token: Optional[str] = Field(default=None, description="Token of the MSP billing profile used for this managed account (MSP invoicing accounts only)")
+    payment_terms_days: Optional[int] = Field(default=None, description="Number of days until payment is due after invoice date (MSP invoicing accounts only)")
+    include_managed_account_integrations: Optional[bool] = Field(default=None, description="Whether to include managed account's own integrations in invoice cost calculations (MSP invoicing accounts only)")
     billing_information_attributes: Optional[BillingInformation] = Field(default=None)
     business_information_attributes: Optional[BusinessInformation] = Field(default=None)
 
@@ -1143,6 +1151,8 @@ class UpdateManagedAccount(BaseModel):
     billing_rule_tokens: Optional[List[str]] = Field(default=None, description="Billing Rule tokens to assign to the Managed Account.")
     email_domain: Optional[str] = Field(default=None, description="Email domain to associate with this Managed Account for SSO.")
     msp_billing_profile_token: Optional[str] = Field(default=None, description="Token of the MSP billing profile to use for this managed account (MSP invoicing accounts only).")
+    payment_terms_days: Optional[int] = Field(default=None, description="Number of days until payment is due after invoice date (MSP invoicing accounts only). Defaults to 10.")
+    include_managed_account_integrations: Optional[bool] = Field(default=None, description="Whether to include managed account's own integrations in invoice cost calculations (MSP invoicing accounts only). Defaults to false.")
     billing_information_attributes: Optional[BillingInformationAttributes] = Field(default=None, description="Billing address and contact information (MSP invoicing accounts only)")
     business_information_attributes: Optional[BusinessInformationAttributes] = Field(default=None, description="Business information and custom fields (MSP invoicing accounts only)")
 
@@ -1845,6 +1855,13 @@ class UpdateAsyncVirtualTagConfig(BaseModel):
     backfill_until: Optional[str] = Field(default=None, description="The earliest month the VirtualTagConfig should be backfilled to.")
     collapsed_tag_keys: Optional[List[VirtualTagConfigCollapsedTagKey]] = Field(default=None, description="Tag keys to collapse values for.")
     values: Optional[List[VirtualTagConfigValue]] = Field(default=None, description="Values for the VirtualTagConfig, with match precedence determined by order in the list.")
+
+
+class AsyncVirtualTagConfigUpdate(BaseModel):
+    """AsyncVirtualTagConfigUpdate model"""
+
+    request_id: str = Field(description="The request ID of the async virtual tag config update.")
+    status_url: str = Field(description="The status path of the async virtual tag config update.")
 
 
 class Workspaces(BaseModel):
