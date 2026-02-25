@@ -116,7 +116,7 @@ class SyncClient:
                 json=body,
             )
 
-        if method.upper() == "GET" and path.startswith("/virtual_tag_configs/async/"):
+        if method.upper() == "GET" and path.startswith("/v2/virtual_tag_configs/async/"):
             if response.status_code == 404:
                 return False
             elif response.is_success:
@@ -135,7 +135,7 @@ class SyncClient:
                 body=response.text,
             )
 
-        if (method, path) in {("POST", "/costs/data_exports"), ("POST", "/kubernetes_efficiency_reports/data_exports"), ("POST", "/unit_costs/data_exports")}:
+        if (method, path) in {("POST", "/v2/costs/data_exports"), ("POST", "/v2/kubernetes_efficiency_reports/data_exports"), ("POST", "/v2/unit_costs/data_exports")}:
             return self._request_for_location(response)
 
         try:
@@ -162,7 +162,7 @@ class AccessGrantsApi:
         
         Return all Access Grants that the current API token has access to.
         """
-        path = "/access_grants"
+        path = "/v2/access_grants"
         params = {
             "page": page,
             "limit": limit,
@@ -179,7 +179,7 @@ class AccessGrantsApi:
         
         Create an Access Grant.
         """
-        path = "/access_grants"
+        path = "/v2/access_grants"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
         data = self._client.request("POST", path, params=params, body=body_data)
@@ -193,7 +193,7 @@ class AccessGrantsApi:
         
         Return a specific Access Grant.
         """
-        path = f"/access_grants/{quote(str(access_grant_token), safe='')}"
+        path = f"/v2/access_grants/{quote(str(access_grant_token), safe='')}"
         params = None
         body_data = None
         data = self._client.request("GET", path, params=params, body=body_data)
@@ -207,7 +207,7 @@ class AccessGrantsApi:
         
         Update an AccessGrant.
         """
-        path = f"/access_grants/{quote(str(access_grant_token), safe='')}"
+        path = f"/v2/access_grants/{quote(str(access_grant_token), safe='')}"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
         data = self._client.request("PUT", path, params=params, body=body_data)
@@ -221,7 +221,7 @@ class AccessGrantsApi:
         
         Delete an Access Grant.
         """
-        path = f"/access_grants/{quote(str(access_grant_token), safe='')}"
+        path = f"/v2/access_grants/{quote(str(access_grant_token), safe='')}"
         params = None
         body_data = None
         self._client.request("DELETE", path, params=params, body=body_data)
@@ -239,7 +239,7 @@ class AnomalyAlertsApi:
         
         Return all Anomaly Alerts that the current API token has access to.
         """
-        path = "/anomaly_alerts"
+        path = "/v2/anomaly_alerts"
         params = {
             "page": page,
             "limit": limit,
@@ -262,7 +262,7 @@ class AnomalyAlertsApi:
         
         Return an AnomalyAlert that the current API token has access to.
         """
-        path = f"/anomaly_alerts/{quote(str(anomaly_alert_token), safe='')}"
+        path = f"/v2/anomaly_alerts/{quote(str(anomaly_alert_token), safe='')}"
         params = None
         body_data = None
         data = self._client.request("GET", path, params=params, body=body_data)
@@ -276,7 +276,7 @@ class AnomalyAlertsApi:
         
         Update an AnomalyAlert.
         """
-        path = f"/anomaly_alerts/{quote(str(anomaly_alert_token), safe='')}"
+        path = f"/v2/anomaly_alerts/{quote(str(anomaly_alert_token), safe='')}"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
         data = self._client.request("PUT", path, params=params, body=body_data)
@@ -297,7 +297,7 @@ class AnomalyNotificationsApi:
         
         Return all Anomaly Notifications.
         """
-        path = "/anomaly_notifications"
+        path = "/v2/anomaly_notifications"
         params = {
             "page": page,
             "limit": limit,
@@ -314,7 +314,7 @@ class AnomalyNotificationsApi:
         
         Create an Anomaly Notification for a Cost Report.
         """
-        path = "/anomaly_notifications"
+        path = "/v2/anomaly_notifications"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
         data = self._client.request("POST", path, params=params, body=body_data)
@@ -328,7 +328,7 @@ class AnomalyNotificationsApi:
         
         Return an Anomaly Notification that the current API token has access to.
         """
-        path = f"/anomaly_notifications/{quote(str(anomaly_notification_token), safe='')}"
+        path = f"/v2/anomaly_notifications/{quote(str(anomaly_notification_token), safe='')}"
         params = None
         body_data = None
         data = self._client.request("GET", path, params=params, body=body_data)
@@ -342,7 +342,7 @@ class AnomalyNotificationsApi:
         
         Update an Anomaly Notification.
         """
-        path = f"/anomaly_notifications/{quote(str(anomaly_notification_token), safe='')}"
+        path = f"/v2/anomaly_notifications/{quote(str(anomaly_notification_token), safe='')}"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
         data = self._client.request("PUT", path, params=params, body=body_data)
@@ -356,7 +356,7 @@ class AnomalyNotificationsApi:
         
         Delete an Anomaly Notification.
         """
-        path = f"/anomaly_notifications/{quote(str(anomaly_notification_token), safe='')}"
+        path = f"/v2/anomaly_notifications/{quote(str(anomaly_notification_token), safe='')}"
         params = None
         body_data = None
         self._client.request("DELETE", path, params=params, body=body_data)
@@ -374,7 +374,7 @@ class AuditLogsApi:
         
         Return all AuditLogs.
         """
-        path = "/audit_logs"
+        path = "/v2/audit_logs"
         params = {
             "page": page,
             "limit": limit,
@@ -401,7 +401,7 @@ class AuditLogsApi:
         
         Return a specific AuditLog.
         """
-        path = f"/audit_logs/{quote(str(audit_log_token), safe='')}"
+        path = f"/v2/audit_logs/{quote(str(audit_log_token), safe='')}"
         params = None
         body_data = None
         data = self._client.request("GET", path, params=params, body=body_data)
@@ -422,7 +422,7 @@ class BillingProfilesApi:
         
         Returns a list of billing profiles (MSP invoicing required).
         """
-        path = "/billing_profiles"
+        path = "/v2/billing_profiles"
         params = {
             "page": page,
             "limit": limit,
@@ -439,7 +439,7 @@ class BillingProfilesApi:
         
         Create a billing profile (MSP invoicing required).
         """
-        path = "/billing_profiles"
+        path = "/v2/billing_profiles"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
         data = self._client.request("POST", path, params=params, body=body_data)
@@ -453,7 +453,7 @@ class BillingProfilesApi:
         
         Requires MSP invoicing to be enabled on the account.
         """
-        path = f"/billing_profiles/{quote(str(billing_profile_token), safe='')}"
+        path = f"/v2/billing_profiles/{quote(str(billing_profile_token), safe='')}"
         params = None
         body_data = None
         data = self._client.request("GET", path, params=params, body=body_data)
@@ -467,7 +467,7 @@ class BillingProfilesApi:
         
         Requires MSP invoicing to be enabled on the account.
         """
-        path = f"/billing_profiles/{quote(str(billing_profile_token), safe='')}"
+        path = f"/v2/billing_profiles/{quote(str(billing_profile_token), safe='')}"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
         data = self._client.request("PUT", path, params=params, body=body_data)
@@ -481,7 +481,7 @@ class BillingProfilesApi:
         
         Requires MSP invoicing to be enabled on the account.
         """
-        path = f"/billing_profiles/{quote(str(billing_profile_token), safe='')}"
+        path = f"/v2/billing_profiles/{quote(str(billing_profile_token), safe='')}"
         params = None
         body_data = None
         self._client.request("DELETE", path, params=params, body=body_data)
@@ -499,7 +499,7 @@ class BillingRulesApi:
         
         Returns a list of billing rules.
         """
-        path = "/billing_rules"
+        path = "/v2/billing_rules"
         params = {
             "page": page,
             "limit": limit,
@@ -516,7 +516,7 @@ class BillingRulesApi:
         
         Create a BillingRule.
         """
-        path = "/billing_rules"
+        path = "/v2/billing_rules"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
         data = self._client.request("POST", path, params=params, body=body_data)
@@ -530,7 +530,7 @@ class BillingRulesApi:
         
         Return a BillingRule.
         """
-        path = f"/billing_rules/{quote(str(billing_rule_token), safe='')}"
+        path = f"/v2/billing_rules/{quote(str(billing_rule_token), safe='')}"
         params = None
         body_data = None
         data = self._client.request("GET", path, params=params, body=body_data)
@@ -544,7 +544,7 @@ class BillingRulesApi:
         
         Update a BillingRule.
         """
-        path = f"/billing_rules/{quote(str(billing_rule_token), safe='')}"
+        path = f"/v2/billing_rules/{quote(str(billing_rule_token), safe='')}"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
         data = self._client.request("PUT", path, params=params, body=body_data)
@@ -558,7 +558,7 @@ class BillingRulesApi:
         
         Delete a BillingRule.
         """
-        path = f"/billing_rules/{quote(str(billing_rule_token), safe='')}"
+        path = f"/v2/billing_rules/{quote(str(billing_rule_token), safe='')}"
         params = None
         body_data = None
         self._client.request("DELETE", path, params=params, body=body_data)
@@ -576,7 +576,7 @@ class BudgetAlertsApi:
         
         Return all BudgetAlerts.
         """
-        path = "/budget_alerts"
+        path = "/v2/budget_alerts"
         params = {
             "page": page,
             "limit": limit,
@@ -593,7 +593,7 @@ class BudgetAlertsApi:
         
         Create a Budget Alert.
         """
-        path = "/budget_alerts"
+        path = "/v2/budget_alerts"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
         data = self._client.request("POST", path, params=params, body=body_data)
@@ -607,7 +607,7 @@ class BudgetAlertsApi:
         
         Return a BudgetAlert.
         """
-        path = f"/budget_alerts/{quote(str(budget_alert_token), safe='')}"
+        path = f"/v2/budget_alerts/{quote(str(budget_alert_token), safe='')}"
         params = None
         body_data = None
         data = self._client.request("GET", path, params=params, body=body_data)
@@ -621,7 +621,7 @@ class BudgetAlertsApi:
         
         Updates an existing BudgetAlert.
         """
-        path = f"/budget_alerts/{quote(str(budget_alert_token), safe='')}"
+        path = f"/v2/budget_alerts/{quote(str(budget_alert_token), safe='')}"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
         data = self._client.request("PUT", path, params=params, body=body_data)
@@ -635,7 +635,7 @@ class BudgetAlertsApi:
         
         Delete a BudgetAlert.
         """
-        path = f"/budget_alerts/{quote(str(budget_alert_token), safe='')}"
+        path = f"/v2/budget_alerts/{quote(str(budget_alert_token), safe='')}"
         params = None
         body_data = None
         self._client.request("DELETE", path, params=params, body=body_data)
@@ -653,7 +653,7 @@ class BudgetsApi:
         
         Return all Budgets.
         """
-        path = "/budgets"
+        path = "/v2/budgets"
         params = {
             "page": page,
             "limit": limit,
@@ -670,7 +670,7 @@ class BudgetsApi:
         
         Create a Budget.
         """
-        path = "/budgets"
+        path = "/v2/budgets"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
         data = self._client.request("POST", path, params=params, body=body_data)
@@ -684,7 +684,7 @@ class BudgetsApi:
         
         Return a Budget.
         """
-        path = f"/budgets/{quote(str(budget_token), safe='')}"
+        path = f"/v2/budgets/{quote(str(budget_token), safe='')}"
         params = {
             "include_performance": include_performance,
         }
@@ -700,7 +700,7 @@ class BudgetsApi:
         
         Update a Budget.
         """
-        path = f"/budgets/{quote(str(budget_token), safe='')}"
+        path = f"/v2/budgets/{quote(str(budget_token), safe='')}"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
         data = self._client.request("PUT", path, params=params, body=body_data)
@@ -714,7 +714,7 @@ class BudgetsApi:
         
         Delete a Budget.
         """
-        path = f"/budgets/{quote(str(budget_token), safe='')}"
+        path = f"/v2/budgets/{quote(str(budget_token), safe='')}"
         params = None
         body_data = None
         self._client.request("DELETE", path, params=params, body=body_data)
@@ -732,7 +732,7 @@ class BusinessMetricsApi:
         
         Return all BusinessMetrics that the current API token has access to.
         """
-        path = "/business_metrics"
+        path = "/v2/business_metrics"
         params = {
             "page": page,
             "limit": limit,
@@ -749,7 +749,7 @@ class BusinessMetricsApi:
         
         Create a new BusinessMetric.
         """
-        path = "/business_metrics"
+        path = "/v2/business_metrics"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
         data = self._client.request("POST", path, params=params, body=body_data)
@@ -763,7 +763,7 @@ class BusinessMetricsApi:
         
         Return a BusinessMetric.
         """
-        path = f"/business_metrics/{quote(str(business_metric_token), safe='')}"
+        path = f"/v2/business_metrics/{quote(str(business_metric_token), safe='')}"
         params = None
         body_data = None
         data = self._client.request("GET", path, params=params, body=body_data)
@@ -777,7 +777,7 @@ class BusinessMetricsApi:
         
         Updates an existing BusinessMetric.
         """
-        path = f"/business_metrics/{quote(str(business_metric_token), safe='')}"
+        path = f"/v2/business_metrics/{quote(str(business_metric_token), safe='')}"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
         data = self._client.request("PUT", path, params=params, body=body_data)
@@ -791,7 +791,7 @@ class BusinessMetricsApi:
         
         Deletes an existing BusinessMetric.
         """
-        path = f"/business_metrics/{quote(str(business_metric_token), safe='')}"
+        path = f"/v2/business_metrics/{quote(str(business_metric_token), safe='')}"
         params = None
         body_data = None
         self._client.request("DELETE", path, params=params, body=body_data)
@@ -802,7 +802,7 @@ class BusinessMetricsApi:
         
         Return values of a BusinessMetric
         """
-        path = f"/business_metrics/{quote(str(business_metric_token), safe='')}/values"
+        path = f"/v2/business_metrics/{quote(str(business_metric_token), safe='')}/values"
         params = {
             "page": page,
             "limit": limit,
@@ -820,7 +820,7 @@ class BusinessMetricsApi:
         
         Return forecasted values of a BusinessMetric
         """
-        path = f"/business_metrics/{quote(str(business_metric_token), safe='')}/forecasted_values"
+        path = f"/v2/business_metrics/{quote(str(business_metric_token), safe='')}/forecasted_values"
         params = {
             "page": page,
             "limit": limit,
@@ -838,7 +838,7 @@ class BusinessMetricsApi:
         
         Updates the values for an existing BusinessMetric from a CSV file.
         """
-        path = f"/business_metrics/{quote(str(business_metric_token), safe='')}/values.csv"
+        path = f"/v2/business_metrics/{quote(str(business_metric_token), safe='')}/values.csv"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
         data = self._client.request("PUT", path, params=params, body=body_data)
@@ -859,7 +859,7 @@ class CostAlertsApi:
         
         Get all CostAlertEvents
         """
-        path = f"/cost_alerts/{quote(str(cost_alert_token), safe='')}/events"
+        path = f"/v2/cost_alerts/{quote(str(cost_alert_token), safe='')}/events"
         params = {
             "report_token": report_token,
             "page": page,
@@ -877,7 +877,7 @@ class CostAlertsApi:
         
         Get a CostAlertEvent
         """
-        path = f"/cost_alerts/{quote(str(cost_alert_token), safe='')}/events/{quote(str(event_token), safe='')}"
+        path = f"/v2/cost_alerts/{quote(str(cost_alert_token), safe='')}/events/{quote(str(event_token), safe='')}"
         params = None
         body_data = None
         data = self._client.request("GET", path, params=params, body=body_data)
@@ -891,7 +891,7 @@ class CostAlertsApi:
         
         List all Cost Alerts
         """
-        path = "/cost_alerts"
+        path = "/v2/cost_alerts"
         params = None
         body_data = None
         data = self._client.request("GET", path, params=params, body=body_data)
@@ -905,7 +905,7 @@ class CostAlertsApi:
         
         Create a new Cost Alert
         """
-        path = "/cost_alerts"
+        path = "/v2/cost_alerts"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
         data = self._client.request("POST", path, params=params, body=body_data)
@@ -919,7 +919,7 @@ class CostAlertsApi:
         
         Get a Cost Alert
         """
-        path = f"/cost_alerts/{quote(str(cost_alert_token), safe='')}"
+        path = f"/v2/cost_alerts/{quote(str(cost_alert_token), safe='')}"
         params = None
         body_data = None
         data = self._client.request("GET", path, params=params, body=body_data)
@@ -933,7 +933,7 @@ class CostAlertsApi:
         
         Update a Cost Alert
         """
-        path = f"/cost_alerts/{quote(str(cost_alert_token), safe='')}"
+        path = f"/v2/cost_alerts/{quote(str(cost_alert_token), safe='')}"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
         data = self._client.request("PUT", path, params=params, body=body_data)
@@ -947,7 +947,7 @@ class CostAlertsApi:
         
         Delete a Cost Alert
         """
-        path = f"/cost_alerts/{quote(str(cost_alert_token), safe='')}"
+        path = f"/v2/cost_alerts/{quote(str(cost_alert_token), safe='')}"
         params = None
         body_data = None
         self._client.request("DELETE", path, params=params, body=body_data)
@@ -965,7 +965,7 @@ class CostProviderAccountsApi:
         
         List CostProviderAccounts available in a given Workspace.
         """
-        path = "/cost_provider_accounts"
+        path = "/v2/cost_provider_accounts"
         params = {
             "workspace_token": workspace_token,
             "provider": provider,
@@ -991,7 +991,7 @@ class CostProvidersApi:
         
         List CostProviders available to query in a given Workspace.
         """
-        path = "/cost_providers"
+        path = "/v2/cost_providers"
         params = {
             "workspace_token": workspace_token,
         }
@@ -1014,7 +1014,7 @@ class CostReportsApi:
         
         Return all CostReports.
         """
-        path = "/cost_reports"
+        path = "/v2/cost_reports"
         params = {
             "page": page,
             "limit": limit,
@@ -1032,7 +1032,7 @@ class CostReportsApi:
         
         Create a CostReport.
         """
-        path = "/cost_reports"
+        path = "/v2/cost_reports"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
         data = self._client.request("POST", path, params=params, body=body_data)
@@ -1046,7 +1046,7 @@ class CostReportsApi:
         
         Return a CostReport.
         """
-        path = f"/cost_reports/{quote(str(cost_report_token), safe='')}"
+        path = f"/v2/cost_reports/{quote(str(cost_report_token), safe='')}"
         params = None
         body_data = None
         data = self._client.request("GET", path, params=params, body=body_data)
@@ -1060,7 +1060,7 @@ class CostReportsApi:
         
         Update a CostReport.
         """
-        path = f"/cost_reports/{quote(str(cost_report_token), safe='')}"
+        path = f"/v2/cost_reports/{quote(str(cost_report_token), safe='')}"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
         data = self._client.request("PUT", path, params=params, body=body_data)
@@ -1074,7 +1074,7 @@ class CostReportsApi:
         
         Delete a CostReport.
         """
-        path = f"/cost_reports/{quote(str(cost_report_token), safe='')}"
+        path = f"/v2/cost_reports/{quote(str(cost_report_token), safe='')}"
         params = None
         body_data = None
         self._client.request("DELETE", path, params=params, body=body_data)
@@ -1085,7 +1085,7 @@ class CostReportsApi:
         
         Return all ForecastedCosts.
         """
-        path = f"/cost_reports/{quote(str(cost_report_token), safe='')}/forecasted_costs"
+        path = f"/v2/cost_reports/{quote(str(cost_report_token), safe='')}/forecasted_costs"
         params = {
             "start_date": start_date,
             "end_date": end_date,
@@ -1113,7 +1113,7 @@ class CostServicesApi:
         
         List CostServices available to query in a given Workspace.
         """
-        path = "/cost_services"
+        path = "/v2/cost_services"
         params = {
             "workspace_token": workspace_token,
         }
@@ -1136,7 +1136,7 @@ class CostsApi:
         
         Generate a DataExport of costs.
         """
-        path = "/costs/data_exports"
+        path = "/v2/costs/data_exports"
         params = {
             "groupings": groupings,
         }
@@ -1149,7 +1149,7 @@ class CostsApi:
         
         Return all Costs for a CostReport or VQL filter.
         """
-        path = "/costs"
+        path = "/v2/costs"
         params = {
             "cost_report_token": cost_report_token,
             "filter": filter,
@@ -1189,7 +1189,7 @@ class DashboardsApi:
         
         Return all Dashboards.
         """
-        path = "/dashboards"
+        path = "/v2/dashboards"
         params = {
             "page": page,
             "limit": limit,
@@ -1206,7 +1206,7 @@ class DashboardsApi:
         
         Create a Dashboard.
         """
-        path = "/dashboards"
+        path = "/v2/dashboards"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
         data = self._client.request("POST", path, params=params, body=body_data)
@@ -1220,7 +1220,7 @@ class DashboardsApi:
         
         Return a specific Dashboard.
         """
-        path = f"/dashboards/{quote(str(dashboard_token), safe='')}"
+        path = f"/v2/dashboards/{quote(str(dashboard_token), safe='')}"
         params = None
         body_data = None
         data = self._client.request("GET", path, params=params, body=body_data)
@@ -1234,7 +1234,7 @@ class DashboardsApi:
         
         Update a Dashboard.
         """
-        path = f"/dashboards/{quote(str(dashboard_token), safe='')}"
+        path = f"/v2/dashboards/{quote(str(dashboard_token), safe='')}"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
         data = self._client.request("PUT", path, params=params, body=body_data)
@@ -1248,7 +1248,7 @@ class DashboardsApi:
         
         Delete a Dashboard.
         """
-        path = f"/dashboards/{quote(str(dashboard_token), safe='')}"
+        path = f"/v2/dashboards/{quote(str(dashboard_token), safe='')}"
         params = None
         body_data = None
         self._client.request("DELETE", path, params=params, body=body_data)
@@ -1266,7 +1266,7 @@ class DataExportsApi:
         
         Get the status of a data export.
         """
-        path = f"/data_exports/{quote(str(data_export_token), safe='')}"
+        path = f"/v2/data_exports/{quote(str(data_export_token), safe='')}"
         params = None
         body_data = None
         data = self._client.request("GET", path, params=params, body=body_data)
@@ -1287,7 +1287,7 @@ class ExchangeRatesApi:
         
         Return all Exchange Rates.
         """
-        path = "/exchange_rates"
+        path = "/v2/exchange_rates"
         params = {
             "page": page,
             "limit": limit,
@@ -1304,7 +1304,7 @@ class ExchangeRatesApi:
         
         Upload Exchange Rates via CSV.
         """
-        path = "/exchange_rates/csv"
+        path = "/v2/exchange_rates/csv"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
         self._client.request("POST", path, params=params, body=body_data)
@@ -1322,7 +1322,7 @@ class FinancialCommitmentReportsApi:
         
         Return all FinancialCommitmentReports.
         """
-        path = "/financial_commitment_reports"
+        path = "/v2/financial_commitment_reports"
         params = {
             "page": page,
             "limit": limit,
@@ -1339,7 +1339,7 @@ class FinancialCommitmentReportsApi:
         
         Create a FinancialCommitmentReport.
         """
-        path = "/financial_commitment_reports"
+        path = "/v2/financial_commitment_reports"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
         data = self._client.request("POST", path, params=params, body=body_data)
@@ -1353,7 +1353,7 @@ class FinancialCommitmentReportsApi:
         
         Return a FinancialCommitmentReport.
         """
-        path = f"/financial_commitment_reports/{quote(str(financial_commitment_report_token), safe='')}"
+        path = f"/v2/financial_commitment_reports/{quote(str(financial_commitment_report_token), safe='')}"
         params = None
         body_data = None
         data = self._client.request("GET", path, params=params, body=body_data)
@@ -1367,7 +1367,7 @@ class FinancialCommitmentReportsApi:
         
         Update a FinancialCommitmentReport.
         """
-        path = f"/financial_commitment_reports/{quote(str(financial_commitment_report_token), safe='')}"
+        path = f"/v2/financial_commitment_reports/{quote(str(financial_commitment_report_token), safe='')}"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
         data = self._client.request("PUT", path, params=params, body=body_data)
@@ -1381,7 +1381,7 @@ class FinancialCommitmentReportsApi:
         
         Delete a FinancialCommitmentReport.
         """
-        path = f"/financial_commitment_reports/{quote(str(financial_commitment_report_token), safe='')}"
+        path = f"/v2/financial_commitment_reports/{quote(str(financial_commitment_report_token), safe='')}"
         params = None
         body_data = None
         self._client.request("DELETE", path, params=params, body=body_data)
@@ -1399,7 +1399,7 @@ class FinancialCommitmentsApi:
         
         Return all FinancialCommitments.
         """
-        path = "/financial_commitments"
+        path = "/v2/financial_commitments"
         params = {
             "page": page,
             "limit": limit,
@@ -1423,7 +1423,7 @@ class FoldersApi:
         
         Return all Folders for CostReports.
         """
-        path = "/folders"
+        path = "/v2/folders"
         params = {
             "page": page,
             "limit": limit,
@@ -1440,7 +1440,7 @@ class FoldersApi:
         
         Create a Folder for CostReports.
         """
-        path = "/folders"
+        path = "/v2/folders"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
         data = self._client.request("POST", path, params=params, body=body_data)
@@ -1454,7 +1454,7 @@ class FoldersApi:
         
         Return a specific Folder for CostReports.
         """
-        path = f"/folders/{quote(str(folder_token), safe='')}"
+        path = f"/v2/folders/{quote(str(folder_token), safe='')}"
         params = None
         body_data = None
         data = self._client.request("GET", path, params=params, body=body_data)
@@ -1468,7 +1468,7 @@ class FoldersApi:
         
         Update a Folder for CostReports.
         """
-        path = f"/folders/{quote(str(folder_token), safe='')}"
+        path = f"/v2/folders/{quote(str(folder_token), safe='')}"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
         data = self._client.request("PUT", path, params=params, body=body_data)
@@ -1482,7 +1482,7 @@ class FoldersApi:
         
         Delete a Folder for CostReports.
         """
-        path = f"/folders/{quote(str(folder_token), safe='')}"
+        path = f"/v2/folders/{quote(str(folder_token), safe='')}"
         params = None
         body_data = None
         self._client.request("DELETE", path, params=params, body=body_data)
@@ -1500,7 +1500,7 @@ class IntegrationsApi:
         
         Return all Integrations.
         """
-        path = "/integrations"
+        path = "/v2/integrations"
         params = {
             "provider": provider,
             "account_identifier": account_identifier,
@@ -1519,7 +1519,7 @@ class IntegrationsApi:
         
         Return an Integration.
         """
-        path = f"/integrations/{quote(str(integration_token), safe='')}"
+        path = f"/v2/integrations/{quote(str(integration_token), safe='')}"
         params = None
         body_data = None
         data = self._client.request("GET", path, params=params, body=body_data)
@@ -1533,7 +1533,7 @@ class IntegrationsApi:
         
         Update an Integration.
         """
-        path = f"/integrations/{quote(str(integration_token), safe='')}"
+        path = f"/v2/integrations/{quote(str(integration_token), safe='')}"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
         data = self._client.request("PUT", path, params=params, body=body_data)
@@ -1547,7 +1547,7 @@ class IntegrationsApi:
         
         Delete an Integration.
         """
-        path = f"/integrations/{quote(str(integration_token), safe='')}"
+        path = f"/v2/integrations/{quote(str(integration_token), safe='')}"
         params = None
         body_data = None
         self._client.request("DELETE", path, params=params, body=body_data)
@@ -1558,7 +1558,7 @@ class IntegrationsApi:
         
         Create a Custom Provider Integration
         """
-        path = "/integrations/custom_provider"
+        path = "/v2/integrations/custom_provider"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
         data = self._client.request("POST", path, params=params, body=body_data)
@@ -1572,7 +1572,7 @@ class IntegrationsApi:
         
         Create UserCostsUpload via CSV for a Custom Provider Integration.
         """
-        path = f"/integrations/{quote(str(integration_token), safe='')}/costs.csv"
+        path = f"/v2/integrations/{quote(str(integration_token), safe='')}/costs.csv"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
         data = self._client.request("POST", path, params=params, body=body_data)
@@ -1586,7 +1586,7 @@ class IntegrationsApi:
         
         Delete a UserCostsUpload.
         """
-        path = f"/integrations/{quote(str(integration_token), safe='')}/costs/{quote(str(user_costs_upload_token), safe='')}"
+        path = f"/v2/integrations/{quote(str(integration_token), safe='')}/costs/{quote(str(user_costs_upload_token), safe='')}"
         params = None
         body_data = None
         self._client.request("DELETE", path, params=params, body=body_data)
@@ -1597,7 +1597,7 @@ class IntegrationsApi:
         
         List UserCostUploads.
         """
-        path = f"/integrations/{quote(str(integration_token), safe='')}/costs"
+        path = f"/v2/integrations/{quote(str(integration_token), safe='')}/costs"
         params = None
         body_data = None
         data = self._client.request("GET", path, params=params, body=body_data)
@@ -1611,7 +1611,7 @@ class IntegrationsApi:
         
         Create a GCP Integration
         """
-        path = "/integrations/gcp"
+        path = "/v2/integrations/gcp"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
         data = self._client.request("POST", path, params=params, body=body_data)
@@ -1625,7 +1625,7 @@ class IntegrationsApi:
         
         Create an Azure Integration
         """
-        path = "/integrations/azure"
+        path = "/v2/integrations/azure"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
         data = self._client.request("POST", path, params=params, body=body_data)
@@ -1646,7 +1646,7 @@ class InvoicesApi:
         
         Returns a list of invoices (MSP invoicing required).
         """
-        path = "/invoices"
+        path = "/v2/invoices"
         params = {
             "page": page,
             "limit": limit,
@@ -1664,7 +1664,7 @@ class InvoicesApi:
         
         Create an invoice (MSP accounts only).
         """
-        path = "/invoices"
+        path = "/v2/invoices"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
         data = self._client.request("POST", path, params=params, body=body_data)
@@ -1678,7 +1678,7 @@ class InvoicesApi:
         
         Return an invoice.
         """
-        path = f"/invoices/{quote(str(invoice_token), safe='')}"
+        path = f"/v2/invoices/{quote(str(invoice_token), safe='')}"
         params = None
         body_data = None
         data = self._client.request("GET", path, params=params, body=body_data)
@@ -1692,7 +1692,7 @@ class InvoicesApi:
         
         Download invoice file (PDF or CSV).
         """
-        path = f"/invoices/{quote(str(invoice_token), safe='')}/download"
+        path = f"/v2/invoices/{quote(str(invoice_token), safe='')}/download"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
         data = self._client.request("POST", path, params=params, body=body_data)
@@ -1706,7 +1706,7 @@ class InvoicesApi:
         
         Send invoice via email.
         """
-        path = f"/invoices/{quote(str(invoice_token), safe='')}/send"
+        path = f"/v2/invoices/{quote(str(invoice_token), safe='')}/send"
         params = None
         body_data = None
         data = self._client.request("POST", path, params=params, body=body_data)
@@ -1720,7 +1720,7 @@ class InvoicesApi:
         
         Send and approve invoice via email (MSP accounts only).
         """
-        path = f"/invoices/{quote(str(invoice_token), safe='')}/send_and_approve"
+        path = f"/v2/invoices/{quote(str(invoice_token), safe='')}/send_and_approve"
         params = None
         body_data = None
         data = self._client.request("POST", path, params=params, body=body_data)
@@ -1734,7 +1734,7 @@ class InvoicesApi:
         
         Get cost report URL for invoice period.
         """
-        path = f"/invoices/{quote(str(invoice_token), safe='')}/cost_report"
+        path = f"/v2/invoices/{quote(str(invoice_token), safe='')}/cost_report"
         params = None
         body_data = None
         data = self._client.request("GET", path, params=params, body=body_data)
@@ -1748,7 +1748,7 @@ class InvoicesApi:
         
         Regenerate an existing invoice (MSP accounts only).
         """
-        path = f"/invoices/{quote(str(invoice_token), safe='')}/regenerate"
+        path = f"/v2/invoices/{quote(str(invoice_token), safe='')}/regenerate"
         params = None
         body_data = None
         data = self._client.request("POST", path, params=params, body=body_data)
@@ -1769,7 +1769,7 @@ class KubernetesEfficiencyReportsApi:
         
         Return all KubernetesEfficiencyReports.
         """
-        path = "/kubernetes_efficiency_reports"
+        path = "/v2/kubernetes_efficiency_reports"
         params = {
             "page": page,
             "limit": limit,
@@ -1786,7 +1786,7 @@ class KubernetesEfficiencyReportsApi:
         
         Create a KubernetesEfficiencyReport.
         """
-        path = "/kubernetes_efficiency_reports"
+        path = "/v2/kubernetes_efficiency_reports"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
         data = self._client.request("POST", path, params=params, body=body_data)
@@ -1800,7 +1800,7 @@ class KubernetesEfficiencyReportsApi:
         
         Generate a DataExport of Kubernetes efficiency data.
         """
-        path = "/kubernetes_efficiency_reports/data_exports"
+        path = "/v2/kubernetes_efficiency_reports/data_exports"
         params = {
             "groupings": groupings,
         }
@@ -1813,7 +1813,7 @@ class KubernetesEfficiencyReportsApi:
         
         Return a KubernetesEfficiencyReport.
         """
-        path = f"/kubernetes_efficiency_reports/{quote(str(kubernetes_efficiency_report_token), safe='')}"
+        path = f"/v2/kubernetes_efficiency_reports/{quote(str(kubernetes_efficiency_report_token), safe='')}"
         params = None
         body_data = None
         data = self._client.request("GET", path, params=params, body=body_data)
@@ -1827,7 +1827,7 @@ class KubernetesEfficiencyReportsApi:
         
         Update a KubernetesEfficiencyReport.
         """
-        path = f"/kubernetes_efficiency_reports/{quote(str(kubernetes_efficiency_report_token), safe='')}"
+        path = f"/v2/kubernetes_efficiency_reports/{quote(str(kubernetes_efficiency_report_token), safe='')}"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
         data = self._client.request("PUT", path, params=params, body=body_data)
@@ -1841,7 +1841,7 @@ class KubernetesEfficiencyReportsApi:
         
         Delete a KubernetesEfficiencyReport.
         """
-        path = f"/kubernetes_efficiency_reports/{quote(str(kubernetes_efficiency_report_token), safe='')}"
+        path = f"/v2/kubernetes_efficiency_reports/{quote(str(kubernetes_efficiency_report_token), safe='')}"
         params = None
         body_data = None
         self._client.request("DELETE", path, params=params, body=body_data)
@@ -1859,7 +1859,7 @@ class ManagedAccountsApi:
         
         Returns a list of managed accounts.
         """
-        path = "/managed_accounts"
+        path = "/v2/managed_accounts"
         params = {
             "page": page,
             "limit": limit,
@@ -1876,7 +1876,7 @@ class ManagedAccountsApi:
         
         Create a Managed Account.
         """
-        path = "/managed_accounts"
+        path = "/v2/managed_accounts"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
         data = self._client.request("POST", path, params=params, body=body_data)
@@ -1890,7 +1890,7 @@ class ManagedAccountsApi:
         
         Return a Managed Account.
         """
-        path = f"/managed_accounts/{quote(str(managed_account_token), safe='')}"
+        path = f"/v2/managed_accounts/{quote(str(managed_account_token), safe='')}"
         params = None
         body_data = None
         data = self._client.request("GET", path, params=params, body=body_data)
@@ -1904,7 +1904,7 @@ class ManagedAccountsApi:
         
         Update a Managed Account.
         """
-        path = f"/managed_accounts/{quote(str(managed_account_token), safe='')}"
+        path = f"/v2/managed_accounts/{quote(str(managed_account_token), safe='')}"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
         data = self._client.request("PUT", path, params=params, body=body_data)
@@ -1918,7 +1918,7 @@ class ManagedAccountsApi:
         
         Delete a Managed Account.
         """
-        path = f"/managed_accounts/{quote(str(managed_account_token), safe='')}"
+        path = f"/v2/managed_accounts/{quote(str(managed_account_token), safe='')}"
         params = None
         body_data = None
         self._client.request("DELETE", path, params=params, body=body_data)
@@ -1929,7 +1929,7 @@ class ManagedAccountsApi:
         
         Update SSO configuration for a Managed Account.
         """
-        path = f"/managed_accounts/{quote(str(managed_account_token), safe='')}/sso_connection"
+        path = f"/v2/managed_accounts/{quote(str(managed_account_token), safe='')}/sso_connection"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
         data = self._client.request("PUT", path, params=params, body=body_data)
@@ -1943,13 +1943,24 @@ class ManagedAccountsApi:
         
         Configure SSO for a Managed Account.
         """
-        path = f"/managed_accounts/{quote(str(managed_account_token), safe='')}/sso_connection"
+        path = f"/v2/managed_accounts/{quote(str(managed_account_token), safe='')}/sso_connection"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
         data = self._client.request("POST", path, params=params, body=body_data)
         if isinstance(data, dict):
             return ManagedAccount.model_validate(data)
         return data
+
+    def delete_sso_connection_for(self, managed_account_token: str) -> None:
+        """
+        Delete SSO connection for managed account
+        
+        Delete SSO connection for a Managed Account.
+        """
+        path = f"/v2/managed_accounts/{quote(str(managed_account_token), safe='')}/sso_connection"
+        params = None
+        body_data = None
+        self._client.request("DELETE", path, params=params, body=body_data)
 
 
 class MeApi:
@@ -1964,7 +1975,7 @@ class MeApi:
         
         Get information about the authenticated BearerToken.
         """
-        path = "/me"
+        path = "/v2/me"
         params = None
         body_data = None
         data = self._client.request("GET", path, params=params, body=body_data)
@@ -1985,7 +1996,7 @@ class NetworkFlowReportsApi:
         
         Return all NetworkFlowReports.
         """
-        path = "/network_flow_reports"
+        path = "/v2/network_flow_reports"
         params = {
             "page": page,
             "limit": limit,
@@ -2002,7 +2013,7 @@ class NetworkFlowReportsApi:
         
         Create a NetworkFlowReport.
         """
-        path = "/network_flow_reports"
+        path = "/v2/network_flow_reports"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
         data = self._client.request("POST", path, params=params, body=body_data)
@@ -2016,7 +2027,7 @@ class NetworkFlowReportsApi:
         
         Return a NetworkFlowReport.
         """
-        path = f"/network_flow_reports/{quote(str(network_flow_report_token), safe='')}"
+        path = f"/v2/network_flow_reports/{quote(str(network_flow_report_token), safe='')}"
         params = None
         body_data = None
         data = self._client.request("GET", path, params=params, body=body_data)
@@ -2030,7 +2041,7 @@ class NetworkFlowReportsApi:
         
         Update a NetworkFlowReport.
         """
-        path = f"/network_flow_reports/{quote(str(network_flow_report_token), safe='')}"
+        path = f"/v2/network_flow_reports/{quote(str(network_flow_report_token), safe='')}"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
         data = self._client.request("PUT", path, params=params, body=body_data)
@@ -2044,7 +2055,7 @@ class NetworkFlowReportsApi:
         
         Delete a NetworkFlowReport.
         """
-        path = f"/network_flow_reports/{quote(str(network_flow_report_token), safe='')}"
+        path = f"/v2/network_flow_reports/{quote(str(network_flow_report_token), safe='')}"
         params = None
         body_data = None
         self._client.request("DELETE", path, params=params, body=body_data)
@@ -2058,7 +2069,7 @@ class PingApi:
 
     def ping(self) -> None:
         """This is a health check endpoint that can be used to determine Vantage API healthiness. It will return 200 if everything is running smoothly."""
-        path = "/ping"
+        path = "/v2/ping"
         params = None
         body_data = None
         self._client.request("GET", path, params=params, body=body_data)
@@ -2076,7 +2087,7 @@ class ProductsApi:
         
         Return available Prices across all Regions for a Product.
         """
-        path = f"/products/{quote(str(product_id), safe='')}/prices"
+        path = f"/v2/products/{quote(str(product_id), safe='')}/prices"
         params = {
             "page": page,
             "limit": limit,
@@ -2093,7 +2104,7 @@ class ProductsApi:
         
         Returns a price
         """
-        path = f"/products/{quote(str(product_id), safe='')}/prices/{quote(str(id), safe='')}"
+        path = f"/v2/products/{quote(str(product_id), safe='')}/prices/{quote(str(id), safe='')}"
         params = None
         body_data = None
         data = self._client.request("GET", path, params=params, body=body_data)
@@ -2107,7 +2118,7 @@ class ProductsApi:
         
         Return available Products for a Service. For example, with a Provider of AWS and a Service of EC2, Products will be a list of all EC2 Instances. By default, this endpoint returns all Products across all Services and Providers but has optional query parameters for filtering listed below.
         """
-        path = "/products"
+        path = "/v2/products"
         params = {
             "provider_id": provider_id,
             "service_id": service_id,
@@ -2127,7 +2138,7 @@ class ProductsApi:
         
         Return a product
         """
-        path = f"/products/{quote(str(id), safe='')}"
+        path = f"/v2/products/{quote(str(id), safe='')}"
         params = None
         body_data = None
         data = self._client.request("GET", path, params=params, body=body_data)
@@ -2148,7 +2159,7 @@ class RecommendationViewsApi:
         
         Return all RecommendationViews.
         """
-        path = "/recommendation_views"
+        path = "/v2/recommendation_views"
         params = {
             "page": page,
             "limit": limit,
@@ -2165,7 +2176,7 @@ class RecommendationViewsApi:
         
         Create a RecommendationView.
         """
-        path = "/recommendation_views"
+        path = "/v2/recommendation_views"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
         data = self._client.request("POST", path, params=params, body=body_data)
@@ -2179,7 +2190,7 @@ class RecommendationViewsApi:
         
         Return a specific RecommendationView.
         """
-        path = f"/recommendation_views/{quote(str(recommendation_view_token), safe='')}"
+        path = f"/v2/recommendation_views/{quote(str(recommendation_view_token), safe='')}"
         params = None
         body_data = None
         data = self._client.request("GET", path, params=params, body=body_data)
@@ -2193,7 +2204,7 @@ class RecommendationViewsApi:
         
         Update a RecommendationView.
         """
-        path = f"/recommendation_views/{quote(str(recommendation_view_token), safe='')}"
+        path = f"/v2/recommendation_views/{quote(str(recommendation_view_token), safe='')}"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
         data = self._client.request("PUT", path, params=params, body=body_data)
@@ -2207,7 +2218,7 @@ class RecommendationViewsApi:
         
         Delete a RecommendationView.
         """
-        path = f"/recommendation_views/{quote(str(recommendation_view_token), safe='')}"
+        path = f"/v2/recommendation_views/{quote(str(recommendation_view_token), safe='')}"
         params = None
         body_data = None
         self._client.request("DELETE", path, params=params, body=body_data)
@@ -2225,7 +2236,7 @@ class RecommendationsApi:
         
         Return all Recommendations. Use the `type` query parameter with a fuzzy fragment to filter recommendation type case-insensitively (for example: aws, aws:ec2, aws:ec2:rightsizing).
         """
-        path = "/recommendations"
+        path = "/v2/recommendations"
         params = {
             "provider_ids": provider_ids,
             "billing_account_ids": billing_account_ids,
@@ -2256,7 +2267,7 @@ class RecommendationsApi:
         
         Return a Recommendation.
         """
-        path = f"/recommendations/{quote(str(recommendation_token), safe='')}"
+        path = f"/v2/recommendations/{quote(str(recommendation_token), safe='')}"
         params = None
         body_data = None
         data = self._client.request("GET", path, params=params, body=body_data)
@@ -2270,7 +2281,7 @@ class RecommendationsApi:
         
         Return all Active Resources, including Recommendation Actions, referenced in this Recommendation.
         """
-        path = f"/recommendations/{quote(str(recommendation_token), safe='')}/resources"
+        path = f"/v2/recommendations/{quote(str(recommendation_token), safe='')}/resources"
         params = {
             "page": page,
             "limit": limit,
@@ -2287,7 +2298,7 @@ class RecommendationsApi:
         
         Return an Active Resource, including Recommendation Actions, referenced in this Recommendation.
         """
-        path = f"/recommendations/{quote(str(recommendation_token), safe='')}/resources/{quote(str(resource_token), safe='')}"
+        path = f"/v2/recommendations/{quote(str(recommendation_token), safe='')}/resources/{quote(str(resource_token), safe='')}"
         params = None
         body_data = None
         data = self._client.request("GET", path, params=params, body=body_data)
@@ -2301,7 +2312,7 @@ class RecommendationsApi:
         
         Return all Active Resources associated with recommendations of the specified type.
         """
-        path = f"/recommendations/by_type/{quote(str(type), safe='')}/resources"
+        path = f"/v2/recommendations/by_type/{quote(str(type), safe='')}/resources"
         params = {
             "provider_ids": provider_ids,
             "billing_account_ids": billing_account_ids,
@@ -2335,7 +2346,7 @@ class ReportNotificationsApi:
         
         Return all ReportNotifications.
         """
-        path = "/report_notifications"
+        path = "/v2/report_notifications"
         params = {
             "page": page,
             "limit": limit,
@@ -2352,7 +2363,7 @@ class ReportNotificationsApi:
         
         Create a ReportNotification.
         """
-        path = "/report_notifications"
+        path = "/v2/report_notifications"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
         data = self._client.request("POST", path, params=params, body=body_data)
@@ -2366,7 +2377,7 @@ class ReportNotificationsApi:
         
         Return a ReportNotification.
         """
-        path = f"/report_notifications/{quote(str(report_notification_token), safe='')}"
+        path = f"/v2/report_notifications/{quote(str(report_notification_token), safe='')}"
         params = None
         body_data = None
         data = self._client.request("GET", path, params=params, body=body_data)
@@ -2380,7 +2391,7 @@ class ReportNotificationsApi:
         
         Update a ReportNotification.
         """
-        path = f"/report_notifications/{quote(str(report_notification_token), safe='')}"
+        path = f"/v2/report_notifications/{quote(str(report_notification_token), safe='')}"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
         data = self._client.request("PUT", path, params=params, body=body_data)
@@ -2394,7 +2405,7 @@ class ReportNotificationsApi:
         
         Delete a ReportNotification.
         """
-        path = f"/report_notifications/{quote(str(report_notification_token), safe='')}"
+        path = f"/v2/report_notifications/{quote(str(report_notification_token), safe='')}"
         params = None
         body_data = None
         self._client.request("DELETE", path, params=params, body=body_data)
@@ -2412,7 +2423,7 @@ class ResourceReportsApi:
         
         List available columns for a resource type.
         """
-        path = "/resource_reports/columns"
+        path = "/v2/resource_reports/columns"
         params = {
             "resource_type": resource_type,
         }
@@ -2428,7 +2439,7 @@ class ResourceReportsApi:
         
         Return all ResourceReports.
         """
-        path = "/resource_reports"
+        path = "/v2/resource_reports"
         params = {
             "page": page,
             "limit": limit,
@@ -2445,7 +2456,7 @@ class ResourceReportsApi:
         
         Create a ResourceReport.
         """
-        path = "/resource_reports"
+        path = "/v2/resource_reports"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
         data = self._client.request("POST", path, params=params, body=body_data)
@@ -2459,7 +2470,7 @@ class ResourceReportsApi:
         
         Return a ResourceReport.
         """
-        path = f"/resource_reports/{quote(str(resource_report_token), safe='')}"
+        path = f"/v2/resource_reports/{quote(str(resource_report_token), safe='')}"
         params = None
         body_data = None
         data = self._client.request("GET", path, params=params, body=body_data)
@@ -2473,7 +2484,7 @@ class ResourceReportsApi:
         
         Update a ResourceReport.
         """
-        path = f"/resource_reports/{quote(str(resource_report_token), safe='')}"
+        path = f"/v2/resource_reports/{quote(str(resource_report_token), safe='')}"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
         data = self._client.request("PUT", path, params=params, body=body_data)
@@ -2487,7 +2498,7 @@ class ResourceReportsApi:
         
         Delete a ResourceReport.
         """
-        path = f"/resource_reports/{quote(str(resource_report_token), safe='')}"
+        path = f"/v2/resource_reports/{quote(str(resource_report_token), safe='')}"
         params = None
         body_data = None
         self._client.request("DELETE", path, params=params, body=body_data)
@@ -2505,7 +2516,7 @@ class ResourcesApi:
         
         Return Resources contained in a ResourceReport
         """
-        path = "/resources"
+        path = "/v2/resources"
         params = {
             "resource_report_token": resource_report_token,
             "filter": filter,
@@ -2526,7 +2537,7 @@ class ResourcesApi:
         
         Return a single Resource
         """
-        path = f"/resources/{quote(str(resource_token), safe='')}"
+        path = f"/v2/resources/{quote(str(resource_token), safe='')}"
         params = {
             "include_cost": include_cost,
         }
@@ -2549,7 +2560,7 @@ class SavedFiltersApi:
         
         Return all SavedFilters that can be applied to a CostReport.
         """
-        path = "/saved_filters"
+        path = "/v2/saved_filters"
         params = {
             "page": page,
             "limit": limit,
@@ -2566,7 +2577,7 @@ class SavedFiltersApi:
         
         Create a SavedFilter for CostReports.
         """
-        path = "/saved_filters"
+        path = "/v2/saved_filters"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
         data = self._client.request("POST", path, params=params, body=body_data)
@@ -2580,7 +2591,7 @@ class SavedFiltersApi:
         
         Return a specific SavedFilter.
         """
-        path = f"/saved_filters/{quote(str(saved_filter_token), safe='')}"
+        path = f"/v2/saved_filters/{quote(str(saved_filter_token), safe='')}"
         params = None
         body_data = None
         data = self._client.request("GET", path, params=params, body=body_data)
@@ -2594,7 +2605,7 @@ class SavedFiltersApi:
         
         Update a SavedFilter for CostReports.
         """
-        path = f"/saved_filters/{quote(str(saved_filter_token), safe='')}"
+        path = f"/v2/saved_filters/{quote(str(saved_filter_token), safe='')}"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
         data = self._client.request("PUT", path, params=params, body=body_data)
@@ -2608,7 +2619,7 @@ class SavedFiltersApi:
         
         Delete a SavedFilter for CostReports.
         """
-        path = f"/saved_filters/{quote(str(saved_filter_token), safe='')}"
+        path = f"/v2/saved_filters/{quote(str(saved_filter_token), safe='')}"
         params = None
         body_data = None
         self._client.request("DELETE", path, params=params, body=body_data)
@@ -2626,7 +2637,7 @@ class SegmentsApi:
         
         Return all Segments.
         """
-        path = "/segments"
+        path = "/v2/segments"
         params = {
             "page": page,
             "limit": limit,
@@ -2643,7 +2654,7 @@ class SegmentsApi:
         
         Create a Segment.
         """
-        path = "/segments"
+        path = "/v2/segments"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
         data = self._client.request("POST", path, params=params, body=body_data)
@@ -2657,7 +2668,7 @@ class SegmentsApi:
         
         Return a Segment.
         """
-        path = f"/segments/{quote(str(segment_token), safe='')}"
+        path = f"/v2/segments/{quote(str(segment_token), safe='')}"
         params = None
         body_data = None
         data = self._client.request("GET", path, params=params, body=body_data)
@@ -2671,7 +2682,7 @@ class SegmentsApi:
         
         Update a Segment.
         """
-        path = f"/segments/{quote(str(segment_token), safe='')}"
+        path = f"/v2/segments/{quote(str(segment_token), safe='')}"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
         data = self._client.request("PUT", path, params=params, body=body_data)
@@ -2685,7 +2696,7 @@ class SegmentsApi:
         
         Delete a Segment.
         """
-        path = f"/segments/{quote(str(segment_token), safe='')}"
+        path = f"/v2/segments/{quote(str(segment_token), safe='')}"
         params = None
         body_data = None
         self._client.request("DELETE", path, params=params, body=body_data)
@@ -2703,7 +2714,7 @@ class TagsApi:
         
         Return all Tags that the current API token has access to.
         """
-        path = "/tags"
+        path = "/v2/tags"
         params = {
             "providers": providers,
             "search_query": search_query,
@@ -2723,7 +2734,7 @@ class TagsApi:
         
         Updates an existing Tag.
         """
-        path = "/tags"
+        path = "/v2/tags"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
         data = self._client.request("PUT", path, params=params, body=body_data)
@@ -2737,7 +2748,7 @@ class TagsApi:
         
         Returns corresponding TagValues for a given Tag.
         """
-        path = f"/tags/{quote(str(key), safe='')}/values"
+        path = f"/v2/tags/{quote(str(key), safe='')}/values"
         params = {
             "providers": providers,
             "sort_direction": sort_direction,
@@ -2764,7 +2775,7 @@ class TeamsApi:
         
         Return all Teams that the current API token has access to.
         """
-        path = "/teams"
+        path = "/v2/teams"
         params = {
             "page": page,
             "limit": limit,
@@ -2781,7 +2792,7 @@ class TeamsApi:
         
         Create a new Team.
         """
-        path = "/teams"
+        path = "/v2/teams"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
         data = self._client.request("POST", path, params=params, body=body_data)
@@ -2795,7 +2806,7 @@ class TeamsApi:
         
         Return a specific Team.
         """
-        path = f"/teams/{quote(str(team_token), safe='')}"
+        path = f"/v2/teams/{quote(str(team_token), safe='')}"
         params = None
         body_data = None
         data = self._client.request("GET", path, params=params, body=body_data)
@@ -2809,7 +2820,7 @@ class TeamsApi:
         
         Update a Team.
         """
-        path = f"/teams/{quote(str(team_token), safe='')}"
+        path = f"/v2/teams/{quote(str(team_token), safe='')}"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
         data = self._client.request("PUT", path, params=params, body=body_data)
@@ -2823,7 +2834,7 @@ class TeamsApi:
         
         Delete a Team.
         """
-        path = f"/teams/{quote(str(team_token), safe='')}"
+        path = f"/v2/teams/{quote(str(team_token), safe='')}"
         params = None
         body_data = None
         self._client.request("DELETE", path, params=params, body=body_data)
@@ -2834,7 +2845,7 @@ class TeamsApi:
         
         Return all members of a Team.
         """
-        path = f"/teams/{quote(str(team_token), safe='')}/members"
+        path = f"/v2/teams/{quote(str(team_token), safe='')}/members"
         params = {
             "page": page,
             "limit": limit,
@@ -2851,7 +2862,7 @@ class TeamsApi:
         
         Add a member to a Team.
         """
-        path = f"/teams/{quote(str(team_token), safe='')}/members"
+        path = f"/v2/teams/{quote(str(team_token), safe='')}/members"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
         data = self._client.request("POST", path, params=params, body=body_data)
@@ -2865,7 +2876,7 @@ class TeamsApi:
         
         Remove a member from a Team.
         """
-        path = f"/teams/{quote(str(team_token), safe='')}/members/{quote(str(user_token), safe='')}"
+        path = f"/v2/teams/{quote(str(team_token), safe='')}/members/{quote(str(user_token), safe='')}"
         params = None
         body_data = None
         self._client.request("DELETE", path, params=params, body=body_data)
@@ -2883,7 +2894,7 @@ class UnitCostsApi:
         
         Generate a DataExport of unit costs.
         """
-        path = "/unit_costs/data_exports"
+        path = "/v2/unit_costs/data_exports"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
         return self._client.request("POST", path, params=params, body=body_data)
@@ -2894,7 +2905,7 @@ class UnitCostsApi:
         
         Return all UnitCosts for a CostReport.
         """
-        path = "/unit_costs"
+        path = "/v2/unit_costs"
         params = {
             "cost_report_token": cost_report_token,
             "start_date": start_date,
@@ -2923,7 +2934,7 @@ class UserFeedbackApi:
         
         Provide UserFeedback for our product and features.
         """
-        path = "/user_feedback"
+        path = "/v2/user_feedback"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
         data = self._client.request("POST", path, params=params, body=body_data)
@@ -2944,7 +2955,7 @@ class UsersApi:
         
         Return all Users that the current API token has access to.
         """
-        path = "/users"
+        path = "/v2/users"
         params = {
             "page": page,
             "limit": limit,
@@ -2961,7 +2972,7 @@ class UsersApi:
         
         Return a specific User.
         """
-        path = f"/users/{quote(str(user_token), safe='')}"
+        path = f"/v2/users/{quote(str(user_token), safe='')}"
         params = None
         body_data = None
         data = self._client.request("GET", path, params=params, body=body_data)
@@ -2982,7 +2993,7 @@ class VirtualTagConfigsApi:
         
         Return all VirtualTagConfigs that the current API token has access to.
         """
-        path = "/virtual_tag_configs"
+        path = "/v2/virtual_tag_configs"
         params = None
         body_data = None
         data = self._client.request("GET", path, params=params, body=body_data)
@@ -2996,7 +3007,7 @@ class VirtualTagConfigsApi:
         
         Create a new VirtualTagConfig.
         """
-        path = "/virtual_tag_configs"
+        path = "/v2/virtual_tag_configs"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
         data = self._client.request("POST", path, params=params, body=body_data)
@@ -3010,7 +3021,7 @@ class VirtualTagConfigsApi:
         
         Return a specific VirtualTagConfig.
         """
-        path = f"/virtual_tag_configs/{quote(str(token), safe='')}"
+        path = f"/v2/virtual_tag_configs/{quote(str(token), safe='')}"
         params = None
         body_data = None
         data = self._client.request("GET", path, params=params, body=body_data)
@@ -3024,7 +3035,7 @@ class VirtualTagConfigsApi:
         
         Updates an existing VirtualTagConfig.
         """
-        path = f"/virtual_tag_configs/{quote(str(token), safe='')}"
+        path = f"/v2/virtual_tag_configs/{quote(str(token), safe='')}"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
         data = self._client.request("PUT", path, params=params, body=body_data)
@@ -3038,7 +3049,7 @@ class VirtualTagConfigsApi:
         
         Deletes an existing VirtualTagConfig.
         """
-        path = f"/virtual_tag_configs/{quote(str(token), safe='')}"
+        path = f"/v2/virtual_tag_configs/{quote(str(token), safe='')}"
         params = None
         body_data = None
         self._client.request("DELETE", path, params=params, body=body_data)
@@ -3049,7 +3060,7 @@ class VirtualTagConfigsApi:
         
         Return the processing status of a specific VirtualTagConfig.
         """
-        path = f"/virtual_tag_configs/{quote(str(token), safe='')}/status"
+        path = f"/v2/virtual_tag_configs/{quote(str(token), safe='')}/status"
         params = None
         body_data = None
         data = self._client.request("GET", path, params=params, body=body_data)
@@ -3063,7 +3074,7 @@ class VirtualTagConfigsApi:
         
         Asynchronously updates an existing VirtualTagConfig.
         """
-        path = f"/virtual_tag_configs/{quote(str(token), safe='')}/async"
+        path = f"/v2/virtual_tag_configs/{quote(str(token), safe='')}/async"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
         data = self._client.request("PUT", path, params=params, body=body_data)
@@ -3077,7 +3088,7 @@ class VirtualTagConfigsApi:
         
         Check the status of an async VirtualTagConfig update.
         """
-        path = f"/virtual_tag_configs/async/{quote(str(request_id), safe='')}"
+        path = f"/v2/virtual_tag_configs/async/{quote(str(request_id), safe='')}"
         params = None
         body_data = None
         return self._client.request("GET", path, params=params, body=body_data)
@@ -3095,7 +3106,7 @@ class WorkspacesApi:
         
         Return all Workspaces that the current API token has access to.
         """
-        path = "/workspaces"
+        path = "/v2/workspaces"
         params = {
             "page": page,
             "limit": limit,
@@ -3112,7 +3123,7 @@ class WorkspacesApi:
         
         Create a workspace
         """
-        path = "/workspaces"
+        path = "/v2/workspaces"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
         data = self._client.request("POST", path, params=params, body=body_data)
@@ -3126,7 +3137,7 @@ class WorkspacesApi:
         
         Return a specific Workspace.
         """
-        path = f"/workspaces/{quote(str(workspace_token), safe='')}"
+        path = f"/v2/workspaces/{quote(str(workspace_token), safe='')}"
         params = None
         body_data = None
         data = self._client.request("GET", path, params=params, body=body_data)
@@ -3140,7 +3151,7 @@ class WorkspacesApi:
         
         Update a workspace
         """
-        path = f"/workspaces/{quote(str(workspace_token), safe='')}"
+        path = f"/v2/workspaces/{quote(str(workspace_token), safe='')}"
         params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
         data = self._client.request("PUT", path, params=params, body=body_data)

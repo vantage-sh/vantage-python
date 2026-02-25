@@ -628,7 +628,7 @@ def _collect_handler_routes(resources: dict[str, Resource]) -> dict[str, list[tu
         for endpoint in resource.endpoints:
             if endpoint.response_handler:
                 handler_routes.setdefault(endpoint.response_handler, []).append(
-                    (endpoint.method, endpoint.path)
+                    (endpoint.method, "/v2" + endpoint.path)
                 )
     return handler_routes
 
@@ -643,7 +643,7 @@ def _collect_boolean_status_prefixes(resources: dict[str, Resource]) -> list[tup
     for resource in resources.values():
         for endpoint in resource.endpoints:
             if endpoint.boolean_status:
-                prefix = endpoint.path.split("{")[0]
+                prefix = ("/v2" + endpoint.path).split("{")[0]
                 result.append((endpoint.method, prefix))
     return result
 
@@ -883,7 +883,7 @@ def generate_sync_method(endpoint: Endpoint, method_name: str) -> list[str]:
             lines.append('        """')
 
     # Build path with parameters (URL-encode each path arg)
-    path = endpoint.path
+    path = "/v2" + endpoint.path
     for pp in path_params:
         path = path.replace(f"{{{pp.name}}}", f"{{quote(str({pp.python_name}), safe='')}}")
 
@@ -1163,7 +1163,7 @@ def generate_async_method(endpoint: Endpoint, method_name: str) -> list[str]:
             lines.append('        """')
 
     # Build path with parameters (URL-encode each path arg)
-    path = endpoint.path
+    path = "/v2" + endpoint.path
     for pp in path_params:
         path = path.replace(f"{{{pp.name}}}", f"{{quote(str({pp.python_name}), safe='')}}")
 
