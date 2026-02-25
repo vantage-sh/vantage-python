@@ -317,7 +317,7 @@ class BudgetAlert(BaseModel):
     token: str
     budget_tokens: List[str] = Field(description="The tokens for the Budgets that the Budget Alert is monitoring to trigger alerts on.")
     created_at: str = Field(description="The date and time, in UTC, the Budget Alert was created. ISO 8601 Formatted.")
-    workspace_token: str = Field(description="The token for the Workspace the ResourceReport is a part of.")
+    workspace_token: Optional[str] = Field(description="The token for the Workspace the ResourceReport is a part of.")
     user_token: Optional[str] = Field(default=None, description="The token for the User who created this BudgetAlert.")
     user_tokens: List[str] = Field(description="The Users that receive the alert.")
     duration_in_days: Optional[int] = Field(description="The number of days from the start or end of the month to trigger the alert if the threshold is reached.")

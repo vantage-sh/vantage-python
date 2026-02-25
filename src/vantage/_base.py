@@ -71,4 +71,4 @@ def build_query_string(params: Dict[str, Any]) -> str:
     return "?" + "&".join(parts) if parts else ""
 
 
-DEFAULT_BASE_URL = "https://api.vantage.sh/v2"
+DEFAULT_BASE_URL = "https://api.vantage.sh"
