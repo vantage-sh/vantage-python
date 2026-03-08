@@ -1983,6 +1983,20 @@ class MeAsyncApi:
             return Me.model_validate(data)
         return data
 
+    async def update(self, body: UpdateMe) -> Me:
+        """
+        Update authenticated user
+        
+        Update the authenticated User.
+        """
+        path = "/v2/me"
+        params = None
+        body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
+        data = await self._client.request("PUT", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return Me.model_validate(data)
+        return data
+
 
 class NetworkFlowReportsAsyncApi:
     """Async API methods for network_flow_reports resource."""
@@ -2976,6 +2990,20 @@ class UsersAsyncApi:
         params = None
         body_data = None
         data = await self._client.request("GET", path, params=params, body=body_data)
+        if isinstance(data, dict):
+            return User.model_validate(data)
+        return data
+
+    async def update(self, user_token: str, body: UpdateUser) -> User:
+        """
+        Update a user
+        
+        Update a specific User.
+        """
+        path = f"/v2/users/{quote(str(user_token), safe='')}"
+        params = None
+        body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
+        data = await self._client.request("PUT", path, params=params, body=body_data)
         if isinstance(data, dict):
             return User.model_validate(data)
         return data

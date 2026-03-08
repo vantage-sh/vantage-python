@@ -1176,6 +1176,7 @@ class Me(BaseModel):
     """Me model"""
 
     default_workspace_token: Optional[str]
+    default_dashboard_token: Optional[str] = Field(default=None, description="The token of the default Dashboard for the User.")
     workspaces: List[Workspace]
     bearer_token: BearerToken
 
@@ -1195,6 +1196,12 @@ class BearerToken(BaseModel):
     description: str = Field(description="The user supplied description of this BearerToken")
     created_at: str = Field(description="The date and time, in UTC, the BearerToken was created. ISO 8601 Formatted.")
     scope: List[str] = Field(description="The scopes applied to the BearerToken used to authenticate this request.")
+
+
+class UpdateMe(BaseModel):
+    """Update the authenticated User."""
+
+    default_dashboard_token: Optional[str] = Field(default=None, description="The token of a Dashboard to set as the User default. Send null to clear.")
 
 
 class CostProviders(BaseModel):
@@ -1672,6 +1679,7 @@ class Team(BaseModel):
     workspace_tokens: List[str] = Field(description="The tokens for any Workspaces that the Team belongs to")
     user_emails: List[str] = Field(description="The email addresses for Users that belong to the Team")
     user_tokens: List[str] = Field(description="The tokens for Users that belong to the Team")
+    default_dashboard_token: Optional[str] = Field(description="The token of the default Dashboard for the Team.")
 
 
 class CreateTeam(BaseModel):
@@ -1683,6 +1691,7 @@ class CreateTeam(BaseModel):
     user_tokens: Optional[List[str]] = Field(default=None, description="The User tokens to associate to the Team.")
     user_emails: Optional[List[str]] = Field(default=None, description="The User emails to associate to the Team.")
     role: Optional[str] = Field(default=None, description="The role to assign to the provided Users. Defaults to 'editor' which has editor permissions.")
+    default_dashboard_token: Optional[str] = Field(default=None, description="The token of a Dashboard to set as the Team default. Send null to clear.")
 
 
 class UpdateTeam(BaseModel):
@@ -1694,6 +1703,7 @@ class UpdateTeam(BaseModel):
     user_tokens: Optional[List[str]] = Field(default=None, description="The User tokens to associate to the Team.")
     user_emails: Optional[List[str]] = Field(default=None, description="The User emails to associate to the Team.")
     role: Optional[str] = Field(default=None, description="The role to assign to the provided Users. Defaults to 'editor' which has editor permissions.")
+    default_dashboard_token: Optional[str] = Field(default=None, description="The token of a Dashboard to set as the Team default. Send null to clear.")
 
 
 class TeamMembers(BaseModel):
@@ -1760,7 +1770,14 @@ class User(BaseModel):
     name: Optional[str] = Field(description="The name of the User.")
     email: str = Field(description="The email of the User.")
     role: str = Field(description="The role of the User.")
+    default_dashboard_token: Optional[str] = Field(default=None, description="The token of the default Dashboard for the User.")
     last_seen_at: Optional[str] = Field(default=None, description="The last time the User logged in.")
+
+
+class UpdateUser(BaseModel):
+    """Update a specific User."""
+
+    default_dashboard_token: Optional[str] = Field(default=None, description="The token of a Dashboard to set as the User default. Send null to clear.")
 
 
 class VirtualTagConfigs(BaseModel):
@@ -1847,6 +1864,13 @@ class UpdateVirtualTagConfig(BaseModel):
     values: Optional[List[VirtualTagConfigValue]] = Field(default=None, description="Values for the VirtualTagConfig, with match precedence determined by order in the list.")
 
 
+class AsyncVirtualTagConfigUpdate(BaseModel):
+    """AsyncVirtualTagConfigUpdate model"""
+
+    request_id: str = Field(description="The request ID of the async virtual tag config update.")
+    status_url: str = Field(description="The status path of the async virtual tag config update.")
+
+
 class UpdateAsyncVirtualTagConfig(BaseModel):
     """Asynchronously updates an existing VirtualTagConfig."""
 
@@ -1855,13 +1879,6 @@ class UpdateAsyncVirtualTagConfig(BaseModel):
     backfill_until: Optional[str] = Field(default=None, description="The earliest month the VirtualTagConfig should be backfilled to.")
     collapsed_tag_keys: Optional[List[VirtualTagConfigCollapsedTagKey]] = Field(default=None, description="Tag keys to collapse values for.")
     values: Optional[List[VirtualTagConfigValue]] = Field(default=None, description="Values for the VirtualTagConfig, with match precedence determined by order in the list.")
-
-
-class AsyncVirtualTagConfigUpdate(BaseModel):
-    """AsyncVirtualTagConfigUpdate model"""
-
-    request_id: str = Field(description="The request ID of the async virtual tag config update.")
-    status_url: str = Field(description="The status path of the async virtual tag config update.")
 
 
 class Workspaces(BaseModel):
