@@ -585,7 +585,7 @@ class CostReport(BaseModel):
     business_metric_tokens_with_metadata: List[AttachedBusinessMetricForCostReport] = Field(description="The tokens for the BusinessMetrics assigned to the CostReport, the unit scale, and label filter.")
     filter: Optional[str] = Field(description="The filter applied to the CostReport. Additional documentation available at https://docs.vantage.sh/vql.")
     groupings: Optional[str] = Field(default=None, description="The grouping aggregations applied to the filtered data.")
-    settings: Optional[Settings] = Field(default=None, description="Report settings.")
+    settings: Optional[CostReportOrCreateCostReportOrUpdateCostReportSettings] = Field(default=None, description="Report settings.")
     created_at: str = Field(description="The date and time, in UTC, the report was created. ISO 8601 Formatted.")
     workspace_token: str = Field(description="The token for the Workspace the CostReport is a part of.")
     previous_period_start_date: Optional[str] = Field(default=None, description="The previous period start date of the CostReport. ISO 8601 Formatted.")
@@ -635,7 +635,7 @@ class CreateCostReport(BaseModel):
     saved_filter_tokens: Optional[List[str]] = Field(default=None, description="The tokens of the SavedFilters to apply to the CostReport.")
     business_metric_tokens_with_metadata: Optional[List[AttachedBusinessMetricForCostReport]] = Field(default=None, description="The tokens for any BusinessMetrics to attach to the CostReport, and the unit scale.")
     folder_token: Optional[str] = Field(default=None, description="The token of the Folder to add the CostReport to. Determines the Workspace the report is assigned to.")
-    settings: Optional[Settings] = Field(default=None, description="Report settings.")
+    settings: Optional[CostReportOrCreateCostReportOrUpdateCostReportSettings] = Field(default=None, description="Report settings.")
     previous_period_start_date: Optional[str] = Field(default=None, description="The previous period start date of the CostReport. ISO 8601 Formatted.")
     previous_period_end_date: str = Field(description="The previous period end date of the CostReport. ISO 8601 Formatted. Required when previous_period_start_date is provided.")
     start_date: Optional[str] = Field(default=None, description="The start date of the CostReport. ISO 8601 Formatted. Incompatible with 'date_interval' parameter.")
@@ -655,7 +655,7 @@ class UpdateCostReport(BaseModel):
     saved_filter_tokens: Optional[List[str]] = Field(default=None, description="The tokens of the SavedFilters to apply to the CostReport.")
     business_metric_tokens_with_metadata: Optional[List[AttachedBusinessMetricForCostReport]] = Field(default=None, description="The tokens for any BusinessMetrics to attach to the CostReport, and the unit scale.")
     folder_token: Optional[str] = Field(default=None, description="The token of the Folder to add the CostReport to. Determines the Workspace the report is assigned to.")
-    settings: Optional[Settings] = Field(default=None, description="Report settings.")
+    settings: Optional[CostReportOrCreateCostReportOrUpdateCostReportSettings] = Field(default=None, description="Report settings.")
     chart_settings: Optional[ChartSettings] = Field(default=None, description="Report chart settings.")
     previous_period_start_date: Optional[str] = Field(default=None, description="The previous period start date of the CostReport. ISO 8601 Formatted.")
     previous_period_end_date: Optional[str] = Field(default=None, description="The previous period end date of the CostReport. ISO 8601 Formatted. Required when previous_period_start_date is provided.")
@@ -674,8 +674,10 @@ class CreateCostExport(BaseModel):
     workspace_token: Optional[str] = Field(default=None, description="The token of the Workspace to query costs from. Ignored if 'cost_report_token' is set. Required if the API token is associated with multiple Workspaces.")
     start_date: Optional[str] = Field(default=None, description="First date you would like to filter costs from. ISO 8601 formatted.")
     end_date: Optional[str] = Field(default=None, description="Last date you would like to filter costs to. ISO 8601 formatted.")
+    groupings: Optional[List[str]] = Field(default=None, description="Group the results by specific field(s). Defaults to provider, service, account_id. Valid groupings: account_id, billing_account_id, charge_type, cost_category, cost_subcategory, provider, region, resource_id, service, tagged, tag:<tag_value>. If providing multiple groupings, join as comma separated values: groupings=provider,service,region")
     date_bin: Optional[str] = Field(default=None, description="The date bin of the costs. Defaults to the report's default or day.")
     schema_: Optional[str] = Field(alias="schema", default="vntg", description="The schema of the data export.")
+    settings: Optional[CreateCostExportSettings] = Field(default=None, description="Cost-related settings.")
 
 
 class Costs(BaseModel):
@@ -897,6 +899,7 @@ class Folder(BaseModel):
 
     token: str
     title: Optional[str] = Field(description="The title of the Folder.")
+    type: str = Field(description="The type of the Folder.")
     parent_folder_token: Optional[str] = Field(default=None, description="The token for the parent Folder, if any.")
     saved_filter_tokens: List[str] = Field(description="The tokens for the SavedFilters assigned to the Folder.")
     created_at: str = Field(description="The date and time, in UTC, the Folder was created. ISO 8601 Formatted.")
@@ -911,6 +914,7 @@ class CreateFolder(BaseModel):
     parent_folder_token: Optional[str] = Field(default=None, description="The token of the parent Folder.")
     saved_filter_tokens: Optional[List[str]] = Field(default=None, description="The tokens of the SavedFilters to apply to any Cost Report contained within the Folder.")
     workspace_token: Optional[str] = Field(default=None, description="The token of the Workspace to add the Folder to. Ignored if 'parent_folder_token' is set. Required if the API token is associated with multiple Workspaces.")
+    type: Optional[str] = Field(default="CostFolder", description="The type of the Folder.")
 
 
 class UpdateFolder(BaseModel):
@@ -1361,15 +1365,30 @@ class RecommendationProviderResources(BaseModel):
     """RecommendationProviderResources model"""
 
     links: Optional[Links] = Field(default=None)
-    resources: List[ProviderResource]
+    resources: List[RecommendationProviderResource]
 
 
-class ProviderResource(BaseModel):
-    """ProviderResource model"""
+class RecommendationProviderResource(BaseModel):
+    """RecommendationProviderResource model"""
 
     token: str
+    uuid: str = Field(description="The unique identifier for the resource.")
+    type: str = Field(description="The kind of resource.")
+    label: Optional[str]
+    metadata: Optional[Dict[str, Any]] = Field(description="Type-specific attributes of the resource.")
+    account_id: Optional[str] = Field(description="The provider account where the resource is located.")
+    billing_account_id: Optional[str] = Field(description="The provider billing account this resource is charged to.")
+    provider: str = Field(description="The provider of the resource.")
+    region: Optional[str] = Field(description="The region where the resource is located. Region values are specific to each provider.")
+    costs: Optional[List[ResourceCost]] = Field(default=None, description="The cost of the resource broken down by category.")
+    created_at: str = Field(description="The date and time when Vantage first observed the resource.")
     resource_id: str = Field(description="The unique identifier of the Active Resource.")
     recommendation_actions: Optional[List[RecommendationAction]] = Field(default=None, description="The actions to take to implement the Recommendation.")
+
+
+class ResourceCost(BaseModel):
+    category: str = Field(description="The category of the cost.")
+    amount: float = Field(description="The cost amount.")
 
 
 class RecommendationAction(BaseModel):
@@ -1500,6 +1519,7 @@ class ResourceReport(BaseModel):
     workspace_token: str = Field(description="The token for the Workspace the ResourceReport is a part of.")
     user_token: Optional[str] = Field(description="The token for the User who created this ResourceReport.")
     created_by_token: Optional[str] = Field(description="The token for the User or Team who created this ResourceReport.")
+    folder_token: Optional[str] = Field(default=None, description="The token for the Folder the ResourceReport is a part of.")
     columns: List[str] = Field(description="Array of column names configured for the ResourceReport table display.")
 
 
@@ -1510,6 +1530,7 @@ class CreateResourceReport(BaseModel):
     title: Optional[str] = Field(default=None, description="The title of the ResourceReport.")
     filter: Optional[str] = Field(default=None, description="The filter query language to apply to the ResourceReport. Additional documentation available at https://docs.vantage.sh/vql.")
     columns: Optional[List[str]] = Field(default=None, description="Array of column names to display in the table. Column names should match those returned by the /resource_reports/columns endpoint. The order determines the display order. Only available for reports with a single resource type filter.")
+    folder_token: Optional[str] = Field(default=None, description="The token of the Folder to add the ResourceReport to.")
 
 
 class UpdateResourceReport(BaseModel):
@@ -1518,6 +1539,7 @@ class UpdateResourceReport(BaseModel):
     title: Optional[str] = Field(default=None, description="The title of the ResourceReport.")
     filter: Optional[str] = Field(default=None, description="The filter query language to apply to the ResourceReport. Additional documentation available at https://docs.vantage.sh/vql.")
     columns: Optional[List[str]] = Field(default=None, description="Array of column names to display in the table. Column names should match those returned by the /resource_reports/columns endpoint. The order determines the display order. Only available for reports with a single resource type filter.")
+    folder_token: Optional[str] = Field(default=None, description="The token of the Folder to move the ResourceReport to.")
 
 
 class Resources(BaseModel):
@@ -1541,11 +1563,6 @@ class Resource(BaseModel):
     region: Optional[str] = Field(description="The region where the resource is located. Region values are specific to each provider.")
     costs: Optional[List[ResourceCost]] = Field(default=None, description="The cost of the resource broken down by category.")
     created_at: str = Field(description="The date and time when Vantage first observed the resource.")
-
-
-class ResourceCost(BaseModel):
-    category: str = Field(description="The category of the cost.")
-    amount: float = Field(description="The cost amount.")
 
 
 class SavedFilters(BaseModel):
@@ -1808,6 +1825,7 @@ class VirtualTagConfigValue(BaseModel):
     name: Optional[str] = Field(default=None, description="The name of the Value.")
     business_metric_token: Optional[str] = Field(default=None, description="The token of the associated BusinessMetric.")
     cost_metric: Optional[VirtualTagConfigValueCostMetric] = Field(default=None)
+    display_name: Optional[str] = Field(default=None, description="The display name for this allocation value.")
     percentages: Optional[List[VirtualTagConfigValuePercentage]] = Field(default=None, description="Labeled percentage allocations for matching costs.")
     date_ranges: Optional[List[VirtualTagConfigValueDateRange]] = Field(default=None, description="Date ranges restricting when this value applies.")
 
@@ -1925,7 +1943,7 @@ class CreateBusinessMetricOrUpdateBusinessMetricCloudwatchFields(BaseModel):
     dimensions: Optional[List[BusinessInformationCustomField]] = Field(default=None)
 
 
-class Settings(BaseModel):
+class CostReportOrCreateCostReportOrUpdateCostReportSettings(BaseModel):
     """Report settings."""
 
     include_credits: Optional[bool] = Field(default=False, description="Report will include credits.")
@@ -1936,6 +1954,20 @@ class Settings(BaseModel):
     unallocated: Optional[bool] = Field(default=False, description="Report will show unallocated costs.")
     aggregate_by: Optional[str] = Field(default="cost", description="Report will aggregate by cost or usage.")
     show_previous_period: Optional[bool] = Field(default=True, description="Report will show previous period costs or usage comparison.")
+    complete_period: Optional[bool] = Field(default=False, description="Report will restrict date ranges to completed periods only.")
+
+
+class CreateCostExportSettings(BaseModel):
+    """Cost-related settings."""
+
+    include_credits: Optional[bool] = Field(default=False, description="Results will include credits.")
+    include_refunds: Optional[bool] = Field(default=False, description="Results will include refunds.")
+    include_discounts: Optional[bool] = Field(default=True, description="Results will include discounts.")
+    include_tax: Optional[bool] = Field(default=True, description="Results will include tax.")
+    amortize: Optional[bool] = Field(default=True, description="Results will amortize.")
+    unallocated: Optional[bool] = Field(default=False, description="Results will show unallocated costs.")
+    aggregate_by: Optional[str] = Field(default="cost", description="Results will aggregate by cost or usage.")
+    show_previous_period: Optional[bool] = Field(default=True, description="Results will show previous period costs or usage comparison.")
 
 
 class BillingInformationAttributes(BaseModel):
