@@ -1,0 +1,8 @@
+# Dependabot dependency manifests — @vantage-sh/engineering-platform
+# Tailored from .github/dependabot.yml + repo manifests (ecosystems: github-actions, pip).
+/.github/workflows/**/* @vantage-sh/engineering-platform
+/Pipfile @vantage-sh/engineering-platform
+/Pipfile.lock @vantage-sh/engineering-platform
+/poetry.lock @vantage-sh/engineering-platform
+/pyproject.toml @vantage-sh/engineering-platform
+/requirements.txt @vantage-sh/engineering-platform
