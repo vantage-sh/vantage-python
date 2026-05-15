@@ -16,7 +16,7 @@ jobs:
         outputs:
             TAG_NOT_PRESENT: ${{ steps.get-tag.outputs.TAG_NOT_PRESENT }}
         steps:
-            - uses: actions/checkout@v4
+            - uses: actions/checkout@v6
               with:
                   fetch-depth: 0
             - name: Get the tag from Python and check if it's present
@@ -43,7 +43,7 @@ jobs:
         needs: check-if-tag
         if: needs.check-if-tag.outputs.TAG_NOT_PRESENT == 'true'
         steps:
-            - uses: actions/checkout@v4
+            - uses: actions/checkout@v6
             - uses: actions/setup-python@v5
               with:
                   python-version: "3.14"
