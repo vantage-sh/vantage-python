@@ -1130,16 +1130,14 @@ class CostsApi:
     def __init__(self, client: SyncClient) -> None:
         self._client = client
 
-    def create_export(self, body: CreateCostExport, *, groupings: Optional[List[str]] = None) -> str:
+    def create_export(self, body: CreateCostExport) -> str:
         """
         Generate cost data export
         
         Generate a DataExport of costs.
         """
         path = "/v2/costs/data_exports"
-        params = {
-            "groupings": groupings,
-        }
+        params = None
         body_data = body.model_dump(by_alias=True, exclude_none=True) if hasattr(body, 'model_dump') else body
         return self._client.request("POST", path, params=params, body=body_data)
 
@@ -1417,7 +1415,7 @@ class FoldersApi:
     def __init__(self, client: SyncClient) -> None:
         self._client = client
 
-    def list(self, *, page: Optional[int] = None, limit: Optional[int] = None) -> Folders:
+    def list(self, *, page: Optional[int] = None, limit: Optional[int] = None, type: Optional[str] = None) -> Folders:
         """
         Get all folders
         
@@ -1427,6 +1425,7 @@ class FoldersApi:
         params = {
             "page": page,
             "limit": limit,
+            "type": type,
         }
         body_data = None
         data = self._client.request("GET", path, params=params, body=body_data)
@@ -2306,7 +2305,7 @@ class RecommendationsApi:
             return RecommendationProviderResources.model_validate(data)
         return data
 
-    def get_resource(self, recommendation_token: str, resource_token: str) -> ProviderResource:
+    def get_resource(self, recommendation_token: str, resource_token: str) -> RecommendationProviderResource:
         """
         Get specific resource for a recommendation
         
@@ -2317,7 +2316,7 @@ class RecommendationsApi:
         body_data = None
         data = self._client.request("GET", path, params=params, body=body_data)
         if isinstance(data, dict):
-            return ProviderResource.model_validate(data)
+            return RecommendationProviderResource.model_validate(data)
         return data
 
     def get_type_resources(self, type: str, *, provider_ids: Optional[List[str]] = None, billing_account_ids: Optional[List[str]] = None, account_ids: Optional[List[str]] = None, regions: Optional[List[str]] = None, tag_key: Optional[str] = None, tag_value: Optional[str] = None, start_date: Optional[str] = None, end_date: Optional[str] = None, status: Optional[str] = None, page: Optional[int] = None, limit: Optional[int] = None, workspace_token: str) -> RecommendationProviderResources:
