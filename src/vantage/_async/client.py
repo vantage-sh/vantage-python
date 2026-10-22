@@ -103,10 +103,13 @@ class AsyncClient:
             params = None
 
         if is_multipart_route(path, method):
+            data = dict(body or {})
+            csv = data.pop("csv", None)
             response = await self._http.request(
                 method,
                 url,
-                data=body,
+                data=data,
+                files={"csv": csv} if csv is not None else None,
             )
         else:
             response = await self._http.request(
